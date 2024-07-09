@@ -1,0 +1,13 @@
+.search-result {
+  padding: 5px 20px;
+}
+
+.search-result:hover {
+  background-color: #efefef;
+  cursor: pointer;
+}
+
+/*.box2 {*/
+/*  position: absolute;*/
+/*  z-index: 1000;*/
+/*}*/

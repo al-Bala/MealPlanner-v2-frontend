@@ -6,6 +6,6 @@ export const translationPL = {
   userProductsMessage: 'Twoje produkty',
   firstDayMessage: 'Pierwszy dzień planu',
   amountMessage: 'Ilość',
-  selectUnitMessage: 'Wybierz jednostkę',
-  acceptButton: 'Zatwierdź'
+  selectUnitMessage: 'Jednostka',
+  addButton: 'Dodaj'
 };

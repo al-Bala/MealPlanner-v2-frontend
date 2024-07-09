@@ -1,30 +1,37 @@
-import { Product } from './models/models';
+import axios from 'axios';
+import {FirstDayRequest, Product} from './models/models';
+import {Dispatch, SetStateAction} from "react";
 
+interface Props {
+    filterText: string;
+    setRows: Dispatch<SetStateAction<Product[]>>;
+}
 export const api = () => {
-    const PRODUCTS = [
-        {id: 1, name: "Apple", mainUnit: "g", units: ["g", "kg", "szt"], weight: 80},
-        {id: 2, name: "Milk", mainUnit: "ml", units: ["ml", "l"], weight: null},
-        {id: 3, name: "Yogurt", mainUnit: "ml", units: ["m", "ml"], weight: null},
-        {id: 4, name: "Broccoli", mainUnit: "g", units: ["g", "kg", "szt"], weight: 150},
-        {id: 5, name: "Pumpkin", mainUnit: "g", units: ["g", "kg", "szt"], weight: 500}
-    ];
+    const getProducts = async ({filterText, setRows}: Props) => {
+        try {
+            await axios.get(`http://localhost:8080/products?query=` + filterText)
+                .then(res => setRows(res.data));
+        } catch (error) {
+            console.log("Api error!")
+        }
+    };
 
-    // const getProducts = (filterText: string): Prod[] => {
-    const getProducts = (filterText: string) => {
-        const prods: Product[] = [];
-
-        PRODUCTS.forEach((product) => {
-            if(filterText.length > 0){
-                if (product.name.toLowerCase().indexOf(filterText.toLowerCase()) === -1) {
-                    return;
+    const postPreferences = async (fdr: FirstDayRequest) => {
+        try {
+            const response = await axios.post('http://localhost:8080/plan/firstDay', fdr, {
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-                prods.push(<Product>product);
-            }
-        });
-        return prods;
+            });
+            console.log('Success:', response.data);
+
+        } catch (error) {
+            console.log("Api error!")
+        }
     };
 
     return {
-        getProducts
+        getProducts,
+        postPreferences
     };
 };

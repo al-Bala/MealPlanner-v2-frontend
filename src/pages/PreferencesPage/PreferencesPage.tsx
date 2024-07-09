@@ -1,30 +1,32 @@
-// import {useTranslation} from "react-i18next";
-import {SearchBar} from "./productstoavoid/SearchBar.tsx";
-import {SearchResultsList} from "./productstoavoid/SearchResultList.tsx";
-import {SearchResultListUser} from "./userproducts/SearchResultListUser.tsx";
 import {useEffect, useState} from "react";
-import {DietOption} from "./diet/DietOption.tsx";
-import {ChosenProductsToAvoid} from "./productstoavoid/ChosenProductsToAvoid.tsx";
-import {UserProduct, DietModel} from '../../models/models.ts';
+import {UserProduct, DietModel, MealValues, UnchangingPrefers, FirstDayRequest} from '../../models/models.ts';
 import "./PrefPage.css"
-import {SearchBarUser} from "./userproducts/SearchBarUser.tsx";
-import {t} from 'i18next';
+import {FirstDay} from "./meals/FirstDay.tsx";
+import dayjs, {Dayjs} from "dayjs";
+import {Diet} from "./diet/Diet.tsx";
+import {Portions} from "./portions/Portions.tsx";
+import {ProductsToAvoid} from "./productstoavoid/ProductsToAvoid.tsx";
+import {UserProducts} from "./userproducts/UserProducts.tsx";
+import {StartDate} from "./startDate/StartDate.tsx";
+import {api} from "../../api.ts";
 
 export const PreferencesPage = () => {
     const [diet, setDiet] = useState<DietModel>({id: 0, name: ''});
-    const [portionsNr, setPortionsNr] = useState('');
+    const [portionsNr, setPortionsNr] = useState<number | string>('');
     const [productsToAvoid, setProductsToAvoid] = useState(['']);
-    const prods: UserProduct[] = [];
-    const [userProducts, setUserProducts] = useState(prods);
-    const [firstDay, setFirstDay] = useState('');
+    const [userProducts, setUserProducts] = useState<UserProduct[]>([]);
+    const [firstDay, setFirstDay] = useState<Dayjs>(dayjs());
+    const [mealValues, setMealValues] = useState<MealValues[]>([]);
+    const [isNextClicked, setIsNextClicked] = useState(false);
 
     useEffect(() => {
         console.log("Selected diet:", diet);
         console.log("Portions number:", portionsNr);
         console.log("Products to avoid:", productsToAvoid);
         console.log("User products:", userProducts);
-        console.log("First day:", firstDay);
-    }, [diet, firstDay, portionsNr, productsToAvoid, userProducts]);
+        console.log("First day:", firstDay.format('DD-MM-YYYY'));
+        console.log("Meals:", mealValues);
+    }, [diet, portionsNr, productsToAvoid, userProducts, firstDay, mealValues]);
 
     const DIETS: DietModel[] = [
         {id: 1, name: "vegetarian"},
@@ -33,97 +35,51 @@ export const PreferencesPage = () => {
         {id: 4, name: "lactose-free"}
     ];
 
-    function Diet({diets}: { diets: DietModel[] }) {
-        return (
-            <div>
-                <div>{t('dietMessage')}:</div>
-                <DietOption diets={diets} diet={diet} setDiet={setDiet}/>
-            </div>
-        );
-    }
+    const handleClick = () => {
+        setIsNextClicked(true);
+        const element = document.getElementById('target');
+        element?.scrollIntoView({
+            behavior: 'smooth'
+        });
+    };
 
-    function Portions() {
-        return (
-            <div>
-                <div>{t('portionsMessage')}:</div>
-                <input
-                    type="number"
-                    value={portionsNr}
-                    // placeholder="Portions"
-                    placeholder={t('portionsMessage')}
-                    onChange={(e) => setPortionsNr(e.target.value)}
-                />
-            </div>
-        );
-    }
+    useEffect(() => {
+        if (isNextClicked) {
+            document.getElementById('target-section')?.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [isNextClicked]);
 
-    function ProductsToAvoid() {
-        const [searchText, setSearchText] = useState('');
-        return (
-            <div>
-                <div>{t('pToAvoidMessage')}:</div>
-                <SearchBar searchText={searchText} onSearchTextChange={setSearchText}/>
-                <SearchResultsList
-                    searchText={searchText}
-                    onSearchTextChange={setSearchText}
-                    setProductsToAvoid={setProductsToAvoid}
-                />
-                <div>
-                    <ChosenProductsToAvoid productsToAvoid={productsToAvoid}/>
-                </div>
-            </div>
-        );
-    }
-
-    function UserProducts() {
-        const [searchText, setSearchText] = useState('');
-        const [isRowSelected, setIsRowSelected] = useState(false);
-        return (
-            <div>
-                <div>{t('userProductsMessage')}:</div>
-                <div className="container">
-                    <SearchBarUser searchText={searchText} onSearchTextChange={setSearchText}
-                                   setIsRowSelected={setIsRowSelected}/>
-                    <SearchResultListUser
-                        searchText={searchText}
-                        onSearchTextChange={setSearchText}
-                        setUserProducts={setUserProducts}
-                        isRowSelected={isRowSelected}
-                        setIsRowSelected={setIsRowSelected}
-                    />
-                </div>
-                <div>
-                    {userProducts.map((userProduct, id) => (
-                        <div key={id}>
-                            {userProduct.name} - {userProduct.amount} {userProduct.unit}
-                        </div>
-                    ))}
-                </div>
-            </div>
-        );
-    }
-
-    function FirstDayOfPlan() {
-        return (
-            <div>
-                <div>{t('firstDayMessage')}:</div>
-                <input
-                    type="date"
-                    value={firstDay}
-                    onChange={(e) => setFirstDay(e.target.value)}
-                />
-            </div>
-        );
+    const sub = async () => {
+        const up: UnchangingPrefers = {
+            diet: diet.name,
+            portions: portionsNr,
+            productsToAvoid: productsToAvoid
+        }
+        const fdr: FirstDayRequest = {
+            unchangingPrefers: up,
+            userProducts: userProducts,
+            date: firstDay.format('DD-MM-YYYY'),
+            mealsValues: mealValues
+        }
+        await api().postPreferences(fdr);
     }
 
     return (
         <>
-            <div>
-                <Diet diets={DIETS}/>
-                <Portions/>
-                <ProductsToAvoid/>
-                <UserProducts/>
-                <FirstDayOfPlan/>
+            <div className="grid-container">
+                <Diet diet={diet} setDiet={setDiet} diets={DIETS}/>
+                <Portions portionsNr={portionsNr} setPortionsNr={setPortionsNr}/>
+                <ProductsToAvoid productsToAvoid={productsToAvoid} setProductsToAvoid={setProductsToAvoid}/>
+                <UserProducts userProducts={userProducts} setUserProducts={setUserProducts}/>
+                <StartDate firstDay={firstDay} setFirstDay={setFirstDay}/>
+            </div>
+            <button onClick={handleClick}>Next</button>
+
+            <div id="target">
+                {isNextClicked &&
+                    <FirstDay firstDay={firstDay} mealValues={mealValues} setMealValues={setMealValues}/>
+                }
+                <button onClick={sub}>Zatwierdź</button>
             </div>
         </>
     );

@@ -10,7 +10,8 @@ interface Props {
 }
 
 export const PcAmountUnit = ({row, setPcProductData, amount}: Props) => {
-    const [pcAmount, setPcAmount] = useState(row.weight * Number(amount));
+    // @ts-ignore
+    const [pcAmount, setPcAmount] = useState(row.standardWeight * Number(amount));
 
     useEffect(() => {
         if (pcAmount) {
@@ -25,15 +26,13 @@ export const PcAmountUnit = ({row, setPcProductData, amount}: Props) => {
 
     return (
         <>
-            <div className="box">
-                <input className="custom-input"
-                       type="number"
-                       value={pcAmount}
-                    // value={row.weight}
-                       placeholder={t('amountMessage')}
-                       onChange={(e) => handlePcAmountChange(e)}
-                />
-            </div>
+            <input className="custom-input"
+                   type="number"
+                   value={pcAmount}
+                // value={row.weight}
+                   placeholder={t('amountMessage')}
+                   onChange={(e) => handlePcAmountChange(e)}
+            />
             <div>{row.mainUnit}</div>
         </>
     );

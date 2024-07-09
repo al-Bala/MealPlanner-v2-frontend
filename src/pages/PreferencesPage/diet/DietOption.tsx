@@ -16,12 +16,12 @@ export const DietOption = ({diets, diet, setDiet}: Props) => {
     }
 
     return (
-        <div>
+        <div className="diet-grid-con">
             {diets.map((chosenDiet) => (
                 <DietButton
                     key={chosenDiet.id}
                     onClick={() => handleDietClick(chosenDiet)}
-                    selected={diet.id == chosenDiet.id}
+                    $selected={diet.id == chosenDiet.id}
                 >
                     {chosenDiet.name}
                 </DietButton>

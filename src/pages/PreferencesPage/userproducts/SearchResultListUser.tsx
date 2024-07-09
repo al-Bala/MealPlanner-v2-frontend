@@ -1,21 +1,24 @@
 import {Dispatch, SetStateAction, useState} from "react";
 import {SearchResultUser} from "./SearchResultUser.tsx";
-import {api} from "../../../api.ts";
+// import {api} from "../../../api.ts";
 import {AmountUnit} from "./AmountUnit.tsx";
 import "../PrefPage.css"
 import {Product, ProductS, UserProduct} from "../../../models/models.ts";
+import "../AddForm.css"
 
 interface Props {
-    searchText: string;
+    rows: Product[];
     onSearchTextChange: Dispatch<SetStateAction<string>>;
     setUserProducts: Dispatch<SetStateAction<UserProduct[]>>
+    // setSelectedRow: Dispatch<SetStateAction<Product>>
     isRowSelected: boolean
     setIsRowSelected: Dispatch<SetStateAction<boolean>>;
 }
 
-export const SearchResultListUser = ({searchText, onSearchTextChange, setUserProducts, isRowSelected, setIsRowSelected}: Props) => {
-    const rows = api().getProducts(searchText)
-    const [selectedRow, setSelectedRow] = useState<Product>({id: 0, name: '', mainUnit: '', units: [], weight: 0});
+export const SearchResultListUser = ({rows, onSearchTextChange, setUserProducts, isRowSelected, setIsRowSelected}: Props) => {
+    // const rows = api().getProducts(searchText)
+    // const rows = searchText
+    const [selectedRow, setSelectedRow] = useState<Product>({id: '', name: '', mainUnit: '', packingUnits: [], standardWeight: 0});
     const [productData, setProductData] = useState<ProductS>({name: '', amount: '', unit: ''})
 
     const handleRowClick = (row: Product) => {
@@ -31,23 +34,27 @@ export const SearchResultListUser = ({searchText, onSearchTextChange, setUserPro
 
     return (
         <>
-            <div className="box">
+            <div className="nad">
                 {!isRowSelected &&
                     rows.map((row) => (
-                        <SearchResultUser
-                            row={row}
-                            key={row.id}
-                            onClick={() => handleRowClick(row)}
-                        />
+                        <>
+                            <SearchResultUser
+                                rowName={row.name}
+                                key={row.id}
+                                onClick={() => handleRowClick(row)}
+                            />
+                        </>
                     ))
                 }
             </div>
-            <AmountUnit
-                row={selectedRow}
-                setUserProducts={setUserProducts}
-                isRowSelected={isRowSelected}
-                productData={productData}
-                setProductData={setProductData}/>
+            {isRowSelected &&
+                <AmountUnit
+                    row={selectedRow}
+                    setUserProducts={setUserProducts}
+                    isRowSelected={isRowSelected}
+                    productData={productData}
+                    setProductData={setProductData}/>
+            }
         </>
     );
 }

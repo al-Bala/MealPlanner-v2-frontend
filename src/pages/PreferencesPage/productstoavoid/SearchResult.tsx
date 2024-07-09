@@ -1,15 +1,16 @@
 import {MouseEventHandler} from "react";
 import "../PrefPage.css"
+import "../AddForm.css"
 
 interface Props {
-    row: string;
+    rowName: string;
     onClick: MouseEventHandler<HTMLDivElement> | undefined
 }
 
-export const SearchResult = ({ row, onClick}: Props) => {
+export const SearchResult = ({ rowName, onClick}: Props) => {
     return (
-        <div onClick={onClick}>
-            <div>{row}</div>
+        <div className="search-result" onClick={onClick}>
+            <div>{rowName}</div>
         </div>
     );
 };

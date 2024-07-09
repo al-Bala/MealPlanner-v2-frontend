@@ -1,31 +1,31 @@
-import {Dispatch, SetStateAction} from "react";
+import React, {Dispatch, SetStateAction} from "react";
 import "../PrefPage.css"
 import { t } from 'i18next';
+import {Product} from "../../../models/models.ts";
+import {api} from "../../../api.ts";
 
 interface Props {
     searchText: string;
+    setRows: Dispatch<SetStateAction<Product[]>>;
     onSearchTextChange: Dispatch<SetStateAction<string>>;
 }
 
-export const SearchBar = ({searchText, onSearchTextChange}: Props) => {
-    // const [input, setInput] = useState("");
-    // const fetchData = (value) => {
-    //     fetch("http://localhost:8080/keywords?query=" + value)
-    //         .then((response) => response.json())
-    //         .then((json) => {
-    //             console.log(json)
-    //             setResults(json)
-    //         });
-    // };
+export const SearchBar = ({searchText, setRows, onSearchTextChange}: Props) => {
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const filterText = e.target.value;
+        onSearchTextChange(filterText)
+        api().getProducts({filterText, setRows})
+    }
 
     return (
-        <div className="box">
-            <input
-                type="text"
-                value={searchText}
-                placeholder={t('searchMessage')}
-                onChange={(e) => onSearchTextChange(e.target.value)}
+        <>
+            <input className="input-search"
+                   type="text"
+                   value={searchText}
+                   placeholder={t('searchMessage')}
+                   onChange={(e) => handleChange(e)}
             />
-        </div>
+        </>
     );
 }

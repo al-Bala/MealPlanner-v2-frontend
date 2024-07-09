@@ -1,17 +1,17 @@
 import "../PrefPage.css"
-import {Product} from "../../../models/models.ts";
 import {MouseEventHandler} from "react";
+import "../AddForm.css"
 
 interface Props {
-    row: Product;
+    rowName: string;
     onClick: MouseEventHandler<HTMLDivElement> | undefined
 }
 
 
-export const SearchResultUser = ({row, onClick}: Props) => {
+export const SearchResultUser = ({rowName, onClick}: Props) => {
     return (
-        <div className="results-list" onClick={onClick}>
-            {row.name}
+        <div className="search-result" onClick={onClick}>
+            {rowName}
         </div>
     );
 };

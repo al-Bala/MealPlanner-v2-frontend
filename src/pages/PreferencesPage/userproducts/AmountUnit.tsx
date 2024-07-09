@@ -32,12 +32,12 @@ export const AmountUnit = ({row, setUserProducts, isRowSelected, productData, se
     const handleUnitClick = (e: ChangeEvent<HTMLSelectElement>) => {
         const selectedUnit = e.target.value;
         setProductData(prevState => ({...prevState, unit: selectedUnit}));
-        selectedUnit == 'szt' ? setIsPcUnitSelected(true) : setIsPcUnitSelected(false)
+        selectedUnit == 'pc.' ? setIsPcUnitSelected(true) : setIsPcUnitSelected(false)
     };
 
     return (
         <>
-            <div className="box">
+            <div className="grid-con">
                 <input className="custom-input"
                        type="number"
                        value={isRowSelected ? productData.amount : ''}
@@ -45,24 +45,22 @@ export const AmountUnit = ({row, setUserProducts, isRowSelected, productData, se
                        onChange={(e) =>
                            setProductData(prevState => ({...prevState, amount: e.target.value}))}
                 />
-            </div>
-            <div className="box">
-                <select
-                    value={productData.unit}
-                    onChange={(e) => handleUnitClick(e)}
+                <select className="custom-input"
+                        value={productData.unit}
+                        onChange={(e) => handleUnitClick(e)}
                 >
-                    <option value="">--{t('selectUnitMessage')}--</option>
-                    {isRowSelected && row.units.map((unit, id) => (
+                    <option value="">{t('selectUnitMessage')}</option>
+                    {isRowSelected && row.packingUnits.map((unit, id) => (
                         <option key={id} value={unit}>
                             {unit}
                         </option>
                     ))}
                 </select>
+                {isPcUnitSelected &&
+                    <PcAmountUnit row={row} setPcProductData={setPcProductData} amount={productData.amount}/>}
             </div>
-            {isPcUnitSelected &&
-                <PcAmountUnit row={row} setPcProductData={setPcProductData} amount={productData.amount}/>}
             <div className="box">
-                <button onClick={handleSubmit}>{t('acceptButton')}</button>
+                <button onClick={handleSubmit}>{t('addButton')}</button>
             </div>
         </>
     );

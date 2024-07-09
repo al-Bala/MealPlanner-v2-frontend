@@ -1,9 +1,16 @@
+// export interface Product {
+//     id: number;
+//     name: string;
+//     mainUnit: string;
+//     units: string[];
+//     weight: number;
+// }
 export interface Product {
-    id: number;
+    id: string;
     name: string;
     mainUnit: string;
-    units: string[];
-    weight: number;
+    packingUnits: string[];
+    standardWeight: number | null;
 }
 
 export interface UserProduct {
@@ -21,4 +28,29 @@ export interface ProductS {
 export interface DietModel {
     id: number;
     name: string;
+}
+
+export interface MealValues {
+    mealId: string;
+    timeMin: number;
+    forHowManyDays: number;
+}
+
+export interface MealModel {
+    id: string;
+    name: string;
+    days: boolean;
+}
+
+export interface FirstDayRequest {
+    unchangingPrefers: UnchangingPrefers;
+    userProducts: UserProduct[];
+    date: string;
+    mealsValues: MealValues[];
+}
+
+export interface UnchangingPrefers {
+    diet: string;
+    portions: number | string;
+    productsToAvoid: string[];
 }

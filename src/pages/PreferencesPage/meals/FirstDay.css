@@ -1,0 +1,14 @@
+.grid {
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+}
+
+.flex-container{
+    display: flex;
+    /*flex-wrap: wrap;*/
+    /*flex-direction: row;*/
+    flex-flow: row wrap;
+    /*justify-content: center;*/
+    /*justify-content: space-between;*/
+    justify-content: space-around;
+}
