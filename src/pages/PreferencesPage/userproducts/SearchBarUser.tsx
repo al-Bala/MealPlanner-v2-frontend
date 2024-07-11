@@ -8,17 +8,20 @@ interface Props {
     searchText: string;
     setRows: Dispatch<SetStateAction<Product[]>>;
     onSearchTextChange: Dispatch<SetStateAction<string>>;
-    setIsRowSelected: Dispatch<SetStateAction<boolean>>
+    setIsResultSelected: Dispatch<SetStateAction<boolean>>
 }
 
-export const SearchBarUser = ({searchText, setRows, onSearchTextChange, setIsRowSelected}: Props) => {
+export const SearchBarUser = ({searchText, setRows, onSearchTextChange, setIsResultSelected}: Props) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const filterText = e.target.value;
         onSearchTextChange(filterText)
-        // setIsRowSelected(false)
-        setIsRowSelected(false)
         api().getProducts({filterText, setRows})
+    }
+
+    const handleClick = () => {
+        onSearchTextChange('')
+        setIsResultSelected(false)
     }
 
     return (
@@ -28,6 +31,7 @@ export const SearchBarUser = ({searchText, setRows, onSearchTextChange, setIsRow
                 value={searchText}
                 placeholder={t('searchMessage')}
                 onChange={(e) => handleChange(e)}
+                onClick={handleClick}
             />
         </>
     );

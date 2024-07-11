@@ -7,7 +7,7 @@ interface Props {
     onClick: MouseEventHandler<HTMLDivElement> | undefined
 }
 
-export const SearchResult = ({ rowName, onClick}: Props) => {
+export const SearchResultAvoid = ({ rowName, onClick}: Props) => {
     return (
         <div className="search-result" onClick={onClick}>
             <div>{rowName}</div>

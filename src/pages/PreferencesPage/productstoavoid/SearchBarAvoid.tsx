@@ -10,7 +10,7 @@ interface Props {
     onSearchTextChange: Dispatch<SetStateAction<string>>;
 }
 
-export const SearchBar = ({searchText, setRows, onSearchTextChange}: Props) => {
+export const SearchBarAvoid = ({searchText, setRows, onSearchTextChange}: Props) => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const filterText = e.target.value;

@@ -1,41 +1,38 @@
 import {Dispatch, SetStateAction, useState} from "react";
 import {SearchResultUser} from "./SearchResultUser.tsx";
-// import {api} from "../../../api.ts";
 import {AmountUnit} from "./AmountUnit.tsx";
 import "../PrefPage.css"
-import {Product, ProductS, UserProduct} from "../../../models/models.ts";
+import {Product} from "../../../models/models.ts";
 import "../AddForm.css"
 
 interface Props {
     rows: Product[];
+    setRows:  Dispatch<SetStateAction<Product[]>>;
     onSearchTextChange: Dispatch<SetStateAction<string>>;
-    setUserProducts: Dispatch<SetStateAction<UserProduct[]>>
-    // setSelectedRow: Dispatch<SetStateAction<Product>>
-    isRowSelected: boolean
-    setIsRowSelected: Dispatch<SetStateAction<boolean>>;
+    isResultSelected: boolean
+    setIsResultSelected: Dispatch<SetStateAction<boolean>>;
 }
 
-export const SearchResultListUser = ({rows, onSearchTextChange, setUserProducts, isRowSelected, setIsRowSelected}: Props) => {
-    // const rows = api().getProducts(searchText)
-    // const rows = searchText
-    const [selectedRow, setSelectedRow] = useState<Product>({id: '', name: '', mainUnit: '', packingUnits: [], standardWeight: 0});
-    const [productData, setProductData] = useState<ProductS>({name: '', amount: '', unit: ''})
+export const SearchResultListUser = ({rows, setRows, onSearchTextChange, isResultSelected, setIsResultSelected}: Props) => {
+    const [selectedRow, setSelectedRow] = useState<Product>({
+        id: '',
+        name: '',
+        mainUnit: '',
+        packingUnits: [],
+        standardWeight: 0
+    });
 
     const handleRowClick = (row: Product) => {
         setSelectedRow(row)
-        setIsRowSelected(true)
+        setIsResultSelected(true)
         onSearchTextChange(row.name)
-        setProductData({
-            name: '',
-            amount: '',
-            unit: ''
-        });
+        setRows([])
     };
 
     return (
         <>
             <div className="nad">
-                {!isRowSelected &&
+                {!isResultSelected &&
                     rows.map((row) => (
                         <>
                             <SearchResultUser
@@ -47,13 +44,13 @@ export const SearchResultListUser = ({rows, onSearchTextChange, setUserProducts,
                     ))
                 }
             </div>
-            {isRowSelected &&
+            {isResultSelected &&
                 <AmountUnit
                     row={selectedRow}
-                    setUserProducts={setUserProducts}
-                    isRowSelected={isRowSelected}
-                    productData={productData}
-                    setProductData={setProductData}/>
+                    isResultSelected={isResultSelected}
+                    setIsResultSelected={setIsResultSelected}
+                    onSearchTextChange={onSearchTextChange}
+                />
             }
         </>
     );

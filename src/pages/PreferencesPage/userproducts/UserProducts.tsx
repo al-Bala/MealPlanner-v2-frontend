@@ -1,18 +1,14 @@
-import {Dispatch, SetStateAction, useState} from "react";
-import {Product, UserProduct} from "../../../models/models.ts";
+import {useState} from "react";
+import {Product} from "../../../models/models.ts";
 import {t} from "i18next";
 import {SearchBarUser} from "./SearchBarUser.tsx";
 import {SearchResultListUser} from "./SearchResultListUser.tsx";
+import {ChosenUserProducts} from "./ChosenUserProducts.tsx";
 
-interface Props{
-    userProducts: UserProduct[];
-    setUserProducts: Dispatch<SetStateAction<UserProduct[]>>;
-}
-
-export const UserProducts = ({userProducts, setUserProducts}: Props) => {
+export const UserProducts = () => {
     const [searchText, setSearchText] = useState('');
     const [rows, setRows] = useState<Product[]>([]);
-    const [isRowSelected, setIsRowSelected] = useState(false);
+    const [isResultSelected, setIsResultSelected] = useState(false);
 
     return (
         <div className="item1" style={{ backgroundColor: 'lightblue', height: "auto"}}>
@@ -23,25 +19,19 @@ export const UserProducts = ({userProducts, setUserProducts}: Props) => {
                         <SearchBarUser searchText={searchText}
                                        setRows={setRows}
                                        onSearchTextChange={setSearchText}
-                                       setIsRowSelected={setIsRowSelected}/>
+                                       setIsResultSelected={setIsResultSelected}/>
                         <SearchResultListUser
                             rows={rows}
+                            setRows={setRows}
                             onSearchTextChange={setSearchText}
-                            setUserProducts={setUserProducts}
-                            isRowSelected={isRowSelected}
-                            setIsRowSelected={setIsRowSelected}
+                            isResultSelected={isResultSelected}
+                            setIsResultSelected={setIsResultSelected}
                         />
                     </div>
                 </div>
                 <div className="user-item">
                     Products:
-                    <div>
-                        {userProducts.map((userProduct, id) => (
-                            <div key={id}>
-                                {userProduct.name} - {userProduct.amount} {userProduct.unit}
-                            </div>
-                        ))}
-                    </div>
+                    <ChosenUserProducts/>
                 </div>
             </div>
         </div>

@@ -1,27 +1,40 @@
 import "../PrefPage.css"
 import {DietButton} from './Diet.style.ts';
 import {DietModel} from '../../../models/models.ts';
-import {Dispatch, SetStateAction} from "react";
+import {useContext} from "react";
+import {PrefsContext, PrefsDispatchContext} from "../PreferencesContext.tsx";
+import dayjs from "dayjs";
 
-interface Props {
-    diets: DietModel[];
-    diet: DietModel;
-    setDiet: Dispatch<SetStateAction<DietModel>>;
-}
+const DIETS: DietModel[] = [
+    {id: 1, name: "vegetarian"},
+    {id: 2, name: "vegan"},
+    {id: 3, name: "gluten-free"},
+    {id: 4, name: "lactose-free"}
+];
 
-export const DietOption = ({diets, diet, setDiet}: Props) => {
+export const DietOption = () => {
+    const state = useContext(PrefsContext);
+    const dispatch = useContext(PrefsDispatchContext);
 
     const handleDietClick = (chosenDiet: DietModel) => {
-        diet.id == chosenDiet.id ? setDiet({id: 0, name: ''}) : setDiet(chosenDiet)
+        dispatch?.({
+            type: 'SET_DIET',
+            diet: chosenDiet,
+            portionsNr: 0,
+            productToAvoid: '',
+            userProduct: {name: '', amount: '', unit: ''},
+            startDay: dayjs(),
+            mealValues: []
+        });
     }
 
     return (
         <div className="diet-grid-con">
-            {diets.map((chosenDiet) => (
+            {DIETS.map((chosenDiet) => (
                 <DietButton
                     key={chosenDiet.id}
                     onClick={() => handleDietClick(chosenDiet)}
-                    $selected={diet.id == chosenDiet.id}
+                    $selected={state?.diet.id == chosenDiet.id}
                 >
                     {chosenDiet.name}
                 </DietButton>

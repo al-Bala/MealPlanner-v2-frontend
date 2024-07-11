@@ -1,37 +1,62 @@
-import {ChangeEvent, Dispatch, SetStateAction, useState} from "react";
-import {Product, ProductS, UserProduct} from '../../../models/models.ts';
+import {ChangeEvent, Dispatch, SetStateAction, useContext, useState} from "react";
+import {Product, UserProduct, UserProductAll} from '../../../models/models.ts';
 import "../PrefPage.css"
 import {PcAmountUnit} from "./PcAmountUnit.tsx";
 import {t} from 'i18next';
+import {PrefsDispatchContext} from "../PreferencesContext.tsx";
+import dayjs from "dayjs";
 
 interface Props {
     row: Product;
-    setUserProducts: Dispatch<SetStateAction<UserProduct[]>>
-    isRowSelected: boolean
-    productData: ProductS
-    setProductData: Dispatch<SetStateAction<ProductS>>
+    isResultSelected: boolean
+    onSearchTextChange: Dispatch<SetStateAction<string>>
+    setIsResultSelected: Dispatch<SetStateAction<boolean>>;
 }
 
-export const AmountUnit = ({row, setUserProducts, isRowSelected, productData, setProductData}: Props) => {
+export const AmountUnit = ({row, isResultSelected, onSearchTextChange, setIsResultSelected}: Props) => {
+    const dispatch = useContext(PrefsDispatchContext);
     const [isPcUnitSelected, setIsPcUnitSelected] = useState(false);
-    const finalProductData: UserProduct = {name: '', amount: 0, unit: ''};
-    const [pcProductData, setPcProductData] = useState<UserProduct>({name: '', amount: 0, unit: ''})
+    const [allProductData, setAllProductData] = useState<UserProductAll>({
+        name: '',
+        amount: '', unit: '',
+        mainAmount: '', mainUnit: ''
+    })
 
     const handleSubmit = () => {
-        finalProductData.name = row.name;
-        if (pcProductData.amount) {
-            finalProductData.amount = pcProductData.amount;
-            finalProductData.unit = pcProductData.unit;
+        let finalProductData: UserProduct;
+        if (!allProductData.mainAmount) {
+            finalProductData = {
+                name: row.name,
+                amount: allProductData.amount,
+                unit: allProductData.unit
+            }
         } else {
-            finalProductData.amount = Number(productData.amount);
-            finalProductData.unit = productData.unit;
+            finalProductData = {
+                name: row.name,
+                amount: allProductData.mainAmount,
+                unit: allProductData.mainUnit
+            }
         }
-        setUserProducts(prevClickedResults => [...prevClickedResults, finalProductData]);
+        dispatch?.({
+            type: 'ADD_USER_PRODUCTS',
+            diet: {id: 0, name: ''},
+            portionsNr: '',
+            productToAvoid: '',
+            userProduct: finalProductData,
+            startDay: dayjs(),
+            mealValues: []
+        })
+        setIsResultSelected(false)
+        onSearchTextChange('')
     };
 
-    const handleUnitClick = (e: ChangeEvent<HTMLSelectElement>) => {
+    const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setAllProductData(prevState => ({...prevState, amount: e.target.value}));
+    };
+
+    const handleUnitChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const selectedUnit = e.target.value;
-        setProductData(prevState => ({...prevState, unit: selectedUnit}));
+        setAllProductData(prevState => ({...prevState, unit: selectedUnit}));
         selectedUnit == 'pc.' ? setIsPcUnitSelected(true) : setIsPcUnitSelected(false)
     };
 
@@ -40,24 +65,23 @@ export const AmountUnit = ({row, setUserProducts, isRowSelected, productData, se
             <div className="grid-con">
                 <input className="custom-input"
                        type="number"
-                       value={isRowSelected ? productData.amount : ''}
+                       value={isResultSelected ? allProductData.amount : ''}
                        placeholder={t('amountMessage')}
-                       onChange={(e) =>
-                           setProductData(prevState => ({...prevState, amount: e.target.value}))}
+                       onChange={(e) => handleAmountChange(e)}
                 />
                 <select className="custom-input"
-                        value={productData.unit}
-                        onChange={(e) => handleUnitClick(e)}
+                        value={allProductData.unit}
+                        onChange={(e) => handleUnitChange(e)}
                 >
                     <option value="">{t('selectUnitMessage')}</option>
-                    {isRowSelected && row.packingUnits.map((unit, id) => (
+                    {isResultSelected && row.packingUnits.map((unit, id) => (
                         <option key={id} value={unit}>
                             {unit}
                         </option>
                     ))}
                 </select>
                 {isPcUnitSelected &&
-                    <PcAmountUnit row={row} setPcProductData={setPcProductData} amount={productData.amount}/>}
+                    <PcAmountUnit row={row} allProductData={allProductData} setAllProductData={setAllProductData}/>}
             </div>
             <div className="box">
                 <button onClick={handleSubmit}>{t('addButton')}</button>

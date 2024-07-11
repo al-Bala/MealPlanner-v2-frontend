@@ -1,16 +1,12 @@
-import dayjs from "dayjs";
-import {MealModel, MealValues} from "../../../models/models.ts";
-import {Dispatch, SetStateAction} from "react";
-import {MealDiv} from './MealDiv.tsx';
-import './FirstDay.css'
+import {MealModel} from "../../../models/models.ts";
+import {MealChooser} from './MealChooser.tsx';
+import './Meals.css'
+import {useContext} from "react";
+import {PrefsContext} from "../PreferencesContext.tsx";
 
-interface Props {
-    firstDay: dayjs.Dayjs;
-    mealValues: MealValues[];
-    setMealValues: Dispatch<SetStateAction<MealValues[]>>;
-}
-
-export const FirstDay= ({firstDay, mealValues, setMealValues}: Props) => {
+export const Meals= () => {
+    const state = useContext(PrefsContext);
+    
     const daysOfWeek = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
     const mealsNames: MealModel[] = [
         {id:'BREAKFAST', name:'Breakfast', days: false},
@@ -24,14 +20,14 @@ export const FirstDay= ({firstDay, mealValues, setMealValues}: Props) => {
 
     return (
         <div style={{paddingTop: "5em"}} id="target-section">
-            <h2>{daysOfWeek[firstDay.day()] + ": " + firstDay.format('DD.MM.YYYY')}</h2>
+            <h2>{daysOfWeek[Number(state?.startDay.day())] + ": " + state?.startDay.format('DD.MM.YYYY')}</h2>
 
             <div className="grid">
                 <div className="flex-container">
                     {mealsNames.map((meal: MealModel) => (
-                        <MealDiv key={meal.id} meal={meal} mealValues={mealValues} setMealValues={setMealValues}>
+                        <MealChooser key={meal.id} meal={meal}>
                             {meal.name}
-                        </MealDiv>
+                        </MealChooser>
                     ))}
                 </div>
                 <div>

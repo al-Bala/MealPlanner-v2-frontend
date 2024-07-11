@@ -1,35 +1,33 @@
-import {ChangeEvent, Dispatch, SetStateAction, useEffect, useState} from "react";
+import {ChangeEvent, Dispatch, SetStateAction, useEffect} from "react";
 import "../PrefPage.css"
 import {t} from 'i18next';
-import {Product, UserProduct} from "../../../models/models.ts";
+import {Product, UserProductAll} from "../../../models/models.ts";
 
 interface Props {
     row: Product;
-    setPcProductData: Dispatch<SetStateAction<UserProduct>>
-    amount: string
+    allProductData: UserProductAll;
+    setAllProductData: Dispatch<SetStateAction<UserProductAll>>
 }
 
-export const PcAmountUnit = ({row, setPcProductData, amount}: Props) => {
+export const PcAmountUnit = ({row, allProductData, setAllProductData}: Props) => {
     // @ts-ignore
-    const [pcAmount, setPcAmount] = useState(row.standardWeight * Number(amount));
+    const pcAmount = row.standardWeight * allProductData.amount;
 
     useEffect(() => {
         if (pcAmount) {
-            setPcProductData(prevState => ({...prevState, amount: pcAmount, unit: row.mainUnit}));
+            setAllProductData(prevState => ({...prevState, mainAmount: pcAmount, mainUnit: row.mainUnit}));
         }
-    }, [pcAmount, row, setPcProductData]);
+    }, [pcAmount, row, setAllProductData]);
 
     const handlePcAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setPcAmount(Number(e.target.value))
-        setPcProductData(prevState => ({...prevState, amount: Number(e.target.value)}))
+        setAllProductData(prevState => ({...prevState, mainAmount: e.target.value}));
     }
 
     return (
         <>
             <input className="custom-input"
                    type="number"
-                   value={pcAmount}
-                // value={row.weight}
+                   value={allProductData.mainAmount}
                    placeholder={t('amountMessage')}
                    onChange={(e) => handlePcAmountChange(e)}
             />

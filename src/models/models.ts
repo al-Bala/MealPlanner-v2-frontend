@@ -5,6 +5,8 @@
 //     units: string[];
 //     weight: number;
 // }
+import {Dayjs} from "dayjs";
+
 export interface Product {
     id: string;
     name: string;
@@ -15,8 +17,16 @@ export interface Product {
 
 export interface UserProduct {
     name: string;
-    amount: number;
+    amount: number | string;
     unit: string;
+}
+
+export interface UserProductAll {
+    name: string;
+    amount: number | string;
+    unit: string;
+    mainAmount: number | string;
+    mainUnit: string;
 }
 
 export interface ProductS {
@@ -44,13 +54,22 @@ export interface MealModel {
 
 export interface FirstDayRequest {
     unchangingPrefers: UnchangingPrefers;
-    userProducts: UserProduct[];
-    date: string;
-    mealsValues: MealValues[];
+    userProducts: UserProduct[] | undefined;
+    date: string | undefined;
+    mealsValues: MealValues[] | null;
 }
 
 export interface UnchangingPrefers {
-    diet: string;
-    portions: number | string;
+    diet: string | undefined;
+    portions: number | string | undefined;
+    productsToAvoid: string[] | undefined;
+}
+
+export interface MainData {
+    diet: DietModel;
+    portionsNr: number | string;
     productsToAvoid: string[];
+    userProducts: UserProduct[];
+    startDay: Dayjs;
+    mealValues: MealValues[];
 }

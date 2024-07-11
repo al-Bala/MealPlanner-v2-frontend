@@ -1,21 +1,30 @@
 import {t} from "i18next";
-import {Dispatch, SetStateAction} from "react";
+import {useContext} from "react";
+import {PrefsContext, PrefsDispatchContext} from "../PreferencesContext.tsx";
+import dayjs from "dayjs";
 
-interface Props {
-    portionsNr: number | string;
-    setPortionsNr: Dispatch<SetStateAction<number | string>>
-}
+export const Portions = () =>  {
+    const state = useContext(PrefsContext);
+    const dispatch = useContext(PrefsDispatchContext);
 
-export const Portions = ({portionsNr, setPortionsNr}: Props) =>  {
     return (
         <div style={{ backgroundColor: 'lightblue', marginLeft: '0.5em'}}>
             <div>{t('portionsMessage')}:</div>
             <input
                 type="number"
-                value={portionsNr}
-                // placeholder="Portions"
+                value={state?.portionsNr}
                 placeholder={t('portionsMessage')}
-                onChange={(e) => setPortionsNr(e.target.value)}
+                onChange={(e) =>
+                    dispatch?.({
+                        type: 'SET_PORTIONS_NR',
+                        diet: {id: 0, name: ''},
+                        portionsNr: e.target.value,
+                        productToAvoid: '',
+                        userProduct: {name: '', amount: '', unit: ''},
+                        startDay: dayjs(),
+                        mealValues: []
+                    })
+                }
             />
         </div>
     );
