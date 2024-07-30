@@ -6,7 +6,14 @@ interface Props {
     children: ReactNode
 }
 
-export const PrefsContext = createContext<MainData | null>(null);
+export const PrefsContext = createContext<MainData>({
+    diet: {id: 0, name: ''},
+    portionsNr: '',
+    productsToAvoid: [],
+    userProducts: [],
+    startDay: dayjs(),
+    mealValues: []
+});
 export const PrefsDispatchContext = createContext<Dispatch<Action> | null>(null);
 
 export function PrefsProvider({children}: Props) {

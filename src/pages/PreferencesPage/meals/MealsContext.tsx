@@ -5,7 +5,7 @@ interface Props {
     children: ReactNode
 }
 
-export const MealsContext = createContext<MealValues[] | null>(null);
+export const MealsContext = createContext<MealValues[]>([]);
 export const MealsDispatchContext = createContext<Dispatch<Action> | null>(null);
 
 export function MealsProvider({children}: Props) {
@@ -25,7 +25,8 @@ interface Action {
         'ADD_MEAL' |
         'DELETE_MEAL' |
         'SET_TIME' |
-        'SET_DAYS'
+        'SET_DAYS' |
+        'RESET'
     meal: MealValues
 }
 
@@ -43,6 +44,8 @@ function reducer(state: MealValues[], action: Action) {
             return state.map(m =>
                 m.mealId === action.meal.mealId ? {...m, forHowManyDays: action.meal.forHowManyDays} : m
             );
+        case 'RESET':
+            return [];
         default:
             return state;
     }

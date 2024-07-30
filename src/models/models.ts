@@ -54,9 +54,9 @@ export interface MealModel {
 
 export interface FirstDayRequest {
     unchangingPrefers: UnchangingPrefers;
-    userProducts: UserProduct[] | undefined;
-    date: string | undefined;
-    mealsValues: MealValues[] | null;
+    userProducts: UserProduct[];
+    date: string;
+    mealsValues: MealValues[];
 }
 
 export interface UnchangingPrefers {
@@ -72,4 +72,27 @@ export interface MainData {
     userProducts: UserProduct[];
     startDay: Dayjs;
     mealValues: MealValues[];
+}
+
+export interface PlannedDay {
+    type_of_meal: string;
+    recipeId: string;
+    recipeName: string;
+}
+
+export interface ResultM {
+    day: string;
+    planned_day: PlannedDay[];
+}
+
+export interface NextDayRequest {
+    date: string;
+    mealsValues: MealValues[]
+}
+
+export interface PlannedDayGood {
+    day: number;
+    date: Dayjs;
+    mealsValues: MealValues[];
+    result: ResultM
 }

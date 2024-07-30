@@ -5,11 +5,16 @@ import {useContext} from "react";
 import {PrefsContext, PrefsDispatchContext} from "../PreferencesContext.tsx";
 import dayjs from "dayjs";
 
+// const DIETS: DietModel[] = [
+//     {id: 1, name: "vegetarian"},
+//     {id: 2, name: "vegan"},
+//     {id: 3, name: "gluten-free"},
+//     {id: 4, name: "lactose-free"}
+// ];
+
 const DIETS: DietModel[] = [
-    {id: 1, name: "vegetarian"},
-    {id: 2, name: "vegan"},
-    {id: 3, name: "gluten-free"},
-    {id: 4, name: "lactose-free"}
+    {id: 1, name: "wegetariańska"},
+    {id: 2, name: "mięsna"}
 ];
 
 export const DietOption = () => {

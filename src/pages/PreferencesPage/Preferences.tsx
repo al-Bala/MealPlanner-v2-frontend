@@ -4,26 +4,12 @@ import {ProductsToAvoid} from "./productstoavoid/ProductsToAvoid.tsx";
 import {UserProducts} from "./userproducts/UserProducts.tsx";
 import {StartDate} from "./startdate/StartDate.tsx";
 import {useContext, useEffect, useState} from "react";
-import {Meals} from "./meals/Meals.tsx";
-import {PrefsContext} from "./PreferencesContext.tsx";
-import {MealsContext} from "./meals/MealsContext.tsx";
-import {FirstDayRequest, UnchangingPrefers} from "../../models/models.ts";
-import {api} from "../../api.ts";
+import {GeneratedRecipes} from "./GeneratedRecipes.tsx";
+import {MealsDispatchContext} from "./meals/MealsContext.tsx";
 
 export const Preferences = () => {
-
-    const statePrefs = useContext(PrefsContext);
-    const stateMeals = useContext(MealsContext);
     const [isNextClicked, setIsNextClicked] = useState(false);
-
-    useEffect(() => {
-        console.log("Selected diet:", statePrefs?.diet);
-        console.log("Portions number:", statePrefs?.portionsNr);
-        console.log("Products to avoid:", statePrefs?.productsToAvoid);
-        console.log("User products:", statePrefs?.userProducts);
-        console.log("Start date:", statePrefs?.startDay.format('DD-MM-YYYY'));
-        console.log("Meals:", stateMeals);
-    }, [statePrefs, stateMeals]);
+    const dispatch = useContext(MealsDispatchContext);
 
     const handleClick = () => {
         setIsNextClicked(true);
@@ -31,6 +17,11 @@ export const Preferences = () => {
         element?.scrollIntoView({
             behavior: 'smooth'
         });
+
+        dispatch?.({
+            type: 'ADD_MEAL',
+            meal: {mealId: 'DINNER', timeMin: -1, forHowManyDays: 1}
+        })
     };
 
     useEffect(() => {
@@ -38,23 +29,6 @@ export const Preferences = () => {
             document.getElementById('target-section')?.scrollIntoView({ behavior: 'smooth' });
         }
     }, [isNextClicked]);
-
-    const postData = async () => {
-        const unchangingPrefs: UnchangingPrefers = {
-            diet: statePrefs?.diet.name,
-            portions: statePrefs?.portionsNr,
-            productsToAvoid: statePrefs?.productsToAvoid
-        };
-
-        const firstDayRequest: FirstDayRequest = {
-            unchangingPrefers: unchangingPrefs,
-            userProducts: statePrefs?.userProducts,
-            date: statePrefs?.startDay.format('DD-MM-YYYY'),
-            mealsValues: stateMeals
-        };
-
-        await api().postPreferences(firstDayRequest);
-    }
 
     return (
         <>
@@ -69,9 +43,11 @@ export const Preferences = () => {
 
             <div id="target">
                 {isNextClicked &&
-                    <Meals/>
+                    <>
+                        <GeneratedRecipes/>
+                    </>
                 }
-                <button onClick={postData}>Zatwierdź</button>
+                <div style={{height: "600px"}}></div>
             </div>
         </>
     );

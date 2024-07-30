@@ -1,11 +1,18 @@
 import axios from 'axios';
-import {FirstDayRequest, Product} from './models/models';
+import {FirstDayRequest, NextDayRequest, Product} from './models/models';
 import {Dispatch, SetStateAction} from "react";
 
 interface Props {
     filterText: string;
     setRows: Dispatch<SetStateAction<Product[]>>;
 }
+interface Props2 {
+    firstDayRequest: FirstDayRequest;
+}
+interface Props3 {
+    nextDayRequest: NextDayRequest;
+}
+
 export const api = () => {
     const getProducts = async ({filterText, setRows}: Props) => {
         try {
@@ -16,14 +23,30 @@ export const api = () => {
         }
     };
 
-    const postPreferences = async (fdr: FirstDayRequest) => {
+    const postFirstDay = async ({firstDayRequest}: Props2) => {
         try {
-            const response = await axios.post('http://localhost:8080/plan/firstDay', fdr, {
+            const response = await axios.post('http://localhost:8080/plan/firstDay', firstDayRequest, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
             console.log('Success:', response.data);
+            return response.data;
+
+        } catch (error) {
+            console.log("Api error!")
+        }
+    };
+
+    const postNextDay = async ({nextDayRequest}: Props3) => {
+        try {
+            const response = await axios.post('http://localhost:8080/plan/nextDay', nextDayRequest, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log('Success:', response.data);
+            return response.data;
 
         } catch (error) {
             console.log("Api error!")
@@ -32,6 +55,7 @@ export const api = () => {
 
     return {
         getProducts,
-        postPreferences
+        postFirstDay,
+        postNextDay
     };
 };

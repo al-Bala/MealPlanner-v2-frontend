@@ -1,25 +1,32 @@
-import {ReactNode, useContext, useState} from "react";
-import {MealModel} from "../../../models/models.ts";
+import {Dispatch, ReactNode, SetStateAction, useContext, useState} from "react";
+import {MealModel, PlannedDayGood} from "../../../models/models.ts";
 import TimeSlider from "./TimeSlider.tsx";
 import {LuClock4} from "react-icons/lu";
-import {DaysButton, FirstDayButton} from './Meals.style.ts';
+import {DaysButton, FirstDayButton, FirstDayButton1} from './Meals.style.ts';
 import './Meals.css'
-import {MealsContext, MealsDispatchContext} from "./MealsContext.tsx";
+import {MealsDispatchContext} from "./MealsContext.tsx";
+import dayjs from "dayjs";
+import {PrefsContext} from "../PreferencesContext.tsx";
 
 interface Props {
+    date:  dayjs.Dayjs;
     meal: MealModel;
+    plannedDaysScreen: PlannedDayGood[]
+    setPlannedDaysScreen: Dispatch<SetStateAction<PlannedDayGood[]>>
     children: ReactNode;
 }
 
-export const MealChooser = ({meal, children}: Props) => {
-    const state = useContext(MealsContext);
+export const MealChooser = ({date, meal, plannedDaysScreen, setPlannedDaysScreen, children}: Props) => {
+
+    const statePrefs = useContext(PrefsContext);
     const dispatch = useContext(MealsDispatchContext);
 
     const [timeButton, setTimeButton] = useState(false);
     const [daysButton, setDaysButton] = useState(1);
 
     const isMealSelected = () => {
-        return !!state?.find((s) => s.mealId == meal.id);
+        const plannedDayForDate = plannedDaysScreen?.find((p) => p.date == date);
+        return !!plannedDayForDate?.mealsValues.find((s) => s.mealId == meal.id)
     }
 
     const handleMealClick = () => {
@@ -28,12 +35,27 @@ export const MealChooser = ({meal, children}: Props) => {
                 type: 'DELETE_MEAL',
                 meal: {mealId: meal.id, timeMin: -1, forHowManyDays: 1}
             })
+            setPlannedDaysScreen(
+                plannedDaysScreen.map(p =>
+                    p.date == date
+                        ? {...p, mealsValues: p.mealsValues.filter(m => m.mealId !== meal.id)}
+                        : p
+                )
+            );
+            plannedDaysScreen.filter(m => m.date !== date);
             setTimeButton(false)
         } else {
             dispatch?.({
                 type: 'ADD_MEAL',
                 meal: {mealId: meal.id, timeMin: -1, forHowManyDays: 1}
             })
+            setPlannedDaysScreen(
+                plannedDaysScreen.map(m =>
+                    m.date == date
+                        ? {...m, mealsValues: [...m.mealsValues, {mealId: meal.id, timeMin: -1, forHowManyDays: 1}]}
+                        : m
+                )
+            );
         }
     }
 
@@ -62,28 +84,37 @@ export const MealChooser = ({meal, children}: Props) => {
     return (
         <div>
             <div>
-                <FirstDayButton $selected={isMealSelected()} onClick={handleMealClick}>
-                    {children}
-                </FirstDayButton>
+                {date == statePrefs.startDay &&
+                    <FirstDayButton1 disabled={meal.name == 'Dinner'} $mealName={meal.name} $selected={isMealSelected()} onClick={handleMealClick}>
+                        {children}
+                    </FirstDayButton1>
+                }
+                {date !== statePrefs.startDay &&
+                    <FirstDayButton $selected={isMealSelected()} onClick={handleMealClick}>
+                        {children}
+                    </FirstDayButton>
+                }
                 {isMealSelected() &&
-                    <FirstDayButton $selected={timeButton} disabled={!isMealSelected()} onClick={handleTimeClick}><LuClock4/></FirstDayButton>
+                    <FirstDayButton $selected={timeButton} disabled={!isMealSelected()}
+                                    onClick={handleTimeClick}><LuClock4/></FirstDayButton>
                 }
             </div>
-
-            <div style={{height: "130px"}}>
+            <div>
                 {isMealSelected() &&
                     <>
                         {meal.days &&
                             <div>
                                 For how many days:
-                                <DaysButton $selected={daysButton == 1} onClick={() => handleDaysClick(1)}>1</DaysButton>
-                                <DaysButton $selected={daysButton == 2} onClick={() => handleDaysClick(2)}>2</DaysButton>
+                                <DaysButton $selected={daysButton == 1}
+                                            onClick={() => handleDaysClick(1)}>1</DaysButton>
+                                <DaysButton $selected={daysButton == 2}
+                                            onClick={() => handleDaysClick(2)}>2</DaysButton>
                             </div>
                         }
                     </>
                 }
                 {timeButton &&
-                    <div style={{justifyItems:"center"}}>
+                    <div style={{justifyItems: "center"}}>
                         <TimeSlider meal={meal}/>
                     </div>
                 }
