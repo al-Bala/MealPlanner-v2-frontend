@@ -11,7 +11,9 @@ export const Result = ({plannedDaysScreenDate}: Props) => {
         <>
             <div style={{backgroundColor: "lightblue", height: "200px"}}>
                 <div className="flex-result">
-                    {plannedDaysScreenDate?.result.planned_day.map(r => (
+                    {plannedDaysScreenDate?.result.planned_day
+                        .sort((a,b) => a.type_of_meal.localeCompare(b.type_of_meal))
+                        .map(r => (
                         <div>
                             <div>{r.type_of_meal}</div>
                             <div>{r.recipeName}</div>

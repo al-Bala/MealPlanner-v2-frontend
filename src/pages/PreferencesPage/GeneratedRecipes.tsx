@@ -4,7 +4,7 @@ import {
     PlannedDayGood,
     NextDayRequest,
     UnchangingPrefers,
-    } from "../../models/models.ts";
+} from "../../models/models.ts";
 import {api} from "../../api.ts";
 import {useContext, useEffect, useState} from "react";
 import {PrefsContext} from "./PreferencesContext.tsx";
@@ -28,12 +28,19 @@ export const GeneratedRecipes= () => {
 
     }, [plannedDaysScreen]);
 
-    const handleChange = async () => {
+    const handleChange = async (i: PlannedDayGood) => {
         const nextDayRequest: NextDayRequest = {
             date: statePrefs.startDay.format('DD-MM-YYYY'),
             mealsValues: stateMeals
         };
-        await api().postNextDay({nextDayRequest});
+        const newVar = await api().postNextDay({nextDayRequest});
+        setPlannedDaysScreen(
+            plannedDaysScreen.map(m =>
+                m.date == i.date
+                    ? {...m, result: newVar}
+                    : m
+            )
+        );
     }
 
     const postData = async (i: PlannedDayGood) => {
@@ -60,7 +67,6 @@ export const GeneratedRecipes= () => {
                 mealsValues: stateMeals
             };
             newVar = await api().postNextDay({nextDayRequest});
-
         }
         setPlannedDaysScreen(
             plannedDaysScreen.map(m =>
@@ -93,14 +99,20 @@ export const GeneratedRecipes= () => {
                 <>
                     <Meals item={i} plannedDaysScreen={plannedDaysScreen} setPlannedDaysScreen={setPlannedDaysScreen}/>
                     <div>
-                        <button onClick={() => postData(i)} style={{margin: "15px"}}>Znajdż przepisy</button>
+                        {i.mealsValues.length !== i.result.planned_day.length &&
+                            <button onClick={() => postData(i)} style={{margin: "15px"}}>Znajdż przepisy</button>
+                        }
                     </div>
                     <div>
                         {i.result.planned_day.length > 0 &&
                             <>
                                 <Result plannedDaysScreenDate={plannedDaysScreen.find((p) => p.date == i.date)}></Result>
-                                <button onClick={handleChange}>Change</button>
-                                <button onClick={handleAccept}>Accept</button>
+                                {i.mealsValues.length == i.result.planned_day.length &&
+                                    <>
+                                        <button onClick={() => handleChange(i)}>Change</button>
+                                        <button onClick={handleAccept}>Accept</button>
+                                    </>
+                                }
                             </>
                         }
                     </div>

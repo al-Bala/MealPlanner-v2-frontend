@@ -13,12 +13,8 @@ interface Props{
 }
 
 export const Meals= ({item, plannedDaysScreen, setPlannedDaysScreen}: Props) => {
-    // const state = useContext(PrefsContext);
-
     const statePrefs = useContext(PrefsContext);
     const stateMeals = useContext(MealsContext);
-    // const [isNextClicked, setIsNextClicked] = useState(false);
-    // const [result, setResult] = useState<ResultM>({day: '', planned_day: []});
 
     useEffect(() => {
         console.log("Selected diet:", statePrefs?.diet);
@@ -37,17 +33,11 @@ export const Meals= ({item, plannedDaysScreen, setPlannedDaysScreen}: Props) => 
         {id:'SUPPER', name:'Supper', days: false}
     ];
 
-    // const submit = () => {
-    //     // setIsMealsSet(true)
-    // }
-
     return (
         <div style={{paddingTop: "5em"}}>
-            {/*<h2>{daysOfWeek[Number(state?.startDay.day())] + ": " + state?.startDay.format('DD.MM.YYYY')}</h2>*/}
             <h2>{daysOfWeek[Number(item.day)] + ": " + item.date?.format('DD.MM.YYYY')}</h2>
 
             <p>Wybierz posiłki, które chcesz przygotować</p>
-            {/*<div className="grid">*/}
                 <div className="flex-container">
                     {mealsNames.map((meal: MealModel) => (
                         // <MealChooser key={meal.id} meal={meal} plannedDays={plannedDaysScreen}>
@@ -61,21 +51,6 @@ export const Meals= ({item, plannedDaysScreen, setPlannedDaysScreen}: Props) => 
                         </MealChooser>
                     ))}
                 </div>
-                {/*<div>*/}
-                {/*    /!*<button style={{margin: "15px"}}>Pomiń ten dzień</button>*!/*/}
-                {/*    /!*<button onClick={postData}>&#128504;</button>*!/*/}
-                {/*    <button onClick={postData} style={{margin: "15px"}}>Znajdż przepisy</button>*/}
-                {/*</div>*/}
-                {/*<div>*/}
-                {/*    {isMealsSet &&*/}
-                {/*        <>*/}
-                {/*            <Result result={result}></Result>*/}
-                {/*            <button>Change</button>*/}
-                {/*            <button onClick={handleAccept}>Accept</button>*/}
-                {/*        </>*/}
-                {/*    }*/}
-                {/*</div>*/}
-            {/*</div>*/}
         </div>
     );
 }
