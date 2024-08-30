@@ -1,21 +1,17 @@
 import {createContext, Dispatch, ReactNode, SetStateAction, useState} from "react";
 
 interface Auth {
-    username: string,
-    password: string,
-    accessToken: string
+    username: string | undefined,
 }
 
 export interface AuthContextProps {
     auth: Auth;
     setAuth: Dispatch<SetStateAction<Auth>>;
-    // inactiveTime: number
 }
 
 const initialAuthContext: AuthContextProps = {
-    auth: {username: '', password: '', accessToken: ''},
+    auth: {username: ''},
     setAuth: () => {},
-    // inactiveTime: 0
 };
 
 interface Props {
@@ -25,7 +21,7 @@ interface Props {
 const AuthContext = createContext<AuthContextProps>(initialAuthContext);
 
 export const AuthProvider = ({ children }: Props) => {
-    const [auth, setAuth] = useState<Auth>({username: '', password: '', accessToken: ''});
+    const [auth, setAuth] = useState<Auth>({username: ''});
 
     return (
         <AuthContext.Provider value={{ auth, setAuth }}>

@@ -5,7 +5,7 @@ import useAuth from "../features/authentication/hooks/useAuth.ts";
 import {useApiAuth} from "../api/apiAuth.ts";
 
 const Navbar = () => {
-    const { auth } = useAuth();
+    const {auth} = useAuth();
     const {logout} = useApiAuth();
 
     const changeLanguage = (lng: string) => {
@@ -21,7 +21,12 @@ const Navbar = () => {
                 {auth.username ?
                     <>
                         <li className="navbar-item">
-                            <Link onClick={logout} to="/">Sign out</Link>
+                            <Link to="/" onClick={(e) => {
+                                e.preventDefault();
+                                logout('');
+                            }}>
+                                Sign out
+                            </Link>
                         </li>
                     </> :
                     <>

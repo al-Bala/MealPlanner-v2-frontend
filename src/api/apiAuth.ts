@@ -2,8 +2,9 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {AxiosError} from "axios";
 import myAxios from "./myAxios.ts";
 import {useState} from "react";
-import useAuth from "../features/authentication/hooks/useAuth.ts";
 import {LoginForm, RegisterServerErrors, RegisterUser} from "../models/authModels.ts";
+import Cookies from "js-cookie";
+import useAuth from "../features/authentication/hooks/useAuth.ts";
 
 const REGISTER_URL: string = '/auth/register';
 const LOGIN_URL: string = '/auth/login';
@@ -70,9 +71,14 @@ export const useApiAuth = () => {
                 }
             );
             console.log(response?.data);
-            const accessToken = response?.data?.accessToken;
-            // const roles = response?.data?.roles;
-            setAuth({username: loginForm.user, password: loginForm.pwd, accessToken: accessToken})
+            Cookies.set('username', response?.data, {
+                path: '/',
+                sameSite: 'Strict',
+                expires: 7,
+            });
+            const username = Cookies.get('username');
+            // // const roles = response?.data?.roles;
+            setAuth({username: username})
             navigate(from, { replace: true });
         } catch (err) {
             if(err instanceof AxiosError) {
@@ -88,15 +94,18 @@ export const useApiAuth = () => {
         }
     };
 
-    const logout = async () => {
-        const response = await myAxios.get(LOGOUT_URL, {
+    const logout = async (path: string) => {
+        await myAxios.get(LOGOUT_URL, {
             withCredentials: true   // allow sent cookies with request
         });
+        Cookies.remove('username', { path: '/' });
         setAuth(prev => {
             console.log("Logout: ", JSON.stringify(prev));
-            console.log("Logout: ", response.data.accessToken);
-            return {...prev, username: '', password: '', accessToken: ''}
+            return {...prev, username: ''}
         });
+        if(path){
+            navigate(path);
+        }
     }
 
     return {
