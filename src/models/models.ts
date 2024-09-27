@@ -6,6 +6,7 @@
 //     weight: number;
 // }
 import {Dayjs} from "dayjs";
+import {DayPlan, RecipeDay} from "./userModels.ts";
 
 export interface Product {
     id: string;
@@ -53,16 +54,16 @@ export interface MealModel {
 }
 
 export interface FirstDayRequest {
-    unchangingPrefers: UnchangingPrefers;
+    savedPrefers: SavedPrefers;
     userProducts: UserProduct[];
     date: string;
     mealsValues: MealValues[];
 }
 
-export interface UnchangingPrefers {
-    diet: string | undefined;
-    portions: number | string | undefined;
-    productsToAvoid: string[] | undefined;
+export interface SavedPrefers {
+    diet: string | null;
+    portions: number | null;
+    productsToAvoid: string[];
 }
 
 export interface MainData {
@@ -86,8 +87,10 @@ export interface ResultM {
 }
 
 export interface NextDayRequest {
-    date: string;
-    mealsValues: MealValues[]
+    savedPrefers: SavedPrefers;
+    // date: string;
+    mealsValues: MealValues[];
+    tempDays: DayPlan[]
 }
 
 export interface PlannedDayGood {
@@ -95,4 +98,21 @@ export interface PlannedDayGood {
     date: Dayjs;
     mealsValues: MealValues[];
     result: ResultM
+}
+
+export interface ResultM2 {
+    date: string;
+    planned_day: RecipeDay[];
+}
+
+export interface ChangeDayRequest {
+    savedPrefers: SavedPrefers;
+    // date: string;
+    mealsValues: MealValues[];
+    tempDay: RecipeDay[]
+}
+
+export interface AcceptDayRequest {
+    portions: number;
+    tempDay: RecipeDay[]
 }

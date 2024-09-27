@@ -7,7 +7,7 @@ import {ProfilePage} from "./pages/ProfilePage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import Layout from "./features/authentication/components/Layout.tsx";
 import RequireAuth from "./features/authentication/components/RequireAuth.tsx";
-import {PreferencesPage} from "./features/plangenerator/PreferencesPage.tsx";
+import {GeneratorPage} from "./pages/GeneratorPage.tsx";
 
 function App() {
 
@@ -24,7 +24,7 @@ function App() {
 
                     {/* protected routes */}
                     <Route element={<RequireAuth/>}>
-                        <Route path="/generator" element={<PreferencesPage/>}/>
+                        <Route path="/generator" element={<GeneratorPage/>}/>
                         <Route path="/profile" element={<ProfilePage/>}/>
                     </Route>
                 </Route>
@@ -33,7 +33,7 @@ function App() {
             {/*    <Navbar token={token} setToken={setToken}/>*/}
             {/*    <Routes>*/}
             {/*        <Route path="/" element={<HomePage/>}/>*/}
-            {/*        <Route path="/generator" element={<PreferencesPage/>}/>*/}
+            {/*        <Route path="/generator" element={<GeneratorPage/>}/>*/}
             {/*        /!*<Route path="/login" element={<Login setToken={setToken}/>}/>*!/*/}
             {/*        <Route path="/login" element={<LoginPage/>}/>*/}
             {/*        <Route path="/register" element={<RegisterPage/>}/>*/}

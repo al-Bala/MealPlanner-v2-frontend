@@ -1,7 +1,7 @@
 import {createContext, Dispatch, ReactNode, SetStateAction, useState} from "react";
 
 interface Auth {
-    username: string | undefined,
+    userId: string | undefined,
 }
 
 export interface AuthContextProps {
@@ -10,7 +10,7 @@ export interface AuthContextProps {
 }
 
 const initialAuthContext: AuthContextProps = {
-    auth: {username: ''},
+    auth: {userId: ''},
     setAuth: () => {},
 };
 
@@ -21,7 +21,7 @@ interface Props {
 const AuthContext = createContext<AuthContextProps>(initialAuthContext);
 
 export const AuthProvider = ({ children }: Props) => {
-    const [auth, setAuth] = useState<Auth>({username: ''});
+    const [auth, setAuth] = useState<Auth>({userId: ''});
 
     return (
         <AuthContext.Provider value={{ auth, setAuth }}>

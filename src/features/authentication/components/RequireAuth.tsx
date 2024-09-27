@@ -7,7 +7,7 @@ const RequireAuth = () => {
     // const username = Cookies.get('username');
 
     return (
-        auth.username
+        auth.userId
         ? <Outlet />
         : <Navigate to="/login" state={{ from: location }} replace/>    // allows back to previous page
     );

@@ -31,7 +31,7 @@ const useInactivityTracker = () => {
     }, [logout, auth]);
 
     useEffect(() => {
-        if (!auth.username) {
+        if (!auth.userId) {
             return;
         }
         const handleUserActivity = () => {
@@ -53,7 +53,7 @@ const useInactivityTracker = () => {
                 clearInterval(intervalRef.current);
             }
         };
-    }, [auth.username, resetInactiveTime, startInactivityTimer]);
+    }, [auth.userId, resetInactiveTime, startInactivityTimer]);
 
     return { inactiveTime };
 };

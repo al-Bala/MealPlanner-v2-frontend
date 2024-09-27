@@ -19,7 +19,7 @@ export const HomePage = () => {
                 <button>Generate Plan</button>
             </Link>
             <div>
-                User: {auth.username}
+                User: {auth.userId}
                 {/*User2: {auth.username}*/}
             </div>
             <button onClick={(e) => {

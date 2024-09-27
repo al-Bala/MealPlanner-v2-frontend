@@ -7,7 +7,7 @@
 
 @media (min-width: 768px) {
     .grid-container {
-        width: 60em;
+        width: 70em;
         display: grid;
         /*grid-template-columns: repeat(2, 1fr);*/
         grid-template-columns: 1fr 1fr;

@@ -71,14 +71,14 @@ export const useApiAuth = () => {
                 }
             );
             console.log(response?.data);
-            Cookies.set('username', response?.data, {
+            Cookies.set('userId', response?.data, {
                 path: '/',
                 sameSite: 'Strict',
                 expires: 7,
             });
-            const username = Cookies.get('username');
+            const userId = Cookies.get('userId');
             // // const roles = response?.data?.roles;
-            setAuth({username: username})
+            setAuth({userId: userId})
             navigate(from, { replace: true });
         } catch (err) {
             if(err instanceof AxiosError) {
@@ -98,10 +98,10 @@ export const useApiAuth = () => {
         await myAxios.get(LOGOUT_URL, {
             withCredentials: true   // allow sent cookies with request
         });
-        Cookies.remove('username', { path: '/' });
+        Cookies.remove('userId', { path: '/' });
         setAuth(prev => {
             console.log("Logout: ", JSON.stringify(prev));
-            return {...prev, username: ''}
+            return {...prev, userId: ''}
         });
         if(path){
             navigate(path);

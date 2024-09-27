@@ -18,7 +18,7 @@ const Navbar = () => {
                 <li className="navbar-item">
                     <Link to="/">Home</Link>
                 </li>
-                {auth.username ?
+                {auth.userId ?
                     <>
                         <li className="navbar-item">
                             <Link to="/" onClick={(e) => {
