@@ -5,7 +5,7 @@ import {useContext, useEffect, useState} from "react";
 import {PrefsContext, PrefsDispatchContext} from "../../../../context/PreferencesContext.tsx";
 import {apiGenerator} from "../../../../api/apiGenerator.ts";
 
-export const DietOption = ({savedDiet}: {savedDiet: DietModel | null}) => {
+export const DietOption = () => {
     const state = useContext(PrefsContext);
     const dispatch = useContext(PrefsDispatchContext);
     const [diets, setDiets] = useState<DietModel[]>([]);
@@ -18,15 +18,6 @@ export const DietOption = ({savedDiet}: {savedDiet: DietModel | null}) => {
                 }
             })
     }, []);
-
-    useEffect(() => {
-        if(savedDiet !== null){
-            dispatch?.({
-                type: 'SET_DIET',
-                diet: savedDiet,
-            })
-        }
-    }, [savedDiet]);
 
     const handleDietClick = (chosenDiet: DietModel) => {
         dispatch?.({
