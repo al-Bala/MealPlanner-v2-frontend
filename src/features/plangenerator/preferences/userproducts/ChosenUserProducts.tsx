@@ -1,7 +1,6 @@
 import {useContext} from "react";
 import {UserProduct} from "../../../../models/models.ts";
 import {PrefsContext, PrefsDispatchContext} from "../../../../context/PreferencesContext.tsx";
-import dayjs from "dayjs";
 
 export const ChosenUserProducts = () => {
     const state = useContext(PrefsContext);
@@ -10,12 +9,7 @@ export const ChosenUserProducts = () => {
     const handleDelete = (userProduct: UserProduct) => {
         dispatch?.({
             type: 'DELETE_USER_PRODUCTS',
-            diet: {id: 0, name: ''},
-            portionsNr: 0,
-            productToAvoid: '',
-            userProduct: userProduct,
-            startDay: dayjs(),
-            mealValues: []
+            userProduct: userProduct
         })
     }
 

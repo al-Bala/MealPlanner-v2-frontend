@@ -1,5 +1,11 @@
-import axios from 'axios';
-import {AcceptDayRequest, ChangeDayRequest, FirstDayRequest, NextDayRequest, Product} from '../models/models.ts';
+import {
+    AcceptDayRequest,
+    ChangeDayRequest,
+    DietModel,
+    FirstDayRequest,
+    NextDayRequest,
+    Product
+} from '../models/models.ts';
 import {Dispatch, SetStateAction} from "react";
 import myAxios from "./myAxios.ts";
 
@@ -28,9 +34,25 @@ interface AcceptDayProps {
 export const apiGenerator = () => {
     const getProducts = async ({filterText, setRows}: Props) => {
         try {
-            await axios.get(`http://localhost:8080/products?query=` + filterText)
+            await myAxios.get(`products?query=` + filterText, {
+                withCredentials: true
+            })
                 .then(res => setRows(res.data));
         } catch (error) {
+            console.log("Api error!")
+        }
+    };
+
+    const getAllDiets = async (): Promise<DietModel[] | undefined> => {
+        try {
+            const response = await myAxios.get(`/diets`,
+                {
+                    withCredentials: true
+                }
+            );
+            console.log('Success GET diets ', response?.data);
+            return response?.data;
+        } catch (err) {
             console.log("Api error!")
         }
     };
@@ -91,6 +113,7 @@ export const apiGenerator = () => {
 
     return {
         getProducts,
+        getAllDiets,
         postFirstDay,
         postNextDay,
         changeLastDay: changeDay,

@@ -22,7 +22,6 @@ export const PlanCreator= () => {
     const {auth} = useAuth();
     const statePrefs = useContext(PrefsContext);
     const stateMeals = useContext(MealsContext);
-    // const dispatchMeals = useContext(MealsDispatchContext);
     const [dayIndex, setDayIndex] = useState<number>(0);
     const [result, setResult] = useState<ResultM2>({date: '', planned_day: []});
     const [tempDays, setTempDays] = useState<DayPlan[]>([]);
@@ -55,7 +54,6 @@ export const PlanCreator= () => {
         } else {
             const nextDayRequest: NextDayRequest = {
                 savedPrefers: savedPrefers,
-                // date: i.date.format('YYYY-MM-DD'),
                 mealsValues: stateMeals,
                 tempDays: tempDays
             };
@@ -67,16 +65,16 @@ export const PlanCreator= () => {
 
     function getSavePrefers() {
         const savedPrefers: SavedPrefers = {
-            diet: statePrefs?.diet.name,
-            portions: Number(statePrefs?.portionsNr),
-            productsToAvoid: statePrefs?.productsToAvoid
+            diet: statePrefs.diet,
+            portions: statePrefs.portionsNr,
+            products_to_avoid: statePrefs.productsToAvoid
         };
         return savedPrefers;
     }
 
     const handleAccept = () => {
         const acceptDayRequest: AcceptDayRequest = {
-            portions: Number(statePrefs?.portionsNr),
+            portions: statePrefs.portionsNr,
             tempDay: result.planned_day
         };
 
@@ -91,7 +89,6 @@ export const PlanCreator= () => {
 
     const handleSave = () => {
         if(!isEqual2 && result.planned_day.length != 0){
-            // setTempDays([...tempDays, {date: result.date, planned_day: result.planned_day}]);
             tempDaysRef.current.push({date: result.date, planned_day: result.planned_day});
         }
         const promise = apiUser().savePlan({

@@ -5,7 +5,7 @@ import {SearchBarAvoid} from "./SearchBarAvoid.tsx";
 import {SearchResultsList} from "./SearchResultListAvoid.tsx";
 import {ChosenProductsToAvoid} from "./ChosenProductsToAvoid.tsx";
 
-export const ProductsToAvoid = ({saveProductsToAvoid}: {saveProductsToAvoid: string[]}) => {
+export const ProductsToAvoid = ({savedProductsToAvoid}: {savedProductsToAvoid: string[] | null}) => {
     const [searchText, setSearchText] = useState('');
     const [rows, setRows] = useState<Product[]>([]);
 
@@ -29,7 +29,7 @@ export const ProductsToAvoid = ({saveProductsToAvoid}: {saveProductsToAvoid: str
                 </div>
                 <div className="user-item">
                     Products:
-                    <ChosenProductsToAvoid/>
+                    <ChosenProductsToAvoid savedProductsToAvoid={savedProductsToAvoid}/>
                 </div>
             </div>
         </div>

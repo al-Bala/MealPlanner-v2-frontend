@@ -1,20 +1,23 @@
-import {useContext} from "react";
-import dayjs from "dayjs";
+import {useContext, useEffect} from "react";
 import {PrefsContext, PrefsDispatchContext} from "../../../../context/PreferencesContext.tsx";
 
-export const ChosenProductsToAvoid = () => {
+export const ChosenProductsToAvoid = ({savedProductsToAvoid}: {savedProductsToAvoid: string[] | null}) => {
     const state = useContext(PrefsContext);
     const dispatch = useContext(PrefsDispatchContext);
+
+    useEffect(() => {
+        if(savedProductsToAvoid !== null){
+            dispatch?.({
+                type: 'SET_PRODUCTS_TO_AVOID',
+                listProductsToAvoid: savedProductsToAvoid,
+            })
+        }
+    }, [savedProductsToAvoid]);
 
     const handleDelete = (productToAvoid: string) => {
         dispatch?.({
             type: 'DELETE_PRODUCTS_TO_AVOID',
-            diet: {id: 0, name: ''},
-            portionsNr: 0,
-            productToAvoid: productToAvoid,
-            userProduct: {name: '', amount: '', unit: ''},
-            startDay: dayjs(),
-            mealValues: []
+            oneProductToAvoid: productToAvoid
         })
     }
 

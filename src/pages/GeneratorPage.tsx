@@ -14,20 +14,22 @@ export const GeneratorPage = () => {
         {
             diet: null,
             portions: null,
-            productsToAvoid: []
+            products_to_avoid: []
         });
     const [isNextClicked, setIsNextClicked] = useState(false);
 
-    // TODO: hook
     useEffect(() => {
-        apiUser().prepareGenerator({userId: auth.userId})
+        apiUser().getPrefers({userId: auth.userId})
             .then(prefs => {
                 if(prefs){
-                    setSavedUserPrefers(prefs);
-                    console.log("Prefs: " + prefs);
+                    setSavedUserPrefers({
+                        diet: prefs.diet,
+                        portions: prefs.portions,
+                        products_to_avoid: prefs.products_to_avoid
+                    });
                 }
-            })
-    }, [auth.userId]);
+            });
+    }, [])
 
     useEffect(() => {
         if (isNextClicked) {

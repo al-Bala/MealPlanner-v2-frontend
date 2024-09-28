@@ -4,7 +4,6 @@ import "../../../../assets/css/plangenerator/PrefPage.css"
 import {PcAmountUnit} from "./PcAmountUnit.tsx";
 import {t} from 'i18next';
 import {PrefsDispatchContext} from "../../../../context/PreferencesContext.tsx";
-import dayjs from "dayjs";
 
 interface Props {
     row: Product;
@@ -39,12 +38,7 @@ export const AmountUnit = ({row, isResultSelected, onSearchTextChange, setIsResu
         }
         dispatch?.({
             type: 'ADD_USER_PRODUCTS',
-            diet: {id: 0, name: ''},
-            portionsNr: '',
-            productToAvoid: '',
-            userProduct: finalProductData,
-            startDay: dayjs(),
-            mealValues: []
+            userProduct: finalProductData
         })
         setIsResultSelected(false)
         onSearchTextChange('')

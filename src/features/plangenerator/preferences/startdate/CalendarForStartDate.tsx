@@ -21,12 +21,7 @@ export default function CalendarForStartDate() {
                             onChange={(newValue) =>
                                 dispatch?.({
                                     type: 'SET_START_DAY',
-                                    diet: {id: 0, name: ''},
-                                    portionsNr: 0,
-                                    productToAvoid: '',
-                                    userProduct: {name: '', amount: '', unit: ''},
-                                    startDay: newValue,
-                                    mealValues: []
+                                    startDay: newValue
                                 })
                             }
                         />

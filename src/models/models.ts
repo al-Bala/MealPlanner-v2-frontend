@@ -37,7 +37,7 @@ export interface ProductS {
 }
 
 export interface DietModel {
-    id: number;
+    id: string;
     name: string;
 }
 
@@ -61,14 +61,14 @@ export interface FirstDayRequest {
 }
 
 export interface SavedPrefers {
-    diet: string | null;
+    diet: DietModel | null;
     portions: number | null;
-    productsToAvoid: string[];
+    products_to_avoid: string[];
 }
 
 export interface MainData {
-    diet: DietModel;
-    portionsNr: number | string;
+    diet: DietModel | null;
+    portionsNr: number | null;
     productsToAvoid: string[];
     userProducts: UserProduct[];
     startDay: Dayjs;
@@ -113,6 +113,6 @@ export interface ChangeDayRequest {
 }
 
 export interface AcceptDayRequest {
-    portions: number;
+    portions: number | null;
     tempDay: RecipeDay[]
 }

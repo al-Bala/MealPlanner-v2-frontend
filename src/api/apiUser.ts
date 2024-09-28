@@ -21,7 +21,7 @@ interface SavePlanProps {
 
 export const apiUser = () => {
 
-    const prepareGenerator = async ({userId}: { userId: string | undefined }): Promise<SavedPrefers | undefined> => {
+    const getPrefers = async ({userId}: { userId: string | undefined }): Promise<SavedPrefers | undefined> => {
         try {
             const response = await myAxios.get(`/users/${userId}/prefs`,
                 {
@@ -29,7 +29,7 @@ export const apiUser = () => {
                     withCredentials: true
                 }
             );
-            console.log(response?.data);
+            console.log('Success GET prefers ', response?.data);
             return response?.data;
         } catch (err) {
             console.log("Api error!")
@@ -44,7 +44,7 @@ export const apiUser = () => {
                     withCredentials: true
                 }
             );
-            console.log('Success prefers update:', response.data);
+            console.log('Success prefers update', response.data);
             return response?.data;
         } catch (err) {
             console.log("Api error!")
@@ -96,7 +96,7 @@ export const apiUser = () => {
     };
 
     return {
-        prepareGenerator,
+        getPrefers,
         updatePrefers,
         showProfile,
         savePlan

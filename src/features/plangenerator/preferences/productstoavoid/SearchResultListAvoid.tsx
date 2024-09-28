@@ -3,7 +3,6 @@ import {Dispatch, SetStateAction, useContext} from "react";
 import {Product} from "../../../../models/models.ts";
 import "../../../../assets/css/plangenerator/AddForm.css"
 import {PrefsDispatchContext} from "../../../../context/PreferencesContext.tsx";
-import dayjs from "dayjs";
 
 interface Props {
     rows: Product[]
@@ -17,13 +16,8 @@ export const SearchResultsList = ({ rows, setRows, onSearchTextChange }: Props) 
     const handleClick = (row: string) => {
         setRows([])
         dispatch?.({
-            type: 'ADD_PRODUCTS_TO_AVOID',
-            diet: {id: 0, name: ''},
-            portionsNr: 0,
-            productToAvoid: row,
-            userProduct: {name: '', amount: '', unit: ''},
-            startDay: dayjs(),
-            mealValues: []
+            type: 'ADD_PRODUCT_TO_AVOID',
+            oneProductToAvoid: row,
         })
         onSearchTextChange('');
     }

@@ -6,6 +6,9 @@ import {StartDate} from "./startdate/StartDate.tsx";
 import {Dispatch, SetStateAction, useContext} from "react";
 import {MealsDispatchContext} from "../../../context/MealsContext.tsx";
 import {SavedPrefers} from "../../../models/models.ts";
+import {apiUser} from "../../../api/apiUser.ts";
+import useAuth from "../../authentication/hooks/useAuth.ts";
+import {PrefsContext} from "../../../context/PreferencesContext.tsx";
 
 interface PreferencesProps {
     savedUserPrefers: SavedPrefers;
@@ -13,9 +16,21 @@ interface PreferencesProps {
 }
 
 export const Preferences = ({savedUserPrefers, setIsNextClicked}: PreferencesProps) => {
+    const {auth} = useAuth();
     const dispatch = useContext(MealsDispatchContext);
+    const state = useContext(PrefsContext);
 
     const handleClick = () => {
+        console.log("StatePrefs: " + state.portionsNr);
+        apiUser().updatePrefers({
+            userId: auth.userId,
+            savedPrefers: {
+                diet: state.diet,
+                portions: state.portionsNr,
+                products_to_avoid: state.productsToAvoid
+            }
+        })
+        console.log(state.diet?.id)
         setIsNextClicked(true);
         const element = document.getElementById('target');
         element?.scrollIntoView({
@@ -31,9 +46,9 @@ export const Preferences = ({savedUserPrefers, setIsNextClicked}: PreferencesPro
     return (
         <>
             <div className="grid-container">
-                <Diet saveDiet={savedUserPrefers.diet}/>
-                <Portions savePortions={savedUserPrefers.portions}/>
-                <ProductsToAvoid saveProductsToAvoid={savedUserPrefers.productsToAvoid}/>
+                <Diet savedDiet={savedUserPrefers.diet}/>
+                <Portions savedPortions={savedUserPrefers.portions}/>
+                <ProductsToAvoid savedProductsToAvoid={savedUserPrefers.products_to_avoid}/>
                 <UserProducts/>
                 <StartDate/>
             </div>
