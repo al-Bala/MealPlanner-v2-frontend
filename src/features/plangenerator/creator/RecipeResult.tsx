@@ -19,7 +19,7 @@ export const RecipeResult = ({day}: Props) => {
                     {day?.planned_day
                         .sort((a,b) => a.type_of_meal.localeCompare(b.type_of_meal))
                         .map(r => (
-                        <div>
+                        <div key={r.type_of_meal}>
                             <div>{r.type_of_meal}</div>
                             <div>{r.recipeName}</div>
                         </div>

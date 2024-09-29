@@ -7,11 +7,10 @@ export const GeneratedDays = ({tempDays}: {tempDays: DayPlan[]}) => {
     return (
         <>
             {tempDays.map((day, dayIndex = 0) => (
-                <>
-                    <div key={dayIndex}></div>
+                <div key={dayIndex}>
                     <Date dayIndex={dayIndex}/>
                     <RecipeResult day={day}/>
-                </>
+                </div>
             ))}
         </>
     );
