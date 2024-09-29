@@ -3,7 +3,7 @@ import {Portions} from "./portions/Portions.tsx";
 import {ProductsToAvoid} from "./productstoavoid/ProductsToAvoid.tsx";
 import {UserProducts} from "./userproducts/UserProducts.tsx";
 import {StartDate} from "./startdate/StartDate.tsx";
-import {Dispatch, SetStateAction, useContext} from "react";
+import {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
 import {MealsDispatchContext} from "../../../context/MealsContext.tsx";
 import {SavedPrefers} from "../../../models/models.ts";
 import {apiUser} from "../../../api/apiUser.ts";
@@ -11,26 +11,44 @@ import useAuth from "../../authentication/hooks/useAuth.ts";
 import {PrefsContext} from "../../../context/PreferencesContext.tsx";
 
 interface PreferencesProps {
-    savedUserPrefers: SavedPrefers;
     setIsNextClicked:   Dispatch<SetStateAction<boolean>>
 }
 
-export const Preferences = ({savedUserPrefers, setIsNextClicked}: PreferencesProps) => {
+export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
     const {auth} = useAuth();
     const dispatch = useContext(MealsDispatchContext);
     const state = useContext(PrefsContext);
+    const [savedUserPrefers, setSavedUserPrefers] = useState<SavedPrefers>(
+        {
+            dietId: null,
+            portions: null,
+            products_to_avoid: []
+        });
 
+    useEffect(() => {
+        apiUser().getPrefers({userId: auth.userId})
+            .then(prefs => {
+                if(prefs){
+                    setSavedUserPrefers({
+                        // diet: prefs.diet,
+                        dietId: prefs.dietId,
+                        portions: prefs.portions,
+                        products_to_avoid: prefs.products_to_avoid
+                    });
+                }
+            });
+    }, [])
+    
     const handleClick = () => {
         console.log("StatePrefs: " + state.portionsNr);
         apiUser().updatePrefers({
             userId: auth.userId,
             savedPrefers: {
-                diet: state.diet,
+                dietId: state.dietId,
                 portions: state.portionsNr,
                 products_to_avoid: state.productsToAvoid
             }
         })
-        console.log(state.diet?.id)
         setIsNextClicked(true);
         const element = document.getElementById('target');
         element?.scrollIntoView({
@@ -46,7 +64,7 @@ export const Preferences = ({savedUserPrefers, setIsNextClicked}: PreferencesPro
     return (
         <>
             <div className="grid-container">
-                <Diet savedDiet={savedUserPrefers.diet}/>
+                <Diet savedDietId={savedUserPrefers.dietId}/>
                 <Portions savedPortions={savedUserPrefers.portions}/>
                 <ProductsToAvoid savedProductsToAvoid={savedUserPrefers.products_to_avoid}/>
                 <UserProducts/>

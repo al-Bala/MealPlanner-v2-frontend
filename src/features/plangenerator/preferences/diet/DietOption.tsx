@@ -22,7 +22,7 @@ export const DietOption = () => {
     const handleDietClick = (chosenDiet: DietModel) => {
         dispatch?.({
             type: 'SET_DIET',
-            diet: chosenDiet
+            dietId: chosenDiet.id
         });
     }
 
@@ -32,7 +32,7 @@ export const DietOption = () => {
                 <DietButton
                     key={chosenDiet.id}
                     onClick={() => handleDietClick(chosenDiet)}
-                    $selected={state?.diet?.id == chosenDiet.id}
+                    $selected={state?.dietId === chosenDiet.id}
                 >
                     {chosenDiet.name}
                 </DietButton>

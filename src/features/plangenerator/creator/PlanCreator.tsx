@@ -65,7 +65,7 @@ export const PlanCreator= () => {
 
     function getSavePrefers() {
         const savedPrefers: SavedPrefers = {
-            diet: statePrefs.diet,
+            dietId: statePrefs.dietId,
             portions: statePrefs.portionsNr,
             products_to_avoid: statePrefs.productsToAvoid
         };

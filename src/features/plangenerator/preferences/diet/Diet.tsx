@@ -1,20 +1,19 @@
 import {t} from "i18next";
 import {DietOption} from "./DietOption.tsx";
-import {DietModel} from "../../../../models/models.ts";
 import {useContext, useEffect} from "react";
 import {PrefsDispatchContext} from "../../../../context/PreferencesContext.tsx";
 
-export const Diet = ({savedDiet}: {savedDiet: DietModel | null}) =>  {
+export const Diet = ({ savedDietId }: { savedDietId: string | null }) =>  {
     const dispatch = useContext(PrefsDispatchContext);
 
     useEffect(() => {
-        if(savedDiet !== null){
+        if(savedDietId !== null){
             dispatch?.({
                 type: 'SET_DIET',
-                diet: savedDiet,
+                dietId: savedDietId
             })
         }
-    }, [savedDiet]);
+    }, [savedDietId]);
 
     return (
         <div style={{ backgroundColor: 'lightblue', marginRight: '0.5em'}}>

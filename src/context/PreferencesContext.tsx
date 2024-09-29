@@ -1,5 +1,5 @@
 import {createContext, Dispatch, ReactNode, useReducer} from 'react';
-import {DietModel, MainData, MealValues, UserProduct} from "../models/models.ts";
+import {MainData, MealValues, UserProduct} from "../models/models.ts";
 import dayjs, {Dayjs} from "dayjs";
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const PrefsContext = createContext<MainData>({
-    diet: null,
+    dietId: null,
     portionsNr: null,
     productsToAvoid: [],
     userProducts: [],
@@ -29,7 +29,7 @@ export function PrefsProvider({children}: Props) {
 }
 
 const initialState: MainData = {
-    diet: null,
+    dietId: null,
     portionsNr: null,
     productsToAvoid: [],
     userProducts: [],
@@ -47,9 +47,8 @@ interface Action {
         'ADD_USER_PRODUCTS' |
         'DELETE_USER_PRODUCTS' |
         'SET_START_DAY' |
-        'SET_MEAL_VALUES' |
-        'SET_SAVED_PREFERS',
-    diet?: DietModel;
+        'SET_MEAL_VALUES'
+    dietId?: string;
     portionsNr?: number;
     oneProductToAvoid?: string;
     listProductsToAvoid?: string[];
@@ -61,8 +60,8 @@ interface Action {
 function reducer(state: MainData, action: Action): MainData {
     switch (action.type) {
         case 'SET_DIET':
-            return action.diet ?
-                {...state, diet: state.diet?.id == action.diet.id ? null : action.diet} : state;
+            return action.dietId ?
+                {...state, dietId: state.dietId === action.dietId ? null : action.dietId} : state;
 
         case 'SET_PORTIONS_NR':
             return action.portionsNr ?
@@ -95,18 +94,6 @@ function reducer(state: MainData, action: Action): MainData {
         case 'SET_START_DAY':
             return action.startDay ?
                 {...state, startDay: action.startDay} : state;
-
-        case 'SET_SAVED_PREFERS': {
-            if(action.diet && action.portionsNr && action.listProductsToAvoid){
-                return {
-                    ...state,
-                    diet: action.diet,
-                    portionsNr: action.portionsNr,
-                    productsToAvoid: action.listProductsToAvoid
-                }
-            }
-            return state;
-        }
 
         default:
             return state;

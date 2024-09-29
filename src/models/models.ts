@@ -61,13 +61,13 @@ export interface FirstDayRequest {
 }
 
 export interface SavedPrefers {
-    diet: DietModel | null;
+    dietId: string | null;
     portions: number | null;
     products_to_avoid: string[];
 }
 
 export interface MainData {
-    diet: DietModel | null;
+    dietId: string | null;
     portionsNr: number | null;
     productsToAvoid: string[];
     userProducts: UserProduct[];
