@@ -1,23 +1,23 @@
-import {ReactNode, useContext, useState} from "react";
+import {Dispatch, ReactNode, SetStateAction, useContext, useState} from "react";
 import {MealModel} from "../../../../models/models.ts";
-import TimeSlider from "./TimeSlider.tsx";
 import {LuClock4} from "react-icons/lu";
-import {DaysButton, FirstDayButton, FirstDayButton1} from './Meals.style.ts';
+import {DaysButton, MealButton, FirstDayMealButton, TimeButton} from './Meals.style.ts';
 import '../../../../assets/css/plangenerator/Meals.css'
 import {MealsContext, MealsDispatchContext} from "../../../../context/MealsContext.tsx";
+import TimeSlider from "./TimeSlider.tsx";
 
 interface Props {
     dayIndex: number;
+    isTwoDays: number;
+    setIsTwoDays: Dispatch<SetStateAction<number>>;
     meal: MealModel;
     children: ReactNode;
 }
 
-export const MealOption = ({dayIndex, meal, children}: Props) => {
+export const MealOption = ({dayIndex, isTwoDays, setIsTwoDays, meal, children}: Props) => {
     const stateMeals = useContext(MealsContext);
     const dispatch = useContext(MealsDispatchContext);
-
     const [timeButton, setTimeButton] = useState(false);
-    const [daysButton, setDaysButton] = useState(1);
 
     const isMealSelected = () => {
         return !!stateMeals.find((selectedMeal) => selectedMeal.mealId == meal.id);
@@ -43,8 +43,10 @@ export const MealOption = ({dayIndex, meal, children}: Props) => {
             type: 'SET_DAYS',
             meal: {mealId: meal.id, timeMin: -1, forHowManyDays: value}
         })
-        if(daysButton != value){
-            setDaysButton(value)
+        if(value == 2){
+            setIsTwoDays(dayIndex + 1);
+        } else {
+            setIsTwoDays(-1)
         }
     }
 
@@ -60,44 +62,78 @@ export const MealOption = ({dayIndex, meal, children}: Props) => {
         })
     }
 
-    return (
+    const renderDaysButtons = () => (
         <div>
+            For how many days:
+            <DaysButton
+                $selected={stateMeals.find(m => m.mealId == meal.id)?.forHowManyDays === 1}
+                onClick={() => handleDaysClick(1)}
+            >
+                1
+            </DaysButton>
+            <DaysButton
+                $selected={stateMeals.find(m => m.mealId == meal.id)?.forHowManyDays === 2}
+                onClick={() => handleDaysClick(2)}
+            >
+                2
+            </DaysButton>
+        </div>
+    );
+
+    const renderTimeButton = () => (
+        <TimeButton
+            $selected={timeButton}
+            // disabled={!isMealSelected()}
+            onClick={handleTimeClick}
+        >
+            <LuClock4 />
+        </TimeButton>
+    );
+
+    const renderMealOption = () => (
+        <>
+            {dayIndex == 0 ?
+                <FirstDayMealButton
+                    disabled={meal.name === 'Dinner'}
+                    $mealName={meal.name}
+                    $selected={isMealSelected()}
+                    onClick={handleMealClick}
+                >
+                    {children}
+                </FirstDayMealButton>
+                :
+                <MealButton
+                    $selected={isMealSelected()}
+                    onClick={handleMealClick}
+                >
+                    {children}
+                </MealButton>
+
+            }
+            {isMealSelected() && renderTimeButton()}
+            {isMealSelected() && meal.days && renderDaysButtons()}
             <div>
-                {dayIndex == 0 &&
-                    <FirstDayButton1 disabled={meal.name == 'Dinner'} $mealName={meal.name} $selected={isMealSelected()} onClick={handleMealClick}>
-                        {children}
-                    </FirstDayButton1>
-                }
-                {dayIndex !== 0 &&
-                    <FirstDayButton $selected={isMealSelected()} onClick={handleMealClick}>
-                        {children}
-                    </FirstDayButton>
-                }
-                {isMealSelected() &&
-                    <FirstDayButton $selected={timeButton} disabled={!isMealSelected()}
-                                    onClick={handleTimeClick}><LuClock4/></FirstDayButton>
-                }
-            </div>
-            <div>
-                {isMealSelected() &&
-                    <>
-                        {meal.days &&
-                            <div>
-                                For how many days:
-                                <DaysButton $selected={daysButton == 1}
-                                            onClick={() => handleDaysClick(1)}>1</DaysButton>
-                                <DaysButton $selected={daysButton == 2}
-                                            onClick={() => handleDaysClick(2)}>2</DaysButton>
-                            </div>
-                        }
-                    </>
-                }
-                {timeButton &&
+                {timeButton && (
                     <div style={{justifyItems: "center"}}>
                         <TimeSlider meal={meal}/>
                     </div>
-                }
+                )}
             </div>
+        </>
+    );
+
+    const renderRepeatedMealOption = () => (
+        <>
+            <button style={{background: "blue", color: "lightgrey"}} disabled>
+                {children}
+            </button>
+            <p>*( To samo co wczoraj )</p>
+        </>
+    );
+
+    return (
+        <div>
+            {(dayIndex === isTwoDays && meal.days) ? renderRepeatedMealOption() : renderMealOption()}
         </div>
     );
 }
