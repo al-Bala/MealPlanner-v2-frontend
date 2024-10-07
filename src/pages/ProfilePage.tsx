@@ -1,30 +1,16 @@
 import useAuth from "../features/authentication/hooks/useAuth.ts";
 import {useEffect, useState} from "react";
-import useRefreshToken from "../features/authentication/hooks/useRefreshToken.ts";
 import {Profile} from "../models/userModels.ts";
 import {apiUser} from "../api/apiUser.ts";
+import dayjs from "dayjs";
+import {useNavigate} from "react-router-dom";
 
 export const ProfilePage = () => {
     const {auth} = useAuth();
-    const refresh = useRefreshToken();
+    const navigate = useNavigate();
     const [profile, setProfile] = useState<Profile>({
-        user: '',
-        plans: [
-            {
-                days: [
-                    {
-                        date: '',
-                        planned_day: [
-                            {
-                                type_of_meal: '',
-                                recipeId: '',
-                                recipeName: ''
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+        username: '',
+        plans: []
     });
 
     useEffect(() => {
@@ -33,32 +19,31 @@ export const ProfilePage = () => {
 
     return (
         <>
-            {/*<Users/>*/}
-            <div>User: {auth.userId}</div>
-            <div>Plan history:
-                {profile.plans.length != 0 ?
+            <div>User id: {auth.userId}</div>
+            <div>
+                <h2>Plan History:</h2>
+                {profile.plans.length !== 0 ? (
                     profile.plans.map((plan, planIndex) => (
                         <div key={planIndex}>
                             <p>Plan: {planIndex + 1}</p>
-                            {plan.days.map((day, dayIndex) => (
+                            {plan.plannedDays.map((day, dayIndex) => (
                                 <div key={dayIndex}>
-                                    <p>Day: {day.date}</p>
-                                    {day.planned_day.map((recipe, recIndex) => (
+                                    <p>{dayjs(day.date).format("DD.MM.YYYY")}</p>
+                                    {day.plannedRecipes.map((recipe, recIndex) => (
                                         <div key={recIndex}>
-                                            <p>Meal: {recipe.type_of_meal}</p>
-                                            <p>Recipe: {recipe.recipeName}</p>
+                                            <p>{recipe.typeOfMeal}</p>
+                                            <p>{recipe.recipeName}</p>
                                         </div>
                                     ))}
                                 </div>
                             ))}
-                            <button>Grocery list</button>
+                            <button onClick={() => navigate('/grocery-list')}>Grocery list</button>
                         </div>
-                    )) :
+                    ))
+                ) : (
                     <p>Brak przepisów w historii</p>
-                }
+                )}
             </div>
-            {/*<button onClick={showProfile}>Show Profile</button>*/}
-            <button onClick={refresh}>Refresh</button>
         </>
     );
 

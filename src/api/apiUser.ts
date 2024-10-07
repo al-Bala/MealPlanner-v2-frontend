@@ -1,8 +1,8 @@
 import {AxiosError} from 'axios';
 import myAxios from "./myAxios.ts";
-import {Profile, TempPlan} from "../models/userModels.ts";
+import {Profile} from "../models/userModels.ts";
 import {Dispatch, SetStateAction} from "react";
-import {SavedPrefers} from "../models/models.ts";
+import {PlanToSave, SavedPrefers} from "../models/generatorModels.ts";
 
 interface ShowProfileProps {
     userId: string | undefined;
@@ -16,11 +16,10 @@ interface UpdatePrefersProps {
 
 interface SavePlanProps {
     userId: string | undefined;
-    tempPlan: TempPlan;
+    tempPlan: PlanToSave;
 }
 
 export const apiUser = () => {
-
     const getPrefers = async ({userId}: { userId: string | undefined }): Promise<SavedPrefers | undefined> => {
         try {
             const response = await myAxios.get(`/users/${userId}/prefs`,
@@ -74,7 +73,7 @@ export const apiUser = () => {
         }
     };
 
-    const savePlan = async ({userId, tempPlan}: SavePlanProps) => {
+    const savePlan = async ({userId, tempPlan}: SavePlanProps): Promise<string | undefined> => {
         try {
             const response = await myAxios.post(`/users/${userId}/plans`, tempPlan, {
                 headers: {'Content-Type': 'application/json'},
@@ -82,7 +81,6 @@ export const apiUser = () => {
             });
             console.log('Success (plan saved):', response.data);
             return response.data;
-
         } catch (err) {
             if (err instanceof AxiosError) {
                 if (err.response?.status === 400) {

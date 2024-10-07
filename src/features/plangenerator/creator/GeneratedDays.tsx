@@ -1,15 +1,19 @@
-import {RecipeResult} from "./RecipeResult.tsx";
-import {DayPlan} from "../../../models/userModels.ts";
 import {Date} from "./Date.tsx";
+import {TempRecipeResult} from "./TempRecipeResult.tsx";
+import {TempDay} from "../../../models/generatorModels.ts";
 
-export const GeneratedDays = ({tempDays}: {tempDays: DayPlan[]}) => {
+interface Props {
+    tempDays: TempDay[]
+}
+
+export const GeneratedDays = ({tempDays}: Props) => {
 
     return (
         <>
-            {tempDays.map((day, dayIndex = 0) => (
-                <div key={dayIndex}>
-                    <Date dayIndex={dayIndex}/>
-                    <RecipeResult day={day}/>
+            {tempDays.map((day, index = 0) => (
+                <div key={index}>
+                    <Date dayIndex={index}/>
+                    <TempRecipeResult day={day.tempRecipes}/>
                 </div>
             ))}
         </>

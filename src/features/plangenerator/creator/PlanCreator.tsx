@@ -1,50 +1,71 @@
-import {
-    AcceptDayRequest,
-    ChangeDayRequest,
-    FirstDayRequest,
-    MealValues,
-    NextDayRequest,
-    ResultM2,
-    SavedPrefers,
-} from "../../../models/models.ts";
+import {MealValues} from "../../../models/models.ts";
 import {apiGenerator} from "../../../api/apiGenerator.ts";
 import {useContext, useRef, useState} from "react";
 import {PrefsContext} from "../../../context/PreferencesContext.tsx";
 import {MealsContext, MealsDispatchContext} from "../../../context/MealsContext.tsx";
 import {apiUser} from "../../../api/apiUser.ts";
 import useAuth from "../../authentication/hooks/useAuth.ts";
-import {DayPlan} from "../../../models/userModels.ts";
 import {RecipeResult} from "./RecipeResult.tsx";
 import {MealsChooser} from "./meals/MealsChooser.tsx";
 import {GeneratedDays} from "./GeneratedDays.tsx";
+import {
+    AcceptDayRequest,
+    ChangeDayRequest,
+    DayResult,
+    FirstDayRequest,
+    NextDayRequest,
+    PlannedDay,
+    RecipeResultM,
+    SavedPrefers,
+    TempDay,
+    TempRecipe
+} from "../../../models/generatorModels.ts";
+import useArraysComparator from "../hooks/useArraysComparator.ts";
+import {useNavigate} from "react-router-dom";
 
 export const PlanCreator= () => {
     const {auth} = useAuth();
     const statePrefs = useContext(PrefsContext);
     const stateMeals = useContext(MealsContext);
-    const [dayIndex, setDayIndex] = useState<number>(0);
-    const [result, setResult] = useState<ResultM2>({date: '', planned_day: []});
-    const [tempDays, setTempDays] = useState<DayPlan[]>([]);
-    const tempDaysRef = useRef<DayPlan[]>([]);
-    const [currentMeals, setCurrentMeals] = useState<MealValues[]>([]);
-    const [isTwoDays, setIsTwoDays] = useState(-1);
     const dispatch = useContext(MealsDispatchContext);
+    const navigate = useNavigate();
+    const arraysComparator = useArraysComparator();
 
-    const handleChange = async () => {
-        const savedPrefers = getSavePrefers();
-        const changeDayRequest: ChangeDayRequest = {
-            savedPrefers: savedPrefers,
-            mealsValues: stateMeals,
-            tempDay: result.planned_day
-        };
-        const resultChangeDay = await apiGenerator().changeLastDay({changeDayRequest: changeDayRequest});
-        console.log("Change: " + resultChangeDay);
-        setResult(resultChangeDay);
-    }
+    const [dayIndex, setDayIndex] = useState(0);
+    const [repeatedDayIndex, setRepeatedDayIndex] = useState(-1);
+    const [dayResult, setDayResult] = useState<DayResult>({recipesResult: []});
+    const [currentMeals, setCurrentMeals] = useState<MealValues[]>([]);
+    const [tempDays, setTempDays] = useState<TempDay[]>([]);
+    const daysToSaveRef = useRef<PlannedDay[]>([]);
+
+    const savedPrefers: SavedPrefers = {
+        dietId: statePrefs.dietId,
+        portions: statePrefs.portionsNr,
+        products_to_avoid: statePrefs.productsToAvoid
+    };
+
+    const isMealButtonsChanged = arraysComparator.isMealButtonsChanged({
+        currentMeals: currentMeals
+    });
 
     const postData = async () => {
-        const savedPrefers = getSavePrefers();
-        let newResult: DayPlan;
+        let newResult: DayResult | undefined;
+        const isMealRepeated = repeatedDayIndex == dayIndex;
+        function deleteRepeatedMeal() {
+            if (isMealRepeated) {
+                return stateMeals.filter(r => r.mealId !== 'DINNER');
+            } else {
+                return stateMeals;
+            }
+        }
+        function addRepeatedRecipeToResult(result: DayResult) {
+            if (isMealRepeated) {
+                const previousDinner = tempDays[tempDays.length - 1].tempRecipes
+                    .find(m => m.typeOfMeal === 'DINNER');
+                previousDinner && result.recipesResult.push(previousDinner)
+                setDayResult({recipesResult: result.recipesResult})
+            }
+        }
         if(dayIndex == 0){
             const firstDayRequest: FirstDayRequest = {
                 savedPrefers: savedPrefers,
@@ -53,110 +74,133 @@ export const PlanCreator= () => {
                 mealsValues: stateMeals
             };
             console.log("First day: " + JSON.stringify(firstDayRequest.mealsValues))
-            newResult = await apiGenerator().postFirstDay({firstDayRequest});
-            setResult(newResult);
+            newResult = await apiGenerator().postFirstDay({
+                firstDayRequest: firstDayRequest
+            });
+            newResult && setDayResult(newResult);
         } else {
-            console.log("Post - TwoDays: " + isTwoDays);
+            console.log("Post - TwoDays: " + repeatedDayIndex);
             console.log("Post - DayIndex: " + dayIndex);
-            let newMealValues: MealValues[];
-            if(isTwoDays == dayIndex){
-                newMealValues = stateMeals.filter(r => r.mealId !== 'DINNER');
-            } else {
-                newMealValues = stateMeals;
-            }
+            const newMealValues = deleteRepeatedMeal();
+            const allUsedRecipesNames = tempDays
+                .flatMap(dayPlan => dayPlan.tempRecipes)
+                    .flatMap(recipeDay => recipeDay.recipeName);
             const nextDayRequest: NextDayRequest = {
                 savedPrefers: savedPrefers,
                 mealsValues: newMealValues,
-                tempDays: tempDays
+                usedRecipesNames: allUsedRecipesNames
             };
             console.log("Next day: " + JSON.stringify(nextDayRequest.mealsValues))
-            newResult = await apiGenerator().postNextDay({nextDayRequest: nextDayRequest});
-            setResult(newResult);
+            newResult = await apiGenerator().postNextDay({
+                nextDayRequest: nextDayRequest
+            });
+            newResult && setDayResult(newResult);
         }
         setCurrentMeals(stateMeals);
-        if(isTwoDays == dayIndex){
-            const repeatedPlannedDay = newResult.planned_day.filter(r => r.type_of_meal !== 'DINNER');
-            const previousDay = tempDays[tempDays.length - 1].planned_day;
-            const previousDinner = previousDay.find(m => m.type_of_meal === 'DINNER');
-            previousDinner && repeatedPlannedDay.push(previousDinner);
-            setResult({date: newResult.date, planned_day: repeatedPlannedDay})
-        }
+        newResult && addRepeatedRecipeToResult(newResult);
     }
 
-    function getSavePrefers() {
-        const savedPrefers: SavedPrefers = {
-            dietId: statePrefs.dietId,
-            portions: statePrefs.portionsNr,
-            products_to_avoid: statePrefs.productsToAvoid
+    const handleChange = async () => {
+        const changeDayRequest: ChangeDayRequest = {
+            savedPrefers: savedPrefers,
+            mealsValues: stateMeals,
+            recipesNamesToChange: dayResult.recipesResult.flatMap(r => r.recipeName)
         };
-        return savedPrefers;
+        const resultChangeDay = await apiGenerator().changeDay({
+            changeDayRequest: changeDayRequest
+        });
+        console.log("Change: " + resultChangeDay);
+        resultChangeDay && setDayResult(resultChangeDay);
     }
+
+    const addMappedResultsToDaysToSave = (recipeResults: RecipeResultM[]) => {
+        daysToSaveRef.current.push({
+            date: '',
+            plannedRecipes: recipeResults.map(r => ({
+                typeOfMeal: r.typeOfMeal,
+                recipeId: r.recipeId,
+                recipeName: r.recipeName,
+                forHowManyDays: stateMeals
+                    .find(m => m.mealId === r.typeOfMeal)?.forHowManyDays || -1,
+            }))
+        });
+    };
+
 
     const handleAccept = () => {
-        console.log("TwoDays: " + isTwoDays);
+        function mapFromDayResultsToTempRecipes() {
+            const newTempRecipes: TempRecipe[] = [];
+            dayResult.recipesResult.map(recipe => {
+                const updatedTempRecipe: TempRecipe = {
+                    typeOfMeal: recipe.typeOfMeal,
+                    recipeId: recipe.recipeId,
+                    recipeName: recipe.recipeName,
+                    forHowManyDays: stateMeals
+                        .find(m => m.mealId === recipe.typeOfMeal)?.forHowManyDays || -1,    //??? error
+                    isRepeated: repeatedDayIndex == dayIndex && recipe.typeOfMeal == 'DINNER'
+                };
+                newTempRecipes.push(updatedTempRecipe);
+            });
+            return newTempRecipes;
+        }
+
+        console.log("TwoDays: " + repeatedDayIndex);
         console.log("DayIndex: " + dayIndex);
         dispatch?.({
             type: 'SET_DAYS',
             meal: {mealId: 'DINNER', timeMin: -1, forHowManyDays: 1}
         })
-        if(isTwoDays == dayIndex) {
-            setIsTwoDays(-1)
-        }
+        const tempRecipes = mapFromDayResultsToTempRecipes();
+
         const acceptDayRequest: AcceptDayRequest = {
             portions: statePrefs.portionsNr,
-            tempDay: result.planned_day
+            tempRecipes: tempRecipes
         };
-
+        // leftovers etc.
         apiGenerator().acceptDay({acceptDayRequest});
 
-        setTempDays([...tempDays, {date: result.date, planned_day: result.planned_day}]);
-        tempDaysRef.current.push({date: result.date, planned_day: result.planned_day});
+        setTempDays([...tempDays, {
+            dayIndex: dayIndex,
+            tempRecipes: tempRecipes
+        }]);
+        addMappedResultsToDaysToSave(dayResult.recipesResult);
         setDayIndex(dayIndex + 1)
-        setResult({date: '', planned_day: []})
+        setDayResult({recipesResult: []})
         setCurrentMeals([])
+
+        if(repeatedDayIndex == dayIndex) {
+            setRepeatedDayIndex(-1);
+        }
     }
 
     const handleSave = () => {
-        if(isTwoDays !== dayIndex && isTwoDays > 0){
+        function addNotAcceptedTempDay() {
+            const isTempDaysAndResultEqual = arraysComparator.isTempDaysAndResultEqual({
+                tempDays: tempDays,
+                result: dayResult
+            });
+            if (!isTempDaysAndResultEqual && dayResult.recipesResult.length != 0) {
+                addMappedResultsToDaysToSave(dayResult.recipesResult);
+            }
+        }
+        if(repeatedDayIndex !== dayIndex && repeatedDayIndex > 0){
             alert("Masz jeszcze jeden dzień do wygenerowania")
             return
         }
-
-        if(!isEqual2 && result.planned_day.length != 0){
-            tempDaysRef.current.push({date: result.date, planned_day: result.planned_day});
-        }
+        addNotAcceptedTempDay();
         const promise = apiUser().savePlan({
             userId: auth.userId,
-            tempPlan: {startDateText: statePrefs.startDay.format("YYYY-MM-DD"), tempDays: tempDaysRef.current}
-        });
+            tempPlan: {startDateText: statePrefs.startDay.format("YYYY-MM-DD"), daysToSave: daysToSaveRef.current}
+        })
         console.log("Save: " + promise)
+        navigate('/profile')
     }
-
-    const areArraysEqual = (arr1: string[], arr2: string[]) => {
-        if (arr1.length !== arr2.length) return false;
-        return arr1.every((val, index) => val === arr2[index]);
-    };
-
-    const isEqual2 = areArraysEqual(
-        tempDays.length != 0 ? tempDays[tempDays.length - 1].planned_day.flatMap(d => d.recipeId) : [],
-        result.planned_day.length != 0 ? result.planned_day.flatMap(d => d.recipeId) : []
-    );
-
-    const isMealsButtonsChanged = () => {
-        if(currentMeals.length == 0 && stateMeals.length == 0) return false;
-        return !isEqual;
-    };
-
-    const isEqual = areArraysEqual(
-        currentMeals.flatMap(m => m.mealId),
-        stateMeals.flatMap(m => m.mealId)
-    );
 
     return (
         <>
             <GeneratedDays tempDays={tempDays}/>
-            <MealsChooser dayIndex={dayIndex} isTwoDays={isTwoDays} setIsTwoDays={setIsTwoDays}/>
-            {isMealsButtonsChanged() ?
+            <MealsChooser dayIndex={dayIndex} isTwoDays={repeatedDayIndex} setIsTwoDays={setRepeatedDayIndex}/>
+            {isMealButtonsChanged ?
                 <>
                     <button onClick={() => postData()} style={{margin: "15px"}}>Znajdż przepisy</button>
                     {
@@ -169,8 +213,8 @@ export const PlanCreator= () => {
                 </>
                 :
                 <>
-                    <RecipeResult day={result}/>
-                    {result?.planned_day.length != 0 &&
+                    <RecipeResult dayResult={dayResult}/>
+                    {dayResult?.recipesResult.length != 0 &&
                         <>
                             <br/>
                             <button onClick={handleChange}>Change</button>

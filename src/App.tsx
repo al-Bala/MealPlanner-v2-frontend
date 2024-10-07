@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage.tsx";
 import Layout from "./features/authentication/components/Layout.tsx";
 import RequireAuth from "./features/authentication/components/RequireAuth.tsx";
 import {GeneratorPage} from "./pages/GeneratorPage.tsx";
+import {GroceryListPage} from "./pages/GroceryListPage.tsx";
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
                     <Route element={<RequireAuth/>}>
                         <Route path="/generator" element={<GeneratorPage/>}/>
                         <Route path="/profile" element={<ProfilePage/>}/>
+                        <Route path="/grocery-list" element={<GroceryListPage/>}/>
                     </Route>
                 </Route>
             </Routes>

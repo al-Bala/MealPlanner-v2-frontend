@@ -5,10 +5,10 @@ import {UserProducts} from "./userproducts/UserProducts.tsx";
 import {StartDate} from "./startdate/StartDate.tsx";
 import {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
 import {MealsDispatchContext} from "../../../context/MealsContext.tsx";
-import {SavedPrefers} from "../../../models/models.ts";
 import {apiUser} from "../../../api/apiUser.ts";
 import useAuth from "../../authentication/hooks/useAuth.ts";
 import {PrefsContext} from "../../../context/PreferencesContext.tsx";
+import {SavedPrefers} from "../../../models/generatorModels.ts";
 
 interface PreferencesProps {
     setIsNextClicked:   Dispatch<SetStateAction<boolean>>

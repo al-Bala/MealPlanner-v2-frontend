@@ -1,13 +1,17 @@
 import {
-    AcceptDayRequest,
-    ChangeDayRequest,
     DietModel,
-    FirstDayRequest,
-    NextDayRequest,
     Product
 } from '../models/models.ts';
 import {Dispatch, SetStateAction} from "react";
 import myAxios from "./myAxios.ts";
+import {
+    AcceptDayRequest,
+    ChangeDayRequest,
+    DayResult,
+    FirstDayRequest,
+    NextDayRequest
+} from "../models/generatorModels.ts";
+import {AxiosError} from "axios";
 
 const FIRST_DAY_CREATE_URL: string = '/generator/days/first';
 const NEXT_DAY_CREATE_URL: string = '/generator/days/next';
@@ -57,7 +61,7 @@ export const apiGenerator = () => {
         }
     };
 
-    const postFirstDay = async ({firstDayRequest}: FirstDayProps) => {
+    const postFirstDay = async ({firstDayRequest}: FirstDayProps): Promise<DayResult | undefined> => {
         try {
             const response = await myAxios.post(FIRST_DAY_CREATE_URL, firstDayRequest, {
                 headers: {'Content-Type': 'application/json'},
@@ -65,13 +69,19 @@ export const apiGenerator = () => {
             });
             console.log('Success first day:', response.data);
             return response.data;
-
         } catch (error) {
-            console.log("Api error!")
+            if(error instanceof AxiosError){
+                if(error.status == 404){
+                    alert("Not found any matching recipe.");
+                }
+                else {
+                    console.log("Api error!")
+                }
+            }
         }
     };
 
-    const postNextDay = async ({nextDayRequest}: NextDayProps) => {
+    const postNextDay = async ({nextDayRequest}: NextDayProps): Promise<DayResult | undefined> => {
         try {
             const response = await myAxios.post(NEXT_DAY_CREATE_URL, nextDayRequest, {
                 headers: {'Content-Type': 'application/json'},
@@ -80,11 +90,18 @@ export const apiGenerator = () => {
             console.log('Success next day:', response.data);
             return response.data;
         } catch (error) {
-            console.log("Api error!")
+            if(error instanceof AxiosError){
+                if(error.status == 404){
+                    alert("Not found any matching recipe.");
+                }
+                else {
+                    console.log("Api error!")
+                }
+            }
         }
     };
 
-    const changeDay = async ({changeDayRequest}: ChangeDayProps) => {
+    const changeDay = async ({changeDayRequest}: ChangeDayProps): Promise<DayResult | undefined> => {
         try {
             const response = await myAxios.post(CHANGE_DAY_URL, changeDayRequest, {
                 headers: {'Content-Type': 'application/json'},
@@ -94,18 +111,25 @@ export const apiGenerator = () => {
             return response.data;
 
         } catch (error) {
-            console.log("Api error!")
+            if(error instanceof AxiosError){
+                if(error.status == 404){
+                    alert("Not found more matching recipes.\nYou must stay with previous one.");
+                }
+                else {
+                    console.log("Api error!")
+                }
+            }
         }
     };
 
-    const acceptDay = async ({acceptDayRequest}: AcceptDayProps) => {
+    const acceptDay = async ({acceptDayRequest}: AcceptDayProps): Promise<void> => {
         try {
             const response = await myAxios.post(ACCEPT_DAY_URL, acceptDayRequest, {
                 headers: {'Content-Type': 'application/json'},
                 withCredentials: true
             });
             console.log('Success (day approved):', response.data);
-            return response.data;
+            // return response.data;
         } catch (err) {
             console.log("Api error!")
         }
@@ -116,7 +140,7 @@ export const apiGenerator = () => {
         getAllDiets,
         postFirstDay,
         postNextDay,
-        changeLastDay: changeDay,
+        changeDay,
         acceptDay
     };
 };
