@@ -22,6 +22,7 @@ import {
 } from "../../../models/generatorModels.ts";
 import useArraysComparator from "../hooks/useArraysComparator.ts";
 import {useNavigate} from "react-router-dom";
+import {t} from "i18next";
 
 export const PlanCreator= () => {
     const {auth} = useAuth();
@@ -204,15 +205,15 @@ export const PlanCreator= () => {
                 <MealsChooser dayIndex={dayIndex} isTwoDays={repeatedDayIndex} setIsTwoDays={setRepeatedDayIndex}/>
                 {isMealButtonsChanged ?
                     <div className="rec-search-button">
-                        <button onClick={() => postData()}>Znajdż przepisy</button>
+                        <button onClick={() => postData()}>{t('findRecipesButton')}</button>
                     </div>
                     :
                     <>
                         <RecipeResult dayResult={dayResult}/>
                         {dayResult ?
                             <div className="actions-buttons-box">
-                                <button onClick={handleChange}>Change</button>
-                                <button onClick={handleAccept}>Next Day</button>
+                                <button onClick={handleChange}>{t('changeButton')}</button>
+                                <button onClick={handleAccept}>{t('nextDayButton')}</button>
                             </div>
                             :
                             <>Error: Recipes not found</>
@@ -222,7 +223,7 @@ export const PlanCreator= () => {
             </div>
             <div>
                 {dayResult &&
-                    <button onClick={handleSave}>Save Plan</button>
+                    <button onClick={handleSave}>{t('savePlanButton')}</button>
                 }
             </div>
         </div>

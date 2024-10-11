@@ -4,6 +4,7 @@ import Slider from '@mui/material/Slider';
 import {useContext, useState} from "react";
 import {MealModel} from "../../../../models/models.ts";
 import {MealsDispatchContext} from "../../../../context/MealsContext.tsx";
+import {t} from "i18next";
 
 interface Props {
     meal: MealModel;
@@ -47,7 +48,7 @@ export default function TimeSlider({meal}: Props) {
     return (
         <Box sx={{ width: 140 }} style={{margin: "auto"}}>
             <Typography id="time-slider" gutterBottom>
-                Time: {valueLabelFormat(value)}
+                {t('time')}: {valueLabelFormat(value)}
             </Typography>
             <Slider
                 value={value}

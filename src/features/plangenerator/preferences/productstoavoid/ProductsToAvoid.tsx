@@ -30,7 +30,7 @@ export const ProductsToAvoid = ({savedProductsToAvoid}: {savedProductsToAvoid: s
                         </div>
                     </div>
                     <div className="product-item">
-                        Products:
+                        {t('products')}:
                         <ChosenProductsToAvoid savedProductsToAvoid={savedProductsToAvoid}/>
                     </div>
                 </div>

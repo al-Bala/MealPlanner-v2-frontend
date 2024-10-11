@@ -4,6 +4,7 @@ import {LuClock4} from "react-icons/lu";
 import {DaysButton, MealButton, FirstDayMealButton, TimeButton} from './Meals.style.ts';
 import {MealsContext, MealsDispatchContext} from "../../../../context/MealsContext.tsx";
 import TimeSlider from "./TimeSlider.tsx";
+import {t} from "i18next";
 
 interface Props {
     dayIndex: number;
@@ -63,19 +64,21 @@ export const MealOption = ({dayIndex, isTwoDays, setIsTwoDays, meal, children}: 
 
     const renderDaysButtons = () => (
         <div>
-            For how many days:
-            <DaysButton
-                $selected={stateMeals.find(m => m.mealId == meal.id)?.forHowManyDays === 1}
-                onClick={() => handleDaysClick(1)}
-            >
-                1
-            </DaysButton>
-            <DaysButton
-                $selected={stateMeals.find(m => m.mealId == meal.id)?.forHowManyDays === 2}
-                onClick={() => handleDaysClick(2)}
-            >
-                2
-            </DaysButton>
+            {t('forManyDaysMsg')}:
+            <div>
+                <DaysButton
+                    $selected={stateMeals.find(m => m.mealId == meal.id)?.forHowManyDays === 1}
+                    onClick={() => handleDaysClick(1)}
+                >
+                    1
+                </DaysButton>
+                <DaysButton
+                    $selected={stateMeals.find(m => m.mealId == meal.id)?.forHowManyDays === 2}
+                    onClick={() => handleDaysClick(2)}
+                >
+                    2
+                </DaysButton>
+            </div>
         </div>
     );
 
@@ -126,7 +129,7 @@ export const MealOption = ({dayIndex, isTwoDays, setIsTwoDays, meal, children}: 
             <button style={{background: "#386641", color: "white"}} disabled>
                 {children}
             </button>
-            <p>*( To samo co wczoraj )</p>
+            <p>*({t('sameDinnerMsg')})</p>
         </>
     );
 

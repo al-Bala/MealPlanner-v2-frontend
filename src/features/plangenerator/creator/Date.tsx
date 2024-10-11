@@ -8,11 +8,12 @@ const countWeekdayIndex = (index: number) => {
 export const Date = ({dayIndex}: {dayIndex: number}) => {
     const statePrefs = useContext(PrefsContext);
     const weekdayIndex = countWeekdayIndex(statePrefs.startDay?.day() + dayIndex);
-    const daysOfWeek = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+    // const daysOfWeekPl = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+    const daysOfWeekEng = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
     return (
         <>
-            <h2>{daysOfWeek[weekdayIndex] + ": " + statePrefs.startDay.add(dayIndex, 'days')?.format('DD.MM.YYYY')}</h2>
+            <h2>{daysOfWeekEng[weekdayIndex] + ": " + statePrefs.startDay.add(dayIndex, 'days')?.format('DD.MM.YYYY')}</h2>
         </>
     );
 }

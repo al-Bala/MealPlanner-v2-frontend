@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {useApiAuth} from "../api/apiAuth.ts";
 import {RegisterForm} from "../models/authModels.ts";
+import {t} from "i18next";
 
 interface RegisterValidErrors {
     username?: string;
@@ -44,14 +45,14 @@ export const RegisterPage = () => {
 
     return (
         <div>
-            <h2>Register Page</h2>
+            <h2>{t('signUp')}</h2>
             <form onSubmit={handleSubmit}>
                 <div>
-                    Username:
+                    {t('username')}:
                     <input
                         type="text"
                         name="username"
-                        placeholder="Username"
+                        placeholder={t('username')}
                         value={registerForm.username}
                         onChange={(e) => handleChange(e)}
                         // required
@@ -62,11 +63,11 @@ export const RegisterPage = () => {
                     </div>
                 </div>
                 <div>
-                    Email:
+                    {t('email')}:
                     <input
                         type="text"
                         name="email"
-                        placeholder="Email"
+                        placeholder={t('email')}
                         value={registerForm.email}
                         onChange={handleChange}
                         // required
@@ -77,11 +78,11 @@ export const RegisterPage = () => {
                     </div>
                 </div>
                 <div>
-                    Password:
+                    {t('password')}:
                     <input
                         type="password"
                         name="password"
-                        placeholder="Password"
+                        placeholder={t('password')}
                         value={registerForm.password}
                         onChange={handleChange}
                         // required
@@ -90,7 +91,7 @@ export const RegisterPage = () => {
                         {validErrors.password && <span>{validErrors.password}</span>}
                     </div>
                 </div>
-                <button type="submit">Register</button>
+                <button type="submit">{t('signUp')}</button>
 
             </form>
             <p aria-live="assertive">{errMsg}</p>

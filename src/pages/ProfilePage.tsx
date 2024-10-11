@@ -4,6 +4,7 @@ import {Profile} from "../models/userModels.ts";
 import {apiUser} from "../api/apiUser.ts";
 import "../../src/assets/css/Profile.css"
 import {PlanHistory} from "../features/profile/PlanHistory.tsx";
+import {t} from "i18next";
 
 export const ProfilePage = () => {
     const {auth} = useAuth();
@@ -18,13 +19,13 @@ export const ProfilePage = () => {
 
     return (
         <>
-            <div style={{margin: "20px 0 20px 0"}}>User ID: {auth.userId}</div>
+            <div style={{margin: "20px 0 20px 0"}}>{t('userId')}: {auth.userId}</div>
             <div className="plan-history">
-                <h2>Plan History:</h2>
+                <h2>{t('planHistory')}:</h2>
                 {profile.plans.length !== 0 ? (
                     <PlanHistory profile={profile}/>
                 ) : (
-                    <p className="empty-message">Brak przepisów w historii</p>
+                    <p className="empty-message">{t('emptyHistoryMsg')}</p>
                 )}
             </div>
         </>

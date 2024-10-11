@@ -9,6 +9,7 @@ import {apiUser} from "../../../api/apiUser.ts";
 import useAuth from "../../authentication/hooks/useAuth.ts";
 import {PrefsContext} from "../../../context/PreferencesContext.tsx";
 import {SavedPrefers} from "../../../models/generatorModels.ts";
+import {t} from "i18next";
 
 interface PreferencesProps {
     setIsNextClicked:   Dispatch<SetStateAction<boolean>>
@@ -70,7 +71,7 @@ export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
                 <UserProducts/>
                 <StartDate/>
             </div>
-            <button onClick={handleClick}>Next</button>
+            <button onClick={handleClick}>{t('nextButton')}</button>
         </>
     );
 }

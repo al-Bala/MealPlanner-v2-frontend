@@ -1,6 +1,7 @@
 import {FormEvent, useEffect, useRef, useState} from "react";
 import {useApiAuth} from "../api/apiAuth.ts";
 import {LoginForm} from "../models/authModels.ts";
+import {t} from "i18next";
 
 const LoginPage = () => {
     const {login, errMsg, setErrMsg} = useApiAuth();
@@ -26,9 +27,9 @@ const LoginPage = () => {
 
     return (
         <div>
-            <h2>Sign In</h2>
+            <h2>{t('logIn')}</h2>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="username">Username:</label>
+                <label htmlFor="username">{t('username')}:</label>
                 <input
                     type="text"
                     id="username"
@@ -40,7 +41,7 @@ const LoginPage = () => {
                     ))}
                     required
                 />
-                <label htmlFor="password">Password:</label>
+                <label htmlFor="password">{t('password')}:</label>
                 <input
                     type="password"
                     id="password"
@@ -50,7 +51,7 @@ const LoginPage = () => {
                     ))}
                     required
                 />
-                <button>Sign In</button>
+                <button>{t('logIn')}</button>
             </form>
             <p aria-live="assertive">{errMsg}</p>
         </div>

@@ -2,6 +2,7 @@ import {MealModel} from "../../../../models/models.ts";
 import {MealOption} from "./MealOption.tsx";
 import {Date} from "../Date.tsx";
 import {Dispatch, SetStateAction} from "react";
+import {t} from "i18next";
 
 interface Props {
     dayIndex: number;
@@ -20,8 +21,7 @@ export const MealsChooser = ({dayIndex, isTwoDays, setIsTwoDays}: Props) => {
     return (
         <div>
             <Date dayIndex={dayIndex}/>
-            <p>Wybierz posiłki, które chcesz przygotować</p>
-            {/*<div style={{width: "80em", margin: "auto"}}>*/}
+            <p>{t('chooseMealsMsg')}</p>
             <div className="meals-box">
                 <div className="recipes-flex-con">
                     {mealsNames.map((meal: MealModel) => (

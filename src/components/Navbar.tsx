@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
 import '../assets/css/Navbar.css';
-import i18n from "i18next";
+import i18n, {t} from "i18next";
 import useAuth from "../features/authentication/hooks/useAuth.ts";
 import {useApiAuth} from "../api/apiAuth.ts";
 
@@ -29,20 +29,20 @@ const Navbar = () => {
                                 e.preventDefault();
                                 logout('');
                             }}>
-                                Sign out
+                                {t('signOut')}
                             </Link>
                         </li>
                         <li>
-                            <Link to="/profile">Profile</Link>
+                            <Link to="/profile">{t('profile')}</Link>
                         </li>
                     </>
                     :
                     <>
                         <li>
-                            <Link to="/register">Register</Link>
+                            <Link to="/register">{t('signUp')}</Link>
                         </li>
                         <li>
-                            <Link to="/login">Login</Link>
+                            <Link to="/login">{t('logIn')}</Link>
                         </li>
                     </>
                 }

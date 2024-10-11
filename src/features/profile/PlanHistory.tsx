@@ -1,6 +1,7 @@
 import {PlanDay} from "./PlanDay.tsx";
 import {useNavigate} from "react-router-dom";
 import {Profile} from "../../models/userModels.ts";
+import {t} from "i18next";
 
 export const PlanHistory = ({profile}: {profile: Profile}) => {
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ export const PlanHistory = ({profile}: {profile: Profile}) => {
                   <h3>Plan: {planIndex + 1}</h3>
                   <PlanDay plan={plan}/>
                   <button onClick={() => navigate('/grocery-list')} className="grocery-button">
-                      Grocery list
+                      {t('groceryListButton')}
                   </button>
               </div>
           )}

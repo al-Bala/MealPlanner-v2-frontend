@@ -86,7 +86,7 @@ export const UserProducts = () => {
                         }
                     </div>
                     <div className="product-item">
-                        Products:
+                        {t('products')}:
                         <ChosenUserProducts/>
                     </div>
                 </div>
