@@ -21,8 +21,9 @@ export const MealsChooser = ({dayIndex, isTwoDays, setIsTwoDays}: Props) => {
         <div>
             <Date dayIndex={dayIndex}/>
             <p>Wybierz posiłki, które chcesz przygotować</p>
-            <div style={{width: "80em", margin: "auto"}}>
-                <div className="flex-container">
+            {/*<div style={{width: "80em", margin: "auto"}}>*/}
+            <div className="meals-box">
+                <div className="recipes-flex-con">
                     {mealsNames.map((meal: MealModel) => (
                         <MealOption key={meal.id}
                                     dayIndex={dayIndex}

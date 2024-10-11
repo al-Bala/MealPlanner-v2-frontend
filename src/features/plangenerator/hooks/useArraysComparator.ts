@@ -25,10 +25,10 @@ const useArraysComparator = () => {
         return isMealsButtonsChanged();
     }
 
-    const isTempDaysAndResultEqual = ({tempDays, result}: {tempDays: TempDay[], result: DayResult}) => {
+    const isTempDaysAndResultEqual = ({tempDays, result}: {tempDays: TempDay[], result: DayResult | null}) => {
         return areArraysEqual(
             tempDays.length != 0 ? tempDays[tempDays.length - 1].tempRecipes.flatMap(d => d.recipeId) : [],
-            result.recipesResult.length != 0 ? result.recipesResult.flatMap(d => d.recipeId) : []
+            result && result.recipesResult.length != 0 ? result.recipesResult.flatMap(d => d.recipeId) : []
         );
     }
 

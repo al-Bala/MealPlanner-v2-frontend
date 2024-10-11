@@ -1,4 +1,5 @@
 import {useContext, useEffect} from "react";
+import { FaTrash } from "react-icons/fa";
 import {PrefsContext, PrefsDispatchContext} from "../../../../context/PreferencesContext.tsx";
 
 export const ChosenProductsToAvoid = ({savedProductsToAvoid}: {savedProductsToAvoid: string[] | null}) => {
@@ -24,9 +25,9 @@ export const ChosenProductsToAvoid = ({savedProductsToAvoid}: {savedProductsToAv
     return (
         <div>
             {state?.productsToAvoid?.map((productToAvoid, id) => (
-                <div key={id}>
-                    {productToAvoid}
-                    <button onClick={() => handleDelete(productToAvoid)}>Delete</button>
+                <div className="chosen-product-grid-con" key={id}>
+                    <div className="product-name">{productToAvoid}</div>
+                    <button onClick={() => handleDelete(productToAvoid)}><FaTrash /></button>
                 </div>
             ))}
         </div>

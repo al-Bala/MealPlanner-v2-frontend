@@ -9,12 +9,28 @@ export default function CalendarForStartDate() {
     const state = useContext(PrefsContext);
     const dispatch = useContext(PrefsDispatchContext);
 
+    // https://mui.com/material-ui/customization/how-to-customize/
+    
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={['DateCalendar', 'DateCalendar', 'DateCalendar']}>
                 <DemoItem>
                     <div>
                         <DateCalendar
+                            // sx={{
+                            //     '& .Mui-selected': {
+                            //         background: '#2c4f33',
+                            //         '&:hover': {
+                            //             background: '#2c4f33'
+                            //         },
+                            //         '&:focus': {
+                            //             background: '#2c4f33',
+                            //         },
+                            //         '&:active': {
+                            //             background: '#2c4f33'
+                            //         },
+                            //     },
+                            // }}
                             disablePast={true}
                             views={['day']}
                             value={state?.startDay}

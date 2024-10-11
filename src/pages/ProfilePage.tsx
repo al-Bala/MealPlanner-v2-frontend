@@ -2,12 +2,11 @@ import useAuth from "../features/authentication/hooks/useAuth.ts";
 import {useEffect, useState} from "react";
 import {Profile} from "../models/userModels.ts";
 import {apiUser} from "../api/apiUser.ts";
-import dayjs from "dayjs";
-import {useNavigate} from "react-router-dom";
+import "../../src/assets/css/Profile.css"
+import {PlanHistory} from "../features/profile/PlanHistory.tsx";
 
 export const ProfilePage = () => {
     const {auth} = useAuth();
-    const navigate = useNavigate();
     const [profile, setProfile] = useState<Profile>({
         username: '',
         plans: []
@@ -19,29 +18,13 @@ export const ProfilePage = () => {
 
     return (
         <>
-            <div>User id: {auth.userId}</div>
-            <div>
+            <div style={{margin: "20px 0 20px 0"}}>User ID: {auth.userId}</div>
+            <div className="plan-history">
                 <h2>Plan History:</h2>
                 {profile.plans.length !== 0 ? (
-                    profile.plans.map((plan, planIndex) => (
-                        <div key={planIndex}>
-                            <p>Plan: {planIndex + 1}</p>
-                            {plan.plannedDays.map((day, dayIndex) => (
-                                <div key={dayIndex}>
-                                    <p>{dayjs(day.date).format("DD.MM.YYYY")}</p>
-                                    {day.plannedRecipes.map((recipe, recIndex) => (
-                                        <div key={recIndex}>
-                                            <p>{recipe.typeOfMeal}</p>
-                                            <p>{recipe.recipeName}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            ))}
-                            <button onClick={() => navigate('/grocery-list')}>Grocery list</button>
-                        </div>
-                    ))
+                    <PlanHistory profile={profile}/>
                 ) : (
-                    <p>Brak przepisów w historii</p>
+                    <p className="empty-message">Brak przepisów w historii</p>
                 )}
             </div>
         </>

@@ -1,4 +1,4 @@
-import '../../../assets/css/plangenerator/Result.css'
+import '../../../assets/css/plangenerator/Creator.css'
 import {TempRecipe} from "../../../models/generatorModels.ts";
 
 interface Props{
@@ -8,20 +8,23 @@ interface Props{
 export const TempRecipeResult = ({day}: Props) => {
     return (
         <>
-            <div style={{
-                backgroundColor: "lightblue",
-                height: "150px",
-                width: "70em",
-                margin: "auto"
-            }}>
-                <div className="flex-result">
-                    {day?.sort((a,b) => a.typeOfMeal.localeCompare(b.typeOfMeal))
+            <div className="recipes-result">
+                <div className="recipes-flex-con">
+                    {day?.sort((a, b) => a.typeOfMeal.localeCompare(b.typeOfMeal))
                         .map(r => (
-                        <div style={r.isRepeated ? {color: "white"} : {}} key={r.typeOfMeal}>
-                            <div>{r.typeOfMeal}</div>
-                            <div>{r.recipeName}</div>
-                        </div>
-                    ))}
+                            <div key={r.typeOfMeal}>
+                                <div className="recipe-box"
+                                     style={r.isRepeated ? {color: "gray", border: "2px solid lightgray"} : {}}
+                                >
+                                    <div>{r.typeOfMeal}</div>
+                                    <div className="photo-box"
+                                         style={r.isRepeated ? {border: "1px solid lightgray"} : {}}
+                                    >
+                                        {r.recipeName}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                 </div>
             </div>
         </>

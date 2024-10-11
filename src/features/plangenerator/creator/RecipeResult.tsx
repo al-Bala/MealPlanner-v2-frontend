@@ -1,29 +1,27 @@
-import '../../../assets/css/plangenerator/Result.css'
+import '../../../assets/css/plangenerator/Creator.css'
 import {DayResult} from "../../../models/generatorModels.ts";
 
 interface Props{
-    dayResult: DayResult | undefined
+    dayResult: DayResult | null
 }
 
 export const RecipeResult = ({dayResult}: Props) => {
 
     return (
         <>
-            <div style={{
-                backgroundColor: "lightblue",
-                height: "150px",
-                width: "70em",
-                margin: "auto"
-            }}>
-                <div className="flex-result">
+            <div className="recipes-result">
+                <div className="recipes-flex-con">
                     {dayResult?.recipesResult
                         .sort((a,b) => a.typeOfMeal.localeCompare(b.typeOfMeal))
                         .map(r => (
-                        <div key={r.typeOfMeal}>
-                            <div>{r.typeOfMeal}</div>
-                            <div>{r.recipeName}</div>
-                        </div>
-                    ))}
+                            <div key={r.typeOfMeal}>
+                                <div className="recipe-box">
+                                    <div>{r.typeOfMeal}</div>
+                                    {/*<div>{r.recipeName}</div>*/}
+                                    <div className="photo-box">{r.recipeName}</div>
+                                </div>
+                            </div>
+                        ))}
                 </div>
             </div>
         </>

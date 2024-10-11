@@ -63,7 +63,7 @@ export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
 
     return (
         <>
-            <div className="grid-container">
+            <div className="prefs-grid-container">
                 <Diet savedDietId={savedUserPrefers.dietId}/>
                 <Portions savedPortions={savedUserPrefers.portions}/>
                 <ProductsToAvoid savedProductsToAvoid={savedUserPrefers.products_to_avoid}/>

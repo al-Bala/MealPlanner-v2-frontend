@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction} from "react";
-import "../../../../assets/css/plangenerator/PrefPage.css"
+import "../../../../assets/css/plangenerator/PrefsPage.css"
 import { t } from 'i18next';
 import {Product} from "../../../../models/models.ts";
 import {apiGenerator} from "../../../../api/apiGenerator.ts";
@@ -20,7 +20,7 @@ export const SearchBarAvoid = ({searchText, setRows, onSearchTextChange}: Props)
 
     return (
         <>
-            <input className="input-search"
+            <input className="custom-field"
                    type="text"
                    value={searchText}
                    placeholder={t('searchMessage')}

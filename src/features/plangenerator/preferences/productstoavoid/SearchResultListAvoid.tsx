@@ -1,7 +1,6 @@
 import {SearchResultAvoid} from "./SearchResultAvoid.tsx";
 import {Dispatch, SetStateAction, useContext} from "react";
 import {Product} from "../../../../models/models.ts";
-import "../../../../assets/css/plangenerator/AddForm.css"
 import {PrefsDispatchContext} from "../../../../context/PreferencesContext.tsx";
 
 interface Props {
@@ -24,8 +23,7 @@ export const SearchResultsList = ({ rows, setRows, onSearchTextChange }: Props) 
 
     return (
         <>
-        <div>
-            <div className="nad">
+            <div className="prod-result-list">
                 {rows.map((row) => (
                     <SearchResultAvoid
                         rowName={row.name}
@@ -34,7 +32,6 @@ export const SearchResultsList = ({ rows, setRows, onSearchTextChange }: Props) 
                     />
                 ))}
             </div>
-        </div>
         </>
     );
 }

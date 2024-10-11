@@ -7,7 +7,7 @@ import myAxios from "./myAxios.ts";
 import {
     AcceptDayRequest,
     ChangeDayRequest,
-    DayResult,
+    CreateDayResponse,
     FirstDayRequest,
     NextDayRequest
 } from "../models/generatorModels.ts";
@@ -61,7 +61,7 @@ export const apiGenerator = () => {
         }
     };
 
-    const postFirstDay = async ({firstDayRequest}: FirstDayProps): Promise<DayResult | undefined> => {
+    const postFirstDay = async ({firstDayRequest}: FirstDayProps): Promise<CreateDayResponse | undefined> => {
         try {
             const response = await myAxios.post(FIRST_DAY_CREATE_URL, firstDayRequest, {
                 headers: {'Content-Type': 'application/json'},
@@ -72,7 +72,7 @@ export const apiGenerator = () => {
         } catch (error) {
             if(error instanceof AxiosError){
                 if(error.status == 404){
-                    alert("Not found any matching recipe.");
+                    return error.response?.data;
                 }
                 else {
                     console.log("Api error!")
@@ -81,7 +81,7 @@ export const apiGenerator = () => {
         }
     };
 
-    const postNextDay = async ({nextDayRequest}: NextDayProps): Promise<DayResult | undefined> => {
+    const postNextDay = async ({nextDayRequest}: NextDayProps): Promise<CreateDayResponse | undefined> => {
         try {
             const response = await myAxios.post(NEXT_DAY_CREATE_URL, nextDayRequest, {
                 headers: {'Content-Type': 'application/json'},
@@ -92,7 +92,7 @@ export const apiGenerator = () => {
         } catch (error) {
             if(error instanceof AxiosError){
                 if(error.status == 404){
-                    alert("Not found any matching recipe.");
+                    return error.response?.data;
                 }
                 else {
                     console.log("Api error!")
@@ -101,7 +101,7 @@ export const apiGenerator = () => {
         }
     };
 
-    const changeDay = async ({changeDayRequest}: ChangeDayProps): Promise<DayResult | undefined> => {
+    const changeDay = async ({changeDayRequest}: ChangeDayProps): Promise<CreateDayResponse | undefined> => {
         try {
             const response = await myAxios.post(CHANGE_DAY_URL, changeDayRequest, {
                 headers: {'Content-Type': 'application/json'},

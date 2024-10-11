@@ -1,0 +1,51 @@
+.plan-container{
+    margin: 40px 0 30px 0;
+    padding: 10px 0 30px 0;
+    border: 1px solid black;
+}
+
+.meals-box{
+    margin-bottom: 30px;
+}
+
+.meal-item{
+    width: 11em;
+}
+
+.actions-buttons-box{
+    margin: 30px 0 10px 0;
+}
+
+.rec-search-button{
+    background-color: #e0e0e0;
+    padding: 10px;
+}
+
+/*RESULTS*/
+.recipes-result{
+    background-color: #e0e0e0;
+    margin: auto;
+    padding: 25px 0 25px 0;
+}
+
+.recipes-flex-con {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+.recipe-box{
+    background-color: white;
+    border: 2px solid black;
+    margin: 5px;
+    padding: 5px;
+}
+
+.photo-box{
+    font-weight: bold;
+    height: 10em;
+    width: 18em;
+    border: 1px solid black;
+    margin: 5px;
+    align-content: center;
+}

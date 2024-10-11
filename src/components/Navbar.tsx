@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom';
-import './Navbar.css';
+import '../assets/css/Navbar.css';
 import i18n from "i18next";
 import useAuth from "../features/authentication/hooks/useAuth.ts";
 import {useApiAuth} from "../api/apiAuth.ts";
@@ -14,13 +14,17 @@ const Navbar = () => {
 
     return (
         <nav className="navbar">
-            <ul className="navbar-list">
-                <li className="navbar-item">
-                    <Link to="/">Home</Link>
+            <ul>
+                <li style={{float: "left"}}>
+                    <Link to="/">MealPlanner</Link>
+                </li>
+                <li>
+                    <button className="lang-button" onClick={() => changeLanguage('en')}>EN</button>
+                    <button className="lang-button" onClick={() => changeLanguage('pl')}>PL</button>
                 </li>
                 {auth.userId ?
                     <>
-                        <li className="navbar-item">
+                        <li>
                             <Link to="/" onClick={(e) => {
                                 e.preventDefault();
                                 logout('');
@@ -28,22 +32,20 @@ const Navbar = () => {
                                 Sign out
                             </Link>
                         </li>
-                    </> :
-                    <>
-                        <li className="navbar-item">
-                            <Link to="/login">Login</Link>
+                        <li>
+                            <Link to="/profile">Profile</Link>
                         </li>
-                        <li className="navbar-item">
+                    </>
+                    :
+                    <>
+                        <li>
                             <Link to="/register">Register</Link>
+                        </li>
+                        <li>
+                            <Link to="/login">Login</Link>
                         </li>
                     </>
                 }
-                <li className="navbar-item">
-                    <button onClick={() => changeLanguage('en')}>EN</button>
-                </li>
-                <li className="navbar-item">
-                    <button onClick={() => changeLanguage('pl')}>PL</button>
-                </li>
             </ul>
         </nav>
     );

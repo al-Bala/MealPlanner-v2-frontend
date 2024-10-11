@@ -11,7 +11,7 @@ export const GeneratedDays = ({tempDays}: Props) => {
     return (
         <>
             {tempDays.map((day, index = 0) => (
-                <div key={index}>
+                <div key={index} className="plan-container">
                     <Date dayIndex={index}/>
                     <TempRecipeResult day={day.tempRecipes}/>
                 </div>

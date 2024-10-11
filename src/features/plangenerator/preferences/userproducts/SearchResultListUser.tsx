@@ -1,38 +1,26 @@
-import {Dispatch, SetStateAction, useState} from "react";
+import {Dispatch, SetStateAction} from "react";
 import {SearchResultUser} from "./SearchResultUser.tsx";
-import {AmountUnit} from "./AmountUnit.tsx";
-import "../../../../assets/css/plangenerator/PrefPage.css"
+import "../../../../assets/css/plangenerator/PrefsPage.css"
 import {Product} from "../../../../models/models.ts";
-import "../../../../assets/css/plangenerator/AddForm.css"
 
 interface Props {
     rows: Product[];
     setRows:  Dispatch<SetStateAction<Product[]>>;
     onSearchTextChange: Dispatch<SetStateAction<string>>;
-    isResultSelected: boolean
-    setIsResultSelected: Dispatch<SetStateAction<boolean>>;
+    setSelectedRow: Dispatch<SetStateAction<Product | undefined>>;
 }
 
-export const SearchResultListUser = ({rows, setRows, onSearchTextChange, isResultSelected, setIsResultSelected}: Props) => {
-    const [selectedRow, setSelectedRow] = useState<Product>({
-        id: '',
-        name: '',
-        mainUnit: '',
-        packingUnits: [],
-        standardWeight: 0
-    });
-
+export const SearchResultListUser = ({rows, setRows, onSearchTextChange, setSelectedRow}: Props) => {
     const handleRowClick = (row: Product) => {
         setSelectedRow(row)
-        setIsResultSelected(true)
         onSearchTextChange(row.name)
         setRows([])
     };
 
     return (
         <>
-            <div className="nad">
-                {!isResultSelected &&
+            <div className="prod-result-list">
+                {rows.length != 0 &&
                     rows.map((row) => (
                         <>
                             <SearchResultUser
@@ -44,14 +32,6 @@ export const SearchResultListUser = ({rows, setRows, onSearchTextChange, isResul
                     ))
                 }
             </div>
-            {isResultSelected &&
-                <AmountUnit
-                    row={selectedRow}
-                    isResultSelected={isResultSelected}
-                    setIsResultSelected={setIsResultSelected}
-                    onSearchTextChange={onSearchTextChange}
-                />
-            }
         </>
     );
 }

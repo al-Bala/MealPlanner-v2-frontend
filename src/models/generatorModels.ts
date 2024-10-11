@@ -62,6 +62,11 @@ export interface PlanToSave {
 }
 
 // RESULT
+export interface CreateDayResponse {
+    message: string;
+    dayResult: DayResult
+}
+
 export interface DayResult {
     recipesResult: RecipeResultM[];
 }

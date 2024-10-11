@@ -1,6 +1,5 @@
 import {MouseEventHandler} from "react";
-import "../../../../assets/css/plangenerator/PrefPage.css"
-import "../../../../assets/css/plangenerator/AddForm.css"
+import "../../../../assets/css/plangenerator/PrefsPage.css"
 
 interface Props {
     rowName: string;
@@ -9,7 +8,7 @@ interface Props {
 
 export const SearchResultAvoid = ({ rowName, onClick}: Props) => {
     return (
-        <div className="search-result" onClick={onClick}>
+        <div className="prod-result" onClick={onClick}>
             <div>{rowName}</div>
         </div>
     );

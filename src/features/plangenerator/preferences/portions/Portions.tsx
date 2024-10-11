@@ -16,7 +16,7 @@ export const Portions = ({savedPortions}: {savedPortions: number | null}) =>  {
     }, [savedPortions]);
 
     return (
-        <div style={{ backgroundColor: 'lightblue', marginLeft: '0.5em'}}>
+        <div className="pref-section">
             <div>{t('portionsMessage')}:</div>
             <input
                 type="number"

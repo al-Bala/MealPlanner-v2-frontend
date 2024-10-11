@@ -2,7 +2,6 @@ import {Dispatch, ReactNode, SetStateAction, useContext, useState} from "react";
 import {MealModel} from "../../../../models/models.ts";
 import {LuClock4} from "react-icons/lu";
 import {DaysButton, MealButton, FirstDayMealButton, TimeButton} from './Meals.style.ts';
-import '../../../../assets/css/plangenerator/Meals.css'
 import {MealsContext, MealsDispatchContext} from "../../../../context/MealsContext.tsx";
 import TimeSlider from "./TimeSlider.tsx";
 
@@ -91,7 +90,7 @@ export const MealOption = ({dayIndex, isTwoDays, setIsTwoDays, meal, children}: 
     );
 
     const renderMealOption = () => (
-        <>
+        <div>
             {dayIndex == 0 ?
                 <FirstDayMealButton
                     disabled={meal.name === 'Dinner'}
@@ -119,12 +118,12 @@ export const MealOption = ({dayIndex, isTwoDays, setIsTwoDays, meal, children}: 
                     </div>
                 )}
             </div>
-        </>
+        </div>
     );
 
     const renderRepeatedMealOption = () => (
         <>
-            <button style={{background: "blue", color: "lightgrey"}} disabled>
+            <button style={{background: "#386641", color: "white"}} disabled>
                 {children}
             </button>
             <p>*( To samo co wczoraj )</p>
@@ -132,7 +131,7 @@ export const MealOption = ({dayIndex, isTwoDays, setIsTwoDays, meal, children}: 
     );
 
     return (
-        <div>
+        <div className="meal-item">
             {(dayIndex === isTwoDays && meal.days) ? renderRepeatedMealOption() : renderMealOption()}
         </div>
     );

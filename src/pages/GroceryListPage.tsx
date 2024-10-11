@@ -8,6 +8,9 @@ export const GroceryListPage = () => {
 
 
     return (
-        <></>
+        <>
+            <br/>
+            In progress...
+        </>
     );
 }

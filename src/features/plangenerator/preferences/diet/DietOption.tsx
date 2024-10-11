@@ -1,4 +1,4 @@
-import "../../../../assets/css/plangenerator/PrefPage.css"
+import "../../../../assets/css/plangenerator/PrefsPage.css"
 import {DietButton} from '../../../../assets/styles/Diet.style.ts';
 import {DietModel} from '../../../../models/models.ts';
 import {useContext, useEffect, useState} from "react";

@@ -1,5 +1,5 @@
 import {ChangeEvent, Dispatch, SetStateAction, useEffect} from "react";
-import "../../../../assets/css/plangenerator/PrefPage.css"
+import "../../../../assets/css/plangenerator/PrefsPage.css"
 import {t} from 'i18next';
 import {Product, UserProductAll} from "../../../../models/models.ts";
 
@@ -24,14 +24,16 @@ export const PcAmountUnit = ({row, allProductData, setAllProductData}: Props) =>
     }
 
     return (
-        <>
-            <input className="custom-input"
+        <div className="prod-AU-grid-con">
+            <input className="custom-field"
                    type="number"
                    value={allProductData.mainAmount}
                    placeholder={t('amountMessage')}
                    onChange={(e) => handlePcAmountChange(e)}
             />
-            <div>{row.mainUnit}</div>
-        </>
+            <div className="custom-field">
+                {row.mainUnit}
+            </div>
+        </div>
     );
 };

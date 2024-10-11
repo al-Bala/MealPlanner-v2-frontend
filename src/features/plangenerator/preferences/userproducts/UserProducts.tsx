@@ -1,37 +1,94 @@
-import {useState} from "react";
-import {Product} from "../../../../models/models.ts";
+import {useContext, useState} from "react";
+import {Product, UserProduct, UserProductAll} from "../../../../models/models.ts";
 import {t} from "i18next";
 import {SearchBarUser} from "./SearchBarUser.tsx";
-import {SearchResultListUser} from "./SearchResultListUser.tsx";
 import {ChosenUserProducts} from "./ChosenUserProducts.tsx";
+import {AmountUnit} from "./AmountUnit.tsx";
+import {PrefsDispatchContext} from "../../../../context/PreferencesContext.tsx";
+import {PcAmountUnit} from "./PcAmountUnit.tsx";
 
 export const UserProducts = () => {
+    const dispatch = useContext(PrefsDispatchContext);
     const [searchText, setSearchText] = useState('');
-    const [rows, setRows] = useState<Product[]>([]);
-    const [isResultSelected, setIsResultSelected] = useState(false);
+    const [selectedRow, setSelectedRow] = useState<Product>();
+    const [allProductData, setAllProductData] = useState<UserProductAll>({
+        name: '',
+        amount: '', unit: '',
+        mainAmount: '', mainUnit: ''
+    })
+
+    const clear = () => {
+        setAllProductData({
+            name: '',
+            amount: '', unit: '',
+            mainAmount: '', mainUnit: ''
+        })
+        setSearchText('')
+        setSelectedRow(undefined)
+    }
+
+    const handleSubmit = () => {
+        let finalProductData: UserProduct;
+        if (!allProductData.mainAmount) {
+            finalProductData = {
+                // name: row.name,
+                name: selectedRow?.name || '',
+                amount: allProductData.amount,
+                unit: allProductData.unit
+            }
+        } else {
+            finalProductData = {
+                // name: row.name,
+                name: selectedRow?.name || '',
+                amount: allProductData.mainAmount,
+                unit: allProductData.mainUnit
+            }
+        }
+        dispatch?.({
+            type: 'ADD_USER_PRODUCTS',
+            userProduct: finalProductData
+        })
+        clear();
+    };
 
     return (
-        <div className="item1" style={{ backgroundColor: 'lightblue', height: "auto"}}>
-            <div>{t('userProductsMessage')}:</div>
-            <div className="user-prod-container">
-                <div className="user-item">
-                    <div className="div-user">
-                        <SearchBarUser searchText={searchText}
-                                       setRows={setRows}
-                                       onSearchTextChange={setSearchText}
-                                       setIsResultSelected={setIsResultSelected}/>
-                        <SearchResultListUser
-                            rows={rows}
-                            setRows={setRows}
+        <div className="prefs-item">
+            <div className="pref-section">
+                <div>{t('userProductsMessage')}:</div>
+                <div className="product-grid-con">
+                    <div className="product-item">
+                        <SearchBarUser
+                            searchText={searchText}
                             onSearchTextChange={setSearchText}
-                            isResultSelected={isResultSelected}
-                            setIsResultSelected={setIsResultSelected}
+                            setSelectedRow={setSelectedRow}
+                            clear={clear}
                         />
+                        {selectedRow &&
+                            <div>
+                                <AmountUnit
+                                    row={selectedRow}
+                                    allProductData={allProductData}
+                                    setAllProductData={setAllProductData}
+                                />
+                                {allProductData.unit == 'pc.' &&
+                                    <PcAmountUnit
+                                        row={selectedRow}
+                                        allProductData={allProductData}
+                                        setAllProductData={setAllProductData}
+                                    />
+                                }
+                                {allProductData.unit && allProductData.amount &&
+                                    <div className="add-button-box">
+                                        <button onClick={handleSubmit}>{t('addButton')}</button>
+                                    </div>
+                                }
+                            </div>
+                        }
                     </div>
-                </div>
-                <div className="user-item">
-                    Products:
-                    <ChosenUserProducts/>
+                    <div className="product-item">
+                        Products:
+                        <ChosenUserProducts/>
+                    </div>
                 </div>
             </div>
         </div>

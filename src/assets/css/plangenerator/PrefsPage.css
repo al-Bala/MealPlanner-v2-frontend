@@ -1,0 +1,54 @@
+/*TEL*/
+/*@media (max-width: 768px) {*/
+/*    .grid-container {*/
+/*        display: grid;*/
+/*        grid-template-columns: 1fr;*/
+/*    }*/
+/*    .item1 {*/
+/*        height: 12em;*/
+/*        margin: 1em 0 1em 0;*/
+/*    }*/
+/*    .item-calendar {*/
+/*        height: 22em;*/
+/*    }*/
+/*}*/
+
+/*@media (min-width: 768px) {*/
+/*    */
+/*}*/
+
+.prefs-base{
+    width: 78em;
+    margin: auto;
+}
+
+.prefs-grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 30px;
+    margin: 30px auto;
+    border: 2px solid black;
+}
+
+.prefs-item {
+    grid-column: 1 / 3;
+}
+.calendar-item {
+    grid-column: 1 / 3;
+}
+
+.pref-section {
+    background-color: #e0e0e0;
+    border: 1px solid black;
+    padding: 10px 0 20px 0;
+}
+
+.diet-grid-con {
+    grid-template-rows: auto auto auto;
+    grid-gap: 5px;
+}
+
+.dietButton:active {
+    background-color: green;
+}
