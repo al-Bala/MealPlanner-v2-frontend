@@ -3,6 +3,7 @@ import {Profile} from "../models/userModels.ts";
 import {Dispatch, SetStateAction} from "react";
 import {PlanToSave, SavedPrefers} from "../models/generatorModels.ts";
 import useAxiosPrivate from "../features/authentication/hooks/useAxiosPrivate.ts";
+import {useNavigate} from "react-router-dom";
 
 interface ShowProfileProps {
     userId: string | undefined;
@@ -21,6 +22,7 @@ interface SavePlanProps {
 
 export const useApiUser = () => {
     const axiosPrivate = useAxiosPrivate();
+    const navigate = useNavigate();
 
     const getPrefers = async ({userId}: { userId: string | undefined }): Promise<SavedPrefers | undefined> => {
         try {
@@ -75,14 +77,15 @@ export const useApiUser = () => {
         }
     };
 
-    const savePlan = async ({userId, tempPlan}: SavePlanProps): Promise<string | undefined> => {
+    const savePlan = async ({userId, tempPlan}: SavePlanProps) => {
         try {
             const response = await axiosPrivate.post(`/users/${userId}/plans`, tempPlan, {
                 headers: {'Content-Type': 'application/json'},
                 withCredentials: true
             });
             console.log('Success (plan saved):', response.data);
-            return response.data;
+            await response.data;
+            navigate('/profile')
         } catch (err) {
             if (err instanceof AxiosError) {
                 if (err.response?.status === 400) {

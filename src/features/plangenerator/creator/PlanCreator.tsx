@@ -10,7 +10,8 @@ import {MealsChooser} from "./meals/MealsChooser.tsx";
 import {GeneratedDays} from "./GeneratedDays.tsx";
 import {
     AcceptDayRequest,
-    ChangeDayRequest, CreateDayResponse,
+    ChangeDayRequest,
+    CreateDayResponse,
     DayResult,
     FirstDayRequest,
     NextDayRequest,
@@ -21,7 +22,6 @@ import {
     TempRecipe
 } from "../../../models/generatorModels.ts";
 import useArraysComparator from "../hooks/useArraysComparator.ts";
-import {useNavigate} from "react-router-dom";
 import {t} from "i18next";
 
 export const PlanCreator= () => {
@@ -31,7 +31,6 @@ export const PlanCreator= () => {
     const statePrefs = useContext(PrefsContext);
     const stateMeals = useContext(MealsContext);
     const dispatch = useContext(MealsDispatchContext);
-    const navigate = useNavigate();
     const arraysComparator = useArraysComparator();
 
     const [dayIndex, setDayIndex] = useState(0);
@@ -187,17 +186,15 @@ export const PlanCreator= () => {
                 addMappedResultsToDaysToSave(dayResult?.recipesResult || []);
             }
         }
-        if(repeatedDayIndex !== dayIndex && repeatedDayIndex > 0){
+        if(repeatedDayIndex !== -1){
             alert("Masz jeszcze jeden dzień do wygenerowania")
             return
         }
         addNotAcceptedTempDay();
-        const promise = apiUser.savePlan({
+        apiUser.savePlan({
             userId: auth.userId,
             tempPlan: {startDateText: statePrefs.startDay.format("YYYY-MM-DD"), daysToSave: daysToSaveRef.current}
         })
-        console.log("Save: " + promise)
-        navigate('/profile')
     }
 
     return (
