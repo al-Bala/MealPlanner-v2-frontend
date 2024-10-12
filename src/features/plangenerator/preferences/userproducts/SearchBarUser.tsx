@@ -2,7 +2,7 @@ import React, {Dispatch, SetStateAction, useState} from "react";
 import "../../../../assets/css/plangenerator/PrefsPage.css"
 import {t} from 'i18next';
 import {Product} from "../../../../models/models.ts";
-import {apiGenerator} from "../../../../api/apiGenerator.ts";
+import {useApiGenerator} from "../../../../api/useApiGenerator.ts";
 import {SearchResultListUser} from "./SearchResultListUser.tsx";
 
 interface Props {
@@ -13,13 +13,14 @@ interface Props {
 }
 
 export const SearchBarUser = ({searchText, onSearchTextChange, setSelectedRow, clear}: Props) => {
+    const apiGenerator = useApiGenerator();
     const [rows, setRows] = useState<Product[]>([]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         clear();
         const filterText = e.target.value;
         onSearchTextChange(filterText)
-        apiGenerator().getProducts({filterText, setRows})
+        apiGenerator.getProducts({filterText, setRows})
     }
 
     return (

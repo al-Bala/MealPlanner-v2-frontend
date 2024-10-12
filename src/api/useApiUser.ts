@@ -1,8 +1,8 @@
 import {AxiosError} from 'axios';
-import myAxios from "./myAxios.ts";
 import {Profile} from "../models/userModels.ts";
 import {Dispatch, SetStateAction} from "react";
 import {PlanToSave, SavedPrefers} from "../models/generatorModels.ts";
+import useAxiosPrivate from "../features/authentication/hooks/useAxiosPrivate.ts";
 
 interface ShowProfileProps {
     userId: string | undefined;
@@ -19,10 +19,12 @@ interface SavePlanProps {
     tempPlan: PlanToSave;
 }
 
-export const apiUser = () => {
+export const useApiUser = () => {
+    const axiosPrivate = useAxiosPrivate();
+
     const getPrefers = async ({userId}: { userId: string | undefined }): Promise<SavedPrefers | undefined> => {
         try {
-            const response = await myAxios.get(`/users/${userId}/prefs`,
+            const response = await axiosPrivate.get(`/users/${userId}/prefs`,
                 {
                     headers: {'Content-Type': 'application/json'},
                     withCredentials: true
@@ -37,7 +39,7 @@ export const apiUser = () => {
 
     const updatePrefers = async ({userId, savedPrefers}: UpdatePrefersProps): Promise<SavedPrefers | undefined> => {
         try {
-            const response = await myAxios.put(`/users/${userId}/prefs`, savedPrefers,
+            const response = await axiosPrivate.put(`/users/${userId}/prefs`, savedPrefers,
                 {
                     headers: {'Content-Type': 'application/json'},
                     withCredentials: true
@@ -52,7 +54,7 @@ export const apiUser = () => {
 
     const showProfile = async ({userId, setProfile}: ShowProfileProps) => {
         try {
-            const response = await myAxios.get(`/users/${userId}/profile`,
+            const response = await axiosPrivate.get(`/users/${userId}/profile`,
                 {
                     headers: {'Content-Type': 'application/json'},
                     withCredentials: true
@@ -75,7 +77,7 @@ export const apiUser = () => {
 
     const savePlan = async ({userId, tempPlan}: SavePlanProps): Promise<string | undefined> => {
         try {
-            const response = await myAxios.post(`/users/${userId}/plans`, tempPlan, {
+            const response = await axiosPrivate.post(`/users/${userId}/plans`, tempPlan, {
                 headers: {'Content-Type': 'application/json'},
                 withCredentials: true
             });

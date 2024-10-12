@@ -1,20 +1,21 @@
 import useAuth from "../features/authentication/hooks/useAuth.ts";
 import {useEffect, useState} from "react";
 import {Profile} from "../models/userModels.ts";
-import {apiUser} from "../api/apiUser.ts";
+import {useApiUser} from "../api/useApiUser.ts";
 import "../../src/assets/css/Profile.css"
 import {PlanHistory} from "../features/profile/PlanHistory.tsx";
 import {t} from "i18next";
 
 export const ProfilePage = () => {
     const {auth} = useAuth();
+    const apiUser = useApiUser();
     const [profile, setProfile] = useState<Profile>({
         username: '',
         plans: []
     });
 
     useEffect(() => {
-        apiUser().showProfile({userId: auth.userId, setProfile: setProfile});
+        apiUser.showProfile({userId: auth.userId, setProfile: setProfile});
     }, [auth.userId]);
 
     return (

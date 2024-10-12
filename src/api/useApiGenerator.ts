@@ -1,9 +1,5 @@
-import {
-    DietModel,
-    Product
-} from '../models/models.ts';
+import {DietModel, Product} from '../models/models.ts';
 import {Dispatch, SetStateAction} from "react";
-import myAxios from "./myAxios.ts";
 import {
     AcceptDayRequest,
     ChangeDayRequest,
@@ -12,6 +8,7 @@ import {
     NextDayRequest
 } from "../models/generatorModels.ts";
 import {AxiosError} from "axios";
+import useAxiosPrivate from "../features/authentication/hooks/useAxiosPrivate.ts";
 
 const FIRST_DAY_CREATE_URL: string = '/generator/days/first';
 const NEXT_DAY_CREATE_URL: string = '/generator/days/next';
@@ -35,10 +32,12 @@ interface AcceptDayProps {
     acceptDayRequest: AcceptDayRequest;
 }
 
-export const apiGenerator = () => {
+export const useApiGenerator = () => {
+    const axiosPrivate = useAxiosPrivate();
+
     const getProducts = async ({filterText, setRows}: Props) => {
         try {
-            await myAxios.get(`products?query=` + filterText, {
+            await axiosPrivate.get(`products?query=` + filterText, {
                 withCredentials: true
             })
                 .then(res => setRows(res.data));
@@ -49,7 +48,7 @@ export const apiGenerator = () => {
 
     const getAllDiets = async (): Promise<DietModel[] | undefined> => {
         try {
-            const response = await myAxios.get(`/diets`,
+            const response = await axiosPrivate.get(`/diets`,
                 {
                     withCredentials: true
                 }
@@ -63,7 +62,7 @@ export const apiGenerator = () => {
 
     const postFirstDay = async ({firstDayRequest}: FirstDayProps): Promise<CreateDayResponse | undefined> => {
         try {
-            const response = await myAxios.post(FIRST_DAY_CREATE_URL, firstDayRequest, {
+            const response = await axiosPrivate.post(FIRST_DAY_CREATE_URL, firstDayRequest, {
                 headers: {'Content-Type': 'application/json'},
                 withCredentials: true
             });
@@ -83,7 +82,7 @@ export const apiGenerator = () => {
 
     const postNextDay = async ({nextDayRequest}: NextDayProps): Promise<CreateDayResponse | undefined> => {
         try {
-            const response = await myAxios.post(NEXT_DAY_CREATE_URL, nextDayRequest, {
+            const response = await axiosPrivate.post(NEXT_DAY_CREATE_URL, nextDayRequest, {
                 headers: {'Content-Type': 'application/json'},
                 withCredentials: true
             });
@@ -103,7 +102,7 @@ export const apiGenerator = () => {
 
     const changeDay = async ({changeDayRequest}: ChangeDayProps): Promise<CreateDayResponse | undefined> => {
         try {
-            const response = await myAxios.post(CHANGE_DAY_URL, changeDayRequest, {
+            const response = await axiosPrivate.post(CHANGE_DAY_URL, changeDayRequest, {
                 headers: {'Content-Type': 'application/json'},
                 withCredentials: true
             });
@@ -124,7 +123,7 @@ export const apiGenerator = () => {
 
     const acceptDay = async ({acceptDayRequest}: AcceptDayProps): Promise<void> => {
         try {
-            const response = await myAxios.post(ACCEPT_DAY_URL, acceptDayRequest, {
+            const response = await axiosPrivate.post(ACCEPT_DAY_URL, acceptDayRequest, {
                 headers: {'Content-Type': 'application/json'},
                 withCredentials: true
             });

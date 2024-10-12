@@ -3,15 +3,16 @@ import {DietButton} from '../../../../assets/styles/Diet.style.ts';
 import {DietModel} from '../../../../models/models.ts';
 import {useContext, useEffect, useState} from "react";
 import {PrefsContext, PrefsDispatchContext} from "../../../../context/PreferencesContext.tsx";
-import {apiGenerator} from "../../../../api/apiGenerator.ts";
+import {useApiGenerator} from "../../../../api/useApiGenerator.ts";
 
 export const DietOption = () => {
+    const apiGenerator = useApiGenerator();
     const state = useContext(PrefsContext);
     const dispatch = useContext(PrefsDispatchContext);
     const [diets, setDiets] = useState<DietModel[]>([]);
 
     useEffect(() => {
-        apiGenerator().getAllDiets()
+        apiGenerator.getAllDiets()
             .then(response => {
                 if(response){
                     setDiets(response)

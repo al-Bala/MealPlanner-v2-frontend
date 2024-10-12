@@ -1,9 +1,9 @@
 import {MealValues} from "../../../models/models.ts";
-import {apiGenerator} from "../../../api/apiGenerator.ts";
+import {useApiGenerator} from "../../../api/useApiGenerator.ts";
 import {useContext, useRef, useState} from "react";
 import {PrefsContext} from "../../../context/PreferencesContext.tsx";
 import {MealsContext, MealsDispatchContext} from "../../../context/MealsContext.tsx";
-import {apiUser} from "../../../api/apiUser.ts";
+import {useApiUser} from "../../../api/useApiUser.ts";
 import useAuth from "../../authentication/hooks/useAuth.ts";
 import {RecipeResult} from "./RecipeResult.tsx";
 import {MealsChooser} from "./meals/MealsChooser.tsx";
@@ -25,6 +25,8 @@ import {useNavigate} from "react-router-dom";
 import {t} from "i18next";
 
 export const PlanCreator= () => {
+    const apiUser = useApiUser();
+    const apiGenerator = useApiGenerator();
     const {auth} = useAuth();
     const statePrefs = useContext(PrefsContext);
     const stateMeals = useContext(MealsContext);
@@ -76,7 +78,7 @@ export const PlanCreator= () => {
                 mealsValues: stateMeals
             };
             console.log("First day: " + JSON.stringify(firstDayRequest.mealsValues))
-            response = await apiGenerator().postFirstDay({
+            response = await apiGenerator.postFirstDay({
                 firstDayRequest: firstDayRequest
             });
             response && setDayResult(response.dayResult);
@@ -93,7 +95,7 @@ export const PlanCreator= () => {
                 usedRecipesNames: allUsedRecipesNames
             };
             console.log("Next day: " + JSON.stringify(nextDayRequest.mealsValues))
-            response = await apiGenerator().postNextDay({
+            response = await apiGenerator.postNextDay({
                 nextDayRequest: nextDayRequest
             });
             response && setDayResult(response.dayResult);
@@ -108,7 +110,7 @@ export const PlanCreator= () => {
             mealsValues: stateMeals,
             recipesNamesToChange: dayResult?.recipesResult.flatMap(r => r.recipeName) || []
         };
-        const resultChangeDay = await apiGenerator().changeDay({
+        const resultChangeDay = await apiGenerator.changeDay({
             changeDayRequest: changeDayRequest
         });
         console.log("Change: " + resultChangeDay);
@@ -159,7 +161,7 @@ export const PlanCreator= () => {
             tempRecipes: tempRecipes
         };
         // leftovers etc.
-        apiGenerator().acceptDay({acceptDayRequest});
+        apiGenerator.acceptDay({acceptDayRequest});
 
         setTempDays([...tempDays, {
             dayIndex: dayIndex,
@@ -190,7 +192,7 @@ export const PlanCreator= () => {
             return
         }
         addNotAcceptedTempDay();
-        const promise = apiUser().savePlan({
+        const promise = apiUser.savePlan({
             userId: auth.userId,
             tempPlan: {startDateText: statePrefs.startDay.format("YYYY-MM-DD"), daysToSave: daysToSaveRef.current}
         })

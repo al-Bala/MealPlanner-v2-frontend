@@ -5,7 +5,7 @@ import {UserProducts} from "./userproducts/UserProducts.tsx";
 import {StartDate} from "./startdate/StartDate.tsx";
 import {Dispatch, SetStateAction, useContext, useEffect, useState} from "react";
 import {MealsDispatchContext} from "../../../context/MealsContext.tsx";
-import {apiUser} from "../../../api/apiUser.ts";
+import {useApiUser} from "../../../api/useApiUser.ts";
 import useAuth from "../../authentication/hooks/useAuth.ts";
 import {PrefsContext} from "../../../context/PreferencesContext.tsx";
 import {SavedPrefers} from "../../../models/generatorModels.ts";
@@ -17,6 +17,7 @@ interface PreferencesProps {
 
 export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
     const {auth} = useAuth();
+    const apiUser = useApiUser();
     const dispatch = useContext(MealsDispatchContext);
     const state = useContext(PrefsContext);
     const [savedUserPrefers, setSavedUserPrefers] = useState<SavedPrefers>(
@@ -27,7 +28,7 @@ export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
         });
 
     useEffect(() => {
-        apiUser().getPrefers({userId: auth.userId})
+        apiUser.getPrefers({userId: auth.userId})
             .then(prefs => {
                 if(prefs){
                     setSavedUserPrefers({
@@ -42,7 +43,7 @@ export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
     
     const handleClick = () => {
         console.log("StatePrefs: " + state.portionsNr);
-        apiUser().updatePrefers({
+        apiUser.updatePrefers({
             userId: auth.userId,
             savedPrefers: {
                 dietId: state.dietId,
