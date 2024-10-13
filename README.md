@@ -1,30 +1,50 @@
-# React + TypeScript + Vite
+# Meal Planner Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Screenshots
 
-Currently, two official plugins are available:
+![Interface-prefers](./images/prefers.jpg)
+![Interface-creator](./images/creator.jpg)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+&nbsp;
 
-## Expanding the ESLint configuration
+## Functionalities
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+**Meal plan generator.**\
+Creating a personalised list of recipes for a specified number of days.\
+The main rule of the program is to calculate the leftovers after each day and prioritize using them in the following days of the plan.
+The calculations are based on information about product packing sizes stored in the database.
 
-- Configure the top-level `parserOptions` property like this:
+Creating options:
+- Choose your preferences (diet, number of portions, products to avoid, already owned products). The first three options are saved and autocompleted in the form for generating future plans.
+- Set and edit the plan’s dates.
+- Adjust meal types for each day. Additionally, set the cooking time and choose the option to prepare meals for 2 days (only available for dinners).
+-  If necessary, change the suggested recipes.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+**Authentication.**\
+Login and registration secured by JWT tokens (access and refresh).
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+&nbsp;
+
+## Technologies
+![Java](https://img.shields.io/badge/17-Java-orange?style=for-the-badge) &nbsp;
+![SpringBoot](https://img.shields.io/badge/Spring_Boot-F2F4F9?style=for-the-badge&logo=spring) &nbsp;
+![SpringSecurity](https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white) &nbsp;
+![Maven](https://img.shields.io/badge/apache_maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white) &nbsp;
+![Mongodb](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white) &nbsp;
+![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white) &nbsp;
+
+![React](https://shields.io/badge/react-black?logo=react&style=for-the-badge) &nbsp;
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white) &nbsp;
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) &nbsp;
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white) &nbsp;
+
+&nbsp;
+
+## Status
+The project is still in progress. I plan to focus more on testing and, later, add a grocery list feature,
+allow user profile editing (changing email and password), and improve the interface to make it more user-friendly.
+
+&nbsp;
+
+##
+Link to backend code: [meal-planner-backend](https://github.com/al-Bala/MealPlanner-v2-backend)
