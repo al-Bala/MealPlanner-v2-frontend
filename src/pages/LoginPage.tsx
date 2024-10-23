@@ -1,5 +1,5 @@
 import {FormEvent, useEffect, useRef, useState} from "react";
-import {useApiAuth} from "../api/apiAuth.ts";
+import {useApiAuth} from "../api/useApiAuth.ts";
 import {LoginForm} from "../models/authModels.ts";
 import {t} from "i18next";
 
@@ -7,7 +7,7 @@ const LoginPage = () => {
     const {login, errMsg, setErrMsg} = useApiAuth();
     const userRef = useRef<HTMLInputElement>(null);
     const [loginForm, setLoginForm] = useState<LoginForm>({
-        user: '',
+        email: '',
         pwd: '',
     });
 
@@ -21,7 +21,7 @@ const LoginPage = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoginForm({user: loginForm.user, pwd: ''});
+        setLoginForm({email: loginForm.email, pwd: ''});
         await login({loginForm})
     }
 
@@ -29,15 +29,15 @@ const LoginPage = () => {
         <div>
             <h2>{t('logIn')}</h2>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="username">{t('username')}:</label>
+                <label htmlFor="email">{t('email')}:</label>
                 <input
                     type="text"
-                    id="username"
+                    id="email"
                     ref={userRef}
                     autoComplete="off"
-                    value={loginForm.user}
+                    value={loginForm.email}
                     onChange={(e) => setLoginForm(prevState => (
-                        {...prevState, user: e.target.value}
+                        {...prevState, email: e.target.value}
                     ))}
                     required
                 />

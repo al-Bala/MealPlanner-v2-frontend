@@ -1,52 +1,48 @@
 import {AxiosError} from 'axios';
-import {Profile} from "../models/userModels.ts";
-import {Dispatch, SetStateAction} from "react";
 import {PlanToSave, SavedPrefers} from "../models/generatorModels.ts";
 import useAxiosPrivate from "../features/authentication/hooks/useAxiosPrivate.ts";
 import {useNavigate} from "react-router-dom";
-
-interface ShowProfileProps {
-    userId: string | undefined;
-    setProfile: Dispatch<SetStateAction<Profile>>;
-}
+import useAuth from "../features/authentication/hooks/useAuth.ts";
 
 interface UpdatePrefersProps {
-    userId: string | undefined;
+    username: string | undefined;
     savedPrefers: SavedPrefers;
 }
 
 interface SavePlanProps {
-    userId: string | undefined;
+    username: string | undefined;
     tempPlan: PlanToSave;
 }
 
 export const useApiUser = () => {
+    const {auth} = useAuth();
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
 
-    const getPrefers = async ({userId}: { userId: string | undefined }): Promise<SavedPrefers | undefined> => {
+    const getPrefers = async ({controller}: {controller: AbortController}): Promise<SavedPrefers | undefined> => {
         try {
-            const response = await axiosPrivate.get(`/users/${userId}/prefs`,
-                {
-                    headers: {'Content-Type': 'application/json'},
-                    withCredentials: true
-                }
-            );
+            console.log("Prefers axios")
+            const response = await axiosPrivate.get(`/users/${auth.username}/prefs`, {
+                signal: controller.signal
+            });
             console.log('Success GET prefers ', response?.data);
             return response?.data;
         } catch (err) {
-            console.log("Api error!")
+            if (err instanceof AxiosError) {
+                if (!err?.response) {
+                    console.log('No Server Response');
+                } else if (err.response?.status === 401) {
+                    console.log("Get Prefers 401")
+                } else {
+                    console.log("Get Prefers Failed")
+                }
+            }
         }
     };
 
-    const updatePrefers = async ({userId, savedPrefers}: UpdatePrefersProps): Promise<SavedPrefers | undefined> => {
+    const updatePrefers = async ({username, savedPrefers}: UpdatePrefersProps): Promise<SavedPrefers | undefined> => {
         try {
-            const response = await axiosPrivate.put(`/users/${userId}/prefs`, savedPrefers,
-                {
-                    headers: {'Content-Type': 'application/json'},
-                    withCredentials: true
-                }
-            );
+            const response = await axiosPrivate.put(`/users/${username}/prefs`, savedPrefers);
             console.log('Success prefers update', response.data);
             return response?.data;
         } catch (err) {
@@ -54,32 +50,30 @@ export const useApiUser = () => {
         }
     };
 
-    const showProfile = async ({userId, setProfile}: ShowProfileProps) => {
+    const showProfile = async ({controller}: {controller: AbortController}) => {
         try {
-            const response = await axiosPrivate.get(`/users/${userId}/profile`,
-                {
-                    headers: {'Content-Type': 'application/json'},
-                    withCredentials: true
-                }
-            );
+            console.log("Profile axios")
+            const response = await axiosPrivate.get(`/users/${auth.username}/profile`, {
+                signal: controller.signal
+            });
             console.log(response?.data);
-            setProfile(response?.data);
+            return response.data;
         } catch (err) {
             if (err instanceof AxiosError) {
                 if (!err?.response) {
                     console.log('No Server Response');
                 } else if (err.response?.status === 401) {
-                    console.log("Unauthorized 401")
+                    console.log("Show Profile 401")
                 } else {
-                    console.log("Login Failed")
+                    console.log("Show Profile Failed")
                 }
             }
         }
-    };
+    }
 
-    const savePlan = async ({userId, tempPlan}: SavePlanProps) => {
+    const savePlan = async ({username, tempPlan}: SavePlanProps) => {
         try {
-            const response = await axiosPrivate.post(`/users/${userId}/plans`, tempPlan, {
+            const response = await axiosPrivate.post(`/users/${username}/plans`, tempPlan, {
                 headers: {'Content-Type': 'application/json'},
                 withCredentials: true
             });

@@ -1,16 +1,22 @@
 import myAxios from "../../../api/myAxios.ts";
 import {AxiosError} from "axios";
-import {useApiAuth} from "../../../api/apiAuth.ts";
+import {useApiAuth} from "../../../api/useApiAuth.ts";
+import useAuth from "./useAuth.ts";
 
 const useRefreshToken = () => {
+    const {auth, setAuth} = useAuth();
     const {logout} = useApiAuth();
 
     return async () => {
         try {
-            await myAxios.get('/auth/refresh-token', {
-                withCredentials: true   // allow sent cookies with request
+            const response = await myAxios.post('/auth/refresh-token', auth.username, {
+                headers: {
+                    'Content-Type': 'text/plain'
+                }
             });
+            setAuth({username: auth.username, accessToken: response.data.accessToken})
             console.log("New access token")
+            return response.data.accessToken;
         } catch (error) {
             if(error instanceof AxiosError && error.response) {
                 console.log('RefreshToken error');

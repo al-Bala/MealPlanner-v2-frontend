@@ -28,10 +28,13 @@ export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
         });
 
     useEffect(() => {
-        apiUser.getPrefers({userId: auth.userId})
+        let isMounted = true;
+        const controller = new AbortController();
+
+        apiUser.getPrefers({controller})
             .then(prefs => {
                 if(prefs){
-                    setSavedUserPrefers({
+                    isMounted && setSavedUserPrefers({
                         // diet: prefs.diet,
                         dietId: prefs.dietId,
                         portions: prefs.portions,
@@ -39,12 +42,17 @@ export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
                     });
                 }
             });
-    }, [])
-    
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    }, []);
+
     const handleClick = () => {
         console.log("StatePrefs: " + state.portionsNr);
         apiUser.updatePrefers({
-            userId: auth.userId,
+            username: auth.username,
             savedPrefers: {
                 dietId: state.dietId,
                 portions: state.portionsNr,

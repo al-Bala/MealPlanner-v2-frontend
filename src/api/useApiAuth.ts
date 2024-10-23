@@ -2,8 +2,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {AxiosError} from "axios";
 import myAxios from "./myAxios.ts";
 import {useState} from "react";
-import {LoginForm, RegisterServerErrors, RegisterUser} from "../models/authModels.ts";
-import Cookies from "js-cookie";
+import {AuthResponse, LoginForm, RegisterServerErrors, RegisterUser} from "../models/authModels.ts";
 import useAuth from "../features/authentication/hooks/useAuth.ts";
 
 const REGISTER_URL: string = '/auth/register';
@@ -64,21 +63,18 @@ export const useApiAuth = () => {
     const login = async ({loginForm}: LoginProps) => {
         try {
             const response = await myAxios.post(LOGIN_URL,
-                JSON.stringify({username: loginForm.user, password: loginForm.pwd}),
+                JSON.stringify({
+                    email: loginForm.email,
+                    password: loginForm.pwd
+                }),
                 {
                     headers: {'Content-Type': 'application/json'},
                     withCredentials: true
                 }
             );
             console.log(response?.data);
-            Cookies.set('userId', response?.data, {
-                path: '/',
-                sameSite: 'Strict',
-                expires: 7,
-            });
-            const userId = Cookies.get('userId');
-            // // const roles = response?.data?.roles;
-            setAuth({userId: userId})
+            const authResponse: AuthResponse = response?.data;
+            setAuth({username: authResponse.username, accessToken: authResponse.accessToken})
             navigate(from, { replace: true });
         } catch (err) {
             if(err instanceof AxiosError) {
@@ -98,11 +94,11 @@ export const useApiAuth = () => {
         await myAxios.get(LOGOUT_URL, {
             withCredentials: true   // allow sent cookies with request
         });
-        Cookies.remove('userId', { path: '/' });
         setAuth(prev => {
             console.log("Logout: ", JSON.stringify(prev));
-            return {...prev, userId: ''}
+            return {...prev, username: '', accessToken: ''}
         });
+        console.log("Logout");
         if(path){
             navigate(path);
         }

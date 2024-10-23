@@ -15,7 +15,7 @@ export const HomePage = () => {
                 <button style={{backgroundColor: "#2c4f33", color: "white"}}>{t('generateButton')}</button>
             </Link>
             <div style={{marginTop: "5em"}}>
-                {t('userId')}: {auth.userId}
+                {t('userId')}: {auth.username}
             </div>
             <p>Inactive time: {inactiveTime}</p>
         </div>

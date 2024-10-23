@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 import '../assets/css/Navbar.css';
 import i18n, {t} from "i18next";
 import useAuth from "../features/authentication/hooks/useAuth.ts";
-import {useApiAuth} from "../api/apiAuth.ts";
+import {useApiAuth} from "../api/useApiAuth.ts";
 
 const Navbar = () => {
     const {auth} = useAuth();
@@ -22,7 +22,7 @@ const Navbar = () => {
                     <button className="lang-button" onClick={() => changeLanguage('en')}>EN</button>
                     <button className="lang-button" onClick={() => changeLanguage('pl')}>PL</button>
                 </li>
-                {auth.userId ?
+                {auth.username ?
                     <>
                         <li>
                             <Link to="/" onClick={(e) => {

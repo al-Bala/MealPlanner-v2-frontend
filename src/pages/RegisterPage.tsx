@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {useApiAuth} from "../api/apiAuth.ts";
+import {useApiAuth} from "../api/useApiAuth.ts";
 import {RegisterForm} from "../models/authModels.ts";
 import {t} from "i18next";
 

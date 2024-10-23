@@ -12,12 +12,20 @@ export const DietOption = () => {
     const [diets, setDiets] = useState<DietModel[]>([]);
 
     useEffect(() => {
-        apiGenerator.getAllDiets()
+        let isMounted = true;
+        const controller = new AbortController();
+
+        apiGenerator.getAllDiets({controller})
             .then(response => {
                 if(response){
-                    setDiets(response)
+                    isMounted && setDiets(response)
                 }
-            })
+            });
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
     }, []);
 
     const handleDietClick = (chosenDiet: DietModel) => {

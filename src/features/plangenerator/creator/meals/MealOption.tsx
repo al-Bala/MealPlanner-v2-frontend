@@ -1,6 +1,6 @@
 import {Dispatch, ReactNode, SetStateAction, useContext, useState} from "react";
 import {MealModel} from "../../../../models/models.ts";
-import {LuClock4} from "react-icons/lu";
+// import {LuClock4} from "react-icons/lu";
 import {DaysButton, MealButton, FirstDayMealButton, TimeButton} from './Meals.style.ts';
 import {MealsContext, MealsDispatchContext} from "../../../../context/MealsContext.tsx";
 import TimeSlider from "./TimeSlider.tsx";
@@ -88,7 +88,8 @@ export const MealOption = ({dayIndex, isTwoDays, setIsTwoDays, meal, children}: 
             // disabled={!isMealSelected()}
             onClick={handleTimeClick}
         >
-            <LuClock4 />
+            {/*<LuClock4 />*/}
+            Time
         </TimeButton>
     );
 

@@ -16,6 +16,11 @@ export interface RegisterForm {
 }
 
 export interface LoginForm {
-    user: string;
+    email: string;
     pwd: string;
+}
+
+export interface AuthResponse {
+    username: string;
+    accessToken: string;
 }

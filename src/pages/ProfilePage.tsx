@@ -15,12 +15,25 @@ export const ProfilePage = () => {
     });
 
     useEffect(() => {
-        apiUser.showProfile({userId: auth.userId, setProfile: setProfile});
-    }, [auth.userId]);
+        let isMounted = true;
+        const controller = new AbortController();
+
+        apiUser.showProfile({controller})
+            .then(response => {
+                if(response){
+                    isMounted && setProfile(response)
+                }
+            });
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        }
+    }, []);
 
     return (
         <>
-            <div style={{margin: "20px 0 20px 0"}}>{t('userId')}: {auth.userId}</div>
+            <div style={{margin: "20px 0 20px 0"}}>{t('userId')}: {auth.username}</div>
             <div className="plan-history">
                 <h2>{t('planHistory')}:</h2>
                 {profile.plans.length !== 0 ? (

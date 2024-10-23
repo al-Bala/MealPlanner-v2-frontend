@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
 import useAuth from "./useAuth.ts";
-import {useApiAuth} from "../../../api/apiAuth.ts";
+import {useApiAuth} from "../../../api/useApiAuth.ts";
 
 const MAX_INACTIVE_TIME_SEC = 30;
 
@@ -23,7 +23,6 @@ const useInactivityTracker = () => {
                 const newInactiveTime = prev + 1;
                 if (newInactiveTime > MAX_INACTIVE_TIME_SEC) {
                     logout('/login');
-                    console.log("Auth: ", auth);
                 }
                 return newInactiveTime;
             });
@@ -31,7 +30,7 @@ const useInactivityTracker = () => {
     }, [logout, auth]);
 
     useEffect(() => {
-        if (!auth.userId) {
+        if (!auth.username) {
             return;
         }
         const handleUserActivity = () => {
@@ -53,7 +52,7 @@ const useInactivityTracker = () => {
                 clearInterval(intervalRef.current);
             }
         };
-    }, [auth.userId, resetInactiveTime, startInactivityTimer]);
+    }, [auth, resetInactiveTime, startInactivityTimer]);
 
     return { inactiveTime };
 };

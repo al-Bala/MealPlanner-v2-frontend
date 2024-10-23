@@ -46,17 +46,24 @@ export const useApiGenerator = () => {
         }
     };
 
-    const getAllDiets = async (): Promise<DietModel[] | undefined> => {
+    const getAllDiets = async ({controller}: {controller: AbortController}): Promise<DietModel[] | undefined> => {
         try {
-            const response = await axiosPrivate.get(`/diets`,
-                {
-                    withCredentials: true
+            const response = await axiosPrivate.get(`/diets`, {
+                    signal: controller.signal
                 }
             );
             console.log('Success GET diets ', response?.data);
             return response?.data;
         } catch (err) {
-            console.log("Api error!")
+            if (err instanceof AxiosError) {
+                if (!err?.response) {
+                    console.log('No Server Response');
+                } else if (err.response?.status === 401) {
+                    console.log("Get All Diets 401")
+                } else {
+                    console.log("Get All Diets Failed")
+                }
+            }
         }
     };
 

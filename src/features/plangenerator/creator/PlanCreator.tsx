@@ -192,7 +192,7 @@ export const PlanCreator= () => {
         }
         addNotAcceptedTempDay();
         apiUser.savePlan({
-            userId: auth.userId,
+            username: auth.username,
             tempPlan: {startDateText: statePrefs.startDay.format("YYYY-MM-DD"), daysToSave: daysToSaveRef.current}
         })
     }
