@@ -3,36 +3,18 @@ import {useApiAuth} from "../api/useApiAuth.ts";
 import {RegisterForm} from "../models/authModels.ts";
 import {t} from "i18next";
 
-interface RegisterValidErrors {
-    username?: string;
-    email?: string;
-    password?: string;
-}
-
 export const RegisterPage = () => {
-    const { register, serverRegisterErrors, errMsg } = useApiAuth();
+    const { register, errMsg, errMap } = useApiAuth();
     const [registerForm, setRegisterForm] = useState<RegisterForm>({
         username: '',
         email: '',
         password: '',
     });
-    const [validErrors, setValidErrors] = useState<RegisterValidErrors>({});
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if(validate()){
-            await register({formState: registerForm});
-            setRegisterForm({username: registerForm.username, email: registerForm.email, password: ''})
-        }
-    };
-
-    const validate = () => {
-        const newErrors: RegisterValidErrors = {};
-        if (!registerForm.username) newErrors.username = 'Username is required';
-        if (!registerForm.email) newErrors.email = 'Email is required';
-        if (!registerForm.password) newErrors.password = 'Password is required';
-        setValidErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+        await register({formState: registerForm});
+        setRegisterForm({username: registerForm.username, email: registerForm.email, password: ''})
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,8 +40,7 @@ export const RegisterPage = () => {
                         // required
                     />
                     <div>
-                        {validErrors.username && <span>{validErrors.username}</span>}
-                        {!serverRegisterErrors.isUsernameValid && <span>This username is taken.</span>}
+                        {errMap.get('username') !== undefined && <span>{t(errMap.get('username') || '')}</span>}
                     </div>
                 </div>
                 <div>
@@ -73,8 +54,7 @@ export const RegisterPage = () => {
                         // required
                     />
                     <div>
-                        {validErrors.email && <span>{validErrors.email}</span>}
-                        {!serverRegisterErrors.isEmailValid && <span>This email is already in use. Try to login.</span>}
+                        {errMap.get('email') !== undefined && <span>{t(errMap.get('email') || '')}</span>}
                     </div>
                 </div>
                 <div>
@@ -88,7 +68,7 @@ export const RegisterPage = () => {
                         // required
                     />
                     <div>
-                        {validErrors.password && <span>{validErrors.password}</span>}
+                        {errMap.get('password') !== undefined && <span>{t(errMap.get('password') || '')}</span>}
                     </div>
                 </div>
                 <button type="submit">{t('signUp')}</button>

@@ -4,11 +4,6 @@ export interface RegisterUser {
     password: string;
 }
 
-export interface RegisterServerErrors {
-    isUsernameValid: boolean;
-    isEmailValid: boolean;
-}
-
 export interface RegisterForm {
     username: string;
     email: string;

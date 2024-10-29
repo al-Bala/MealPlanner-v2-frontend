@@ -8,6 +8,15 @@ export const translationPL = {
   username: 'Login',
   password: 'Hasło',
   email: 'Email',
+  // validation messages
+  usernameRequire: 'Login jest wymagany.',
+  usernameRepeated: 'Ten login jest już zajęty.',
+  passwordRequire: 'Hasło jest wymagane.',
+  passwordInvalid: 'Hasło musi zawierać min. 8 znaków, w tym duże i małe litery oraz liczby.',
+  emailRequire: 'Email jest wymagany.',
+  emailInvalid: 'Niewłaściwy email.',
+  emailRepeated: 'Ten email już istnieje. Spróbuj się zalogować.',
+  unauthorizedLogInMsg: 'Niewłaściwe hasło lub email.',
   // profile
   planHistory: 'Historia planów',
   emptyHistoryMsg: 'Brak przepisów w historii',

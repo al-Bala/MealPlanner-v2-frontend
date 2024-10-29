@@ -2,7 +2,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {AxiosError} from "axios";
 import myAxios from "./myAxios.ts";
 import {useState} from "react";
-import {AuthResponse, LoginForm, RegisterServerErrors, RegisterUser} from "../models/authModels.ts";
+import {AuthResponse, LoginForm, RegisterUser} from "../models/authModels.ts";
 import useAuth from "../features/authentication/hooks/useAuth.ts";
 
 const REGISTER_URL: string = '/auth/register';
@@ -23,10 +23,7 @@ export const useApiAuth = () => {
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";     // where user came from
     const [errMsg, setErrMsg] = useState('');
-    const [serverRegisterErrors, setServerRegisterErrors] = useState<RegisterServerErrors>({
-        isUsernameValid: true,
-        isEmailValid: true
-    });
+    const [errMap, setErrMap] = useState(new Map<string, string>());
 
     const register = async ({formState: registerUser}: RegisterProps) => {
         try {
@@ -48,10 +45,8 @@ export const useApiAuth = () => {
                     setErrMsg('No Server Response');
                 } else if (err.response?.status === 400) {
                     console.log('Unsuccessful register: ', err.response.data);
-                    setServerRegisterErrors({
-                        isUsernameValid: err.response.data.isUsernameValid,
-                        isEmailValid: err.response.data.isEmailValid
-                    })
+                    const errorMap = new Map<string, string>(Object.entries(err.response.data));
+                    setErrMap(errorMap);
                     navigate('/register');
                 } else {
                     setErrMsg('RegisterPage Failed')
@@ -68,8 +63,7 @@ export const useApiAuth = () => {
                     password: loginForm.pwd
                 }),
                 {
-                    headers: {'Content-Type': 'application/json'},
-                    withCredentials: true
+                    headers: {'Content-Type': 'application/json'}
                 }
             );
             console.log(response?.data);
@@ -80,9 +74,12 @@ export const useApiAuth = () => {
             if(err instanceof AxiosError) {
                 if(!err?.response) {
                     setErrMsg('No Server Response');
+                } else if (err.response?.status === 400) {
+                    const errorMap = new Map<string, string>(Object.entries(err.response.data));
+                    setErrMap(errorMap);
                 } else if (err.response?.status === 401) {
-                    console.log("401")
-                    setErrMsg('Unauthorized')
+                    errMap.clear();
+                    setErrMsg('unauthorizedLogInMsg')
                 } else {
                     setErrMsg('Login Failed')
                 }
@@ -91,9 +88,7 @@ export const useApiAuth = () => {
     };
 
     const logout = async (path: string) => {
-        await myAxios.get(LOGOUT_URL, {
-            withCredentials: true   // allow sent cookies with request
-        });
+        await myAxios.get(LOGOUT_URL);
         setAuth(prev => {
             console.log("Logout: ", JSON.stringify(prev));
             return {...prev, username: '', accessToken: ''}
@@ -110,6 +105,6 @@ export const useApiAuth = () => {
         logout,
         errMsg,
         setErrMsg,
-        serverRegisterErrors
+        errMap
     };
 };

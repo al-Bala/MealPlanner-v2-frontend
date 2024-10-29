@@ -10,9 +10,7 @@ import {GeneratorPage} from "./pages/GeneratorPage.tsx";
 import {GroceryListPage} from "./pages/GroceryListPage.tsx";
 
 function App() {
-
-    const {i18n} = useTranslation();
-
+    useTranslation();
     return (
         <>
             <Routes>
@@ -30,17 +28,6 @@ function App() {
                     </Route>
                 </Route>
             </Routes>
-            {/*<Router>*/}
-            {/*    <Navbar token={token} setToken={setToken}/>*/}
-            {/*    <Routes>*/}
-            {/*        <Route path="/" element={<HomePage/>}/>*/}
-            {/*        <Route path="/generator" element={<GeneratorPage/>}/>*/}
-            {/*        /!*<Route path="/login" element={<Login setToken={setToken}/>}/>*!/*/}
-            {/*        <Route path="/login" element={<LoginPage/>}/>*/}
-            {/*        <Route path="/register" element={<RegisterPage/>}/>*/}
-            {/*        <Route path="/profile" element={<ProfilePage/>}/>*/}
-            {/*    </Routes>*/}
-            {/*</Router>*/}
         </>
     )
 }

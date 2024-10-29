@@ -8,6 +8,15 @@ export const translationEn = {
   username: 'Username',
   password: 'Password',
   email: 'Email',
+  // validation messages
+  usernameRequire: 'Username require.',
+  usernameRepeated: 'This username is taken.',
+  passwordRequire: 'Password require.',
+  passwordInvalid: 'Password must contain min. 8 characters, including upper and lower case letters and numbers.',
+  emailRequire: 'Email require.',
+  emailInvalid: 'Incorrect email.',
+  emailRepeated: 'This email is already in use. Try to log in.',
+  unauthorizedLogInMsg: 'Invalid password or email.',
   // profile
   planHistory: 'Plan history',
   emptyHistoryMsg: 'Not found any recipes in history',
