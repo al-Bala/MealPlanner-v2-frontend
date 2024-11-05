@@ -12,23 +12,21 @@ import {GroceryListPage} from "./pages/GroceryListPage.tsx";
 function App() {
     useTranslation();
     return (
-        <>
-            <Routes>
-                <Route path="/" element={<Layout/>}>
-                    {/* public routes */}
-                    <Route path="/login" element={<LoginPage/>}/>
-                    <Route path="/register" element={<RegisterPage/>}/>
-                    <Route path="/" element={<HomePage/>}/>
+        <Routes>
+            <Route path="/" element={<Layout/>}>
+                {/* public routes */}
+                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/register" element={<RegisterPage/>}/>
+                <Route path="/" element={<HomePage/>}/>
 
-                    {/* protected routes */}
-                    <Route element={<RequireAuth/>}>
-                        <Route path="/generator" element={<GeneratorPage/>}/>
-                        <Route path="/profile" element={<ProfilePage/>}/>
-                        <Route path="/grocery-list" element={<GroceryListPage/>}/>
-                    </Route>
+                {/* protected routes */}
+                <Route element={<RequireAuth/>}>
+                    <Route path="/generator" element={<GeneratorPage/>}/>
+                    <Route path="/profile" element={<ProfilePage/>}/>
+                    <Route path="/grocery-list" element={<GroceryListPage/>}/>
                 </Route>
-            </Routes>
-        </>
+            </Route>
+        </Routes>
     )
 }
 

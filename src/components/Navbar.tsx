@@ -3,24 +3,35 @@ import '../assets/css/Navbar.css';
 import i18n, {t} from "i18next";
 import useAuth from "../features/authentication/hooks/useAuth.ts";
 import {useApiAuth} from "../api/useApiAuth.ts";
+import LanguageIcon from '@mui/icons-material/Language';
+import MenuIcon from '@mui/icons-material/Menu';
+import {useState} from "react";
 
 const Navbar = () => {
     const {auth} = useAuth();
     const {logout} = useApiAuth();
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [checkLang, setCheckLang] = useState('en');
 
     const changeLanguage = (lng: string) => {
         i18n.changeLanguage(lng);
+        setCheckLang(lng);
     };
 
     return (
-        <nav className="navbar">
+        <nav className={menuOpen ? "open" : ""}>
+            <div className="logo">
+                <Link to="/">MealPlanner</Link>
+            </div>
+            <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
+                <MenuIcon/>
+            </div>
             <ul>
-                <li style={{float: "left"}}>
-                    <Link to="/">MealPlanner</Link>
-                </li>
-                <li>
-                    <button className="lang-button" onClick={() => changeLanguage('en')}>EN</button>
-                    <button className="lang-button" onClick={() => changeLanguage('pl')}>PL</button>
+                <li className="home">
+                    <Link
+                        onClick={() => setMenuOpen(!menuOpen)}
+                        to="/">{t('home')}
+                    </Link>
                 </li>
                 {auth.username ?
                     <>
@@ -38,14 +49,33 @@ const Navbar = () => {
                     </>
                     :
                     <>
-                        <li>
-                            <Link to="/register">{t('signUp')}</Link>
+                        <li className="generator">
+                            <Link
+                                onClick={() => setMenuOpen(!menuOpen)}
+                                to="/generator">{t('generator')}
+                            </Link>
                         </li>
-                        <li>
-                            <Link to="/login">{t('logIn')}</Link>
+                        <li className="login">
+                            <Link
+                                onClick={() => setMenuOpen(!menuOpen)}
+                                to="/login">{t('logIn')}
+                            </Link>
                         </li>
                     </>
                 }
+                <li className="lang">
+                    <LanguageIcon/>
+                    <select onChange={(e) => changeLanguage(e.target.value)}>
+                        <option value="en">ENG</option>
+                        <option value="pl">PL</option>
+                    </select>
+                    <button className={checkLang === 'en' ? "checked-lang" : ""}
+                            onClick={() => changeLanguage('en')}>ENG
+                    </button>
+                    <button className={checkLang === 'pl' ? "checked-lang" : ""}
+                            onClick={() => changeLanguage('pl')}>PL
+                    </button>
+                </li>
             </ul>
         </nav>
     );

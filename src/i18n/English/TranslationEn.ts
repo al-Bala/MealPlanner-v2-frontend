@@ -1,9 +1,11 @@
 export const translationEn = {
   // navbar
+  home: 'Home',
   logIn: 'Log in',
   signUp: 'Sign up',
   signOut: 'Sign out',
   profile: 'Profile',
+  generator: 'Plan Generator',
   //
   username: 'Username',
   password: 'Password',
