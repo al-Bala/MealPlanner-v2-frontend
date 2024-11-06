@@ -33,29 +33,33 @@ const Navbar = () => {
                         to="/">{t('home')}
                     </Link>
                 </li>
+                <li className="generator">
+                    <Link
+                        onClick={() => setMenuOpen(!menuOpen)}
+                        to="/generator">{t('generator')}
+                    </Link>
+                </li>
                 {auth.username ?
                     <>
                         <li>
-                            <Link to="/" onClick={(e) => {
-                                e.preventDefault();
-                                logout('');
-                            }}>
-                                {t('signOut')}
+                            <Link
+                                onClick={() => setMenuOpen(!menuOpen)}
+                                to="/profile">{t('profile')}
                             </Link>
                         </li>
-                        <li>
-                            <Link to="/profile">{t('profile')}</Link>
+                        <li className="sign-in-out">
+                            <Link
+                                onClick={() => {
+                                    logout('');
+                                    setMenuOpen(!menuOpen)
+                                }}
+                                to="/">{t('signOut')}
+                            </Link>
                         </li>
                     </>
                     :
                     <>
-                        <li className="generator">
-                            <Link
-                                onClick={() => setMenuOpen(!menuOpen)}
-                                to="/generator">{t('generator')}
-                            </Link>
-                        </li>
-                        <li className="login">
+                        <li className="sign-in-out">
                             <Link
                                 onClick={() => setMenuOpen(!menuOpen)}
                                 to="/login">{t('logIn')}

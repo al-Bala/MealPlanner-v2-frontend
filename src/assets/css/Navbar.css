@@ -38,6 +38,12 @@ nav ul li a:hover {
     background-color: #3C4B3B;
 }
 
+nav ul .sign-in-out {
+    a {
+        background-color: #627A5F;
+    }
+}
+
 nav .menu-icon {
     display: none;
     grid-column-end: 21;
@@ -139,7 +145,7 @@ nav .menu-icon {
             }
         }
 
-        .login {
+        .sign-in-out {
             justify-content: center;
             margin: 5em 0 2em 0;
             a {
