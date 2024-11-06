@@ -19,6 +19,11 @@ export const translationPL = {
   emailInvalid: 'Niewłaściwy email.',
   emailRepeated: 'Ten email już istnieje. Spróbuj się zalogować.',
   unauthorizedLogInMsg: 'Niewłaściwe hasło lub email.',
+  // messages
+  loginFirst: 'Musisz się najpierw zalogować.',
+  // redirect
+  notHaveAccountQuestion: 'Nie masz jeszcze konta?',
+  hereLink: 'tutaj',
   // profile
   planHistory: 'Historia planów',
   emptyHistoryMsg: 'Brak przepisów w historii',

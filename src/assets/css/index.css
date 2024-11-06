@@ -23,14 +23,16 @@ body{
 }
 
 .background {
-  background-color: lightgray;
+  display: flex;
   width: 80%;
+  justify-content: center;
   margin: auto;
 }
 
 a {
   font-weight: 500;
   text-decoration: inherit;
+  cursor: pointer;
 }
 
 h1 {

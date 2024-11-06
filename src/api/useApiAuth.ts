@@ -26,6 +26,7 @@ export const useApiAuth = () => {
     const [errMap, setErrMap] = useState(new Map<string, string>());
 
     const register = async ({formState: registerUser}: RegisterProps) => {
+        // setErrMsg('')
         try {
             const response = await myAxios.post(REGISTER_URL,
                 JSON.stringify({
@@ -56,6 +57,7 @@ export const useApiAuth = () => {
     };
 
     const login = async ({loginForm}: LoginProps) => {
+        setErrMsg('')
         try {
             const response = await myAxios.post(LOGIN_URL,
                 JSON.stringify({

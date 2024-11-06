@@ -19,6 +19,11 @@ export const translationEn = {
   emailInvalid: 'Incorrect email.',
   emailRepeated: 'This email is already in use. Try to log in.',
   unauthorizedLogInMsg: 'Invalid password or email.',
+  // messages
+  loginFirst: 'You have to login first.',
+  // redirect
+  notHaveAccountQuestion: 'Haven’t got an account yet?',
+  hereLink: 'here',
   // profile
   planHistory: 'Plan history',
   emptyHistoryMsg: 'Not found any recipes in history',

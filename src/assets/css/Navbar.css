@@ -4,7 +4,7 @@ nav {
     grid-template-rows: 3.6em;
     font-size: 1.1em;
     background-color: #536851;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 nav ul {
@@ -146,6 +146,10 @@ nav .menu-icon {
                 background-color: #4A5C48;
                 width: 10em;
                 border-radius: 15px;
+                color: white;
+            }
+            a:hover {
+                background-color: #323F31;
                 color: white;
             }
         }
