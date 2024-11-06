@@ -4,6 +4,7 @@ import myAxios from "./myAxios.ts";
 import {useState} from "react";
 import {AuthResponse, LoginForm, RegisterUser} from "../models/authModels.ts";
 import useAuth from "../features/authentication/hooks/useAuth.ts";
+import {t} from "i18next";
 
 const REGISTER_URL: string = '/auth/register';
 const LOGIN_URL: string = '/auth/login';
@@ -26,7 +27,7 @@ export const useApiAuth = () => {
     const [errMap, setErrMap] = useState(new Map<string, string>());
 
     const register = async ({formState: registerUser}: RegisterProps) => {
-        // setErrMsg('')
+        setErrMsg('')
         try {
             const response = await myAxios.post(REGISTER_URL,
                 JSON.stringify({
@@ -39,7 +40,7 @@ export const useApiAuth = () => {
                 }
             );
             console.log(response?.data);
-            navigate('/login', { state: {message: 'Registration successful. You may login now.' } })
+            navigate('/login', { state: {message: t('successfulRegister')}})
         } catch (err) {
             if(err instanceof AxiosError) {
                 if(!err?.response) {

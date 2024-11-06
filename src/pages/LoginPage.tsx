@@ -33,11 +33,11 @@ const LoginPage = () => {
                 {message &&
                     <div className="info">
                         <InfoOutlinedIcon/>
-                        <span>{message}</span>
+                        <p>{message}</p>
                     </div>
                 }
                 <div className="login-form">
-                    <h1></h1>
+                    <div className="header-box"></div>
                     <form onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="email">{t('email')}:</label>
@@ -53,8 +53,10 @@ const LoginPage = () => {
                                 ))}
                                 // required
                             />
-                            {errMap.get('email') !== undefined &&
-                                <span className="error">{t(errMap.get('email') || '')}</span>}
+                            <div className="error">
+                                {errMap.get('email') !== undefined &&
+                                    <p>{t(errMap.get('email') || '')}</p>}
+                            </div>
                             <label htmlFor="password">{t('password')}:</label>
                             <input
                                 type="password"
@@ -66,12 +68,16 @@ const LoginPage = () => {
                                 ))}
                                 // required
                             />
-                            {errMap.get('password') !== undefined &&
-                                <span className="error">{t(errMap.get('password') || '')}</span>}
+                            <div className="error">
+                                {errMap.get('password') !== undefined &&
+                                    <p>{t(errMap.get('password') || '')}</p>}
+                            </div>
                         </div>
                     </form>
                 </div>
-                {errMsg && <span className="error">{t(errMsg)}</span>}
+                <div className="error">
+                    {errMsg && <p>{t(errMsg)}</p>}
+                </div>
                 <button className="login-button" onClick={handleSubmit}>{t('logIn')}</button>
                 <p className="change-action">
                     {t('notHaveAccountQuestion')} <br/> {t('signUp')} <Link to="/register">{t('hereLink')}</Link>.

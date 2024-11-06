@@ -4,6 +4,11 @@
     align-items: center;
     width: 45%;
     border-radius: 15px;
+
+    h2 {
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+    }
 }
 
 .login-form {
@@ -13,10 +18,9 @@
     border-radius: inherit;
     width: 100%;
 
-    h1 {
+    .header-box {
         background-color: #E5E5E5;
-        height: 0.8em;
-        margin: 0;
+        height: 2em;
         border-top-left-radius: inherit;
         border-top-right-radius: inherit;
     }
@@ -33,7 +37,7 @@ form > div {
     grid-gap: 0.8em;
     width: 70%;
     margin-top: 1.5em;
-    margin-bottom: 3em;
+    margin-bottom: 2.5em;
     align-items: center;
 }
 
@@ -45,8 +49,6 @@ form label {
 
 form input {
     grid-column: 2 / 3;
-    /*width: 70%;*/
-    padding-left: 0.8em;
     height: 2.2em;
     border: 1px solid #D9D9D9;
     border-radius: 8px;
@@ -55,22 +57,20 @@ form input {
 .error {
     margin: 0;
     grid-column: 2 / 3;
-    height: 1.8em;
-    /*width: 100%;*/
-    padding-left: 0.8em;
-    padding-top: 0.1em;
     text-align: left;
     background-color: #CB6969;
     border-radius: 10px;
     color: white;
     font-size: 0.95em;
+
+    p {
+        margin: 0.2em 0.8em 0.2em 0.8em;
+    }
 }
 
 .form-box > .error {
     width: 60%;
     text-align: center;
-    padding-left: 0;
-    padding-top: 0.3em;
 }
 
 .info {
@@ -78,13 +78,11 @@ form input {
     align-items: center;
     width: 100%;
     font-size: 0.92em;
-    /*height: 3em;*/
     margin-top: 1em;
     background-color: #F6EADF;
     border-radius: inherit;
 
-    span {
-        /*margin: 0.5em 0 0.5em 1em;*/
+    p {
         margin: 0 0 0 1em;
         padding: 0.5em 0 0.5em 0;
         text-align: left;
@@ -136,7 +134,7 @@ form input {
         display: flex;
         flex-direction: column;
         gap: 0.3em;
-        width: 70%;
+        width: 80%;
         align-items: flex-start;
         margin-top: 0.2em;
         margin-bottom: 2em;
@@ -144,7 +142,6 @@ form input {
 
     form label {
         margin-top: 1em;
-        padding-left: 0.4em;
     }
 
     form input {
@@ -161,7 +158,7 @@ form input {
     }
 
     .info {
-        span {
+        p {
             margin: 0 0 0 0.5em;
         }
 

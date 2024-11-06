@@ -21,8 +21,10 @@ export const translationPL = {
   unauthorizedLogInMsg: 'Niewłaściwe hasło lub email.',
   // messages
   loginFirst: 'Musisz się najpierw zalogować.',
+  successfulRegister: 'Zarejestrowano pomyślnie.',
   // redirect
   notHaveAccountQuestion: 'Nie masz jeszcze konta?',
+  alreadyHaveAccountQuestion: 'Masz już konto?',
   hereLink: 'tutaj',
   // profile
   planHistory: 'Historia planów',

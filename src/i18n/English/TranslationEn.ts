@@ -21,8 +21,10 @@ export const translationEn = {
   unauthorizedLogInMsg: 'Invalid password or email.',
   // messages
   loginFirst: 'You have to login first.',
+  successfulRegister: 'Successful registration.',
   // redirect
   notHaveAccountQuestion: 'Haven’t got an account yet?',
+  alreadyHaveAccountQuestion: 'Already have an account?',
   hereLink: 'here',
   // profile
   planHistory: 'Plan history',
