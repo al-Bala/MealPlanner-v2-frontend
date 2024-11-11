@@ -3,11 +3,11 @@ import CalendarForStartDate from "./CalendarForStartDate.tsx";
 
 export const StartDate = () => {
     return (
-        <div className="calendar-item">
-            <div  className="pref-section">
-                <div>{t('firstDayMessage')}:</div>
-                <CalendarForStartDate/>
+        <div className="prefs-item calendar-section">
+            <div className="header-box">
+                <p>{t('firstDayMessage')}:</p>
             </div>
+            <CalendarForStartDate/>
         </div>
     );
 }

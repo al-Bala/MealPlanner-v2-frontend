@@ -1,7 +1,7 @@
 import {useContext} from "react";
 import {UserProduct} from "../../../../models/models.ts";
 import {PrefsContext, PrefsDispatchContext} from "../../../../context/PreferencesContext.tsx";
-// import {FaTrash} from "react-icons/fa";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export const ChosenUserProducts = () => {
     const state = useContext(PrefsContext);
@@ -15,17 +15,16 @@ export const ChosenUserProducts = () => {
     }
 
     return (
-        <div>
+        <>
             {state?.userProducts?.map((userProduct, id) => (
-                <div className="chosen-product-grid-con" key={id}>
-                    <div>
-                        <div className="product-name">{userProduct.name}</div>
-                        <div className="product-name">{userProduct.amount} {userProduct.unit}</div>
+                <div className="chosen-prod-grid" key={id}>
+                    <div className="name-amount-grid">
+                        <div className="product">{userProduct.name}</div>
+                        <div className="product">{userProduct.amount} {userProduct.unit}</div>
                     </div>
-                    {/*<button onClick={() => handleDelete(userProduct)}><FaTrash/></button>*/}
-                    <button onClick={() => handleDelete(userProduct)}>Delete</button>
+                    <button onClick={() => handleDelete(userProduct)}><DeleteIcon/></button>
                 </div>
             ))}
-        </div>
+        </>
     );
 }

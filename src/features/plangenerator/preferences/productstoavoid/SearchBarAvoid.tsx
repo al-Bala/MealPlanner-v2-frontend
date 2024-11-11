@@ -1,17 +1,18 @@
-import React, {Dispatch, SetStateAction} from "react";
-import "../../../../assets/css/plangenerator/PrefsPage.css"
-import { t } from 'i18next';
+import React, {Dispatch, SetStateAction, useState} from "react";
+import "../../../../assets/css/plangenerator/PrefsPanel.css"
+import {t} from 'i18next';
 import {Product} from "../../../../models/models.ts";
 import {useApiGenerator} from "../../../../api/useApiGenerator.ts";
+import {SearchResultsList} from "./SearchResultListAvoid.tsx";
 
 interface Props {
     searchText: string;
-    setRows: Dispatch<SetStateAction<Product[]>>;
     onSearchTextChange: Dispatch<SetStateAction<string>>;
 }
 
-export const SearchBarAvoid = ({searchText, setRows, onSearchTextChange}: Props) => {
+export const SearchBarAvoid = ({searchText, onSearchTextChange}: Props) => {
     const apiGenerator = useApiGenerator();
+    const [rows, setRows] = useState<Product[]>([]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const filterText = e.target.value;
@@ -20,13 +21,18 @@ export const SearchBarAvoid = ({searchText, setRows, onSearchTextChange}: Props)
     }
 
     return (
-        <>
-            <input className="custom-field"
-                   type="text"
-                   value={searchText}
-                   placeholder={t('searchMessage')}
-                   onChange={(e) => handleChange(e)}
+        <div className="input-box">
+            <input
+                type="text"
+                value={searchText}
+                placeholder={t('searchMessage')}
+                onChange={(e) => handleChange(e)}
             />
-        </>
+            <SearchResultsList
+                rows={rows}
+                setRows={setRows}
+                onSearchTextChange={onSearchTextChange}
+            />
+        </div>
     );
 }

@@ -1,4 +1,4 @@
-import "../../../../assets/css/plangenerator/PrefsPage.css"
+import "../../../../assets/css/plangenerator/PrefsProducts.css"
 import {MouseEventHandler} from "react";
 
 interface Props {

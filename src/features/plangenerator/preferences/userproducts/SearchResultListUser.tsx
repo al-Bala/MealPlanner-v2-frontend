@@ -1,6 +1,6 @@
 import {Dispatch, SetStateAction} from "react";
 import {SearchResultUser} from "./SearchResultUser.tsx";
-import "../../../../assets/css/plangenerator/PrefsPage.css"
+import "../../../../assets/css/plangenerator/PrefsPanel.css"
 import {Product} from "../../../../models/models.ts";
 
 interface Props {

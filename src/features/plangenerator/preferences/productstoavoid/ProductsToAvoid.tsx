@@ -1,36 +1,28 @@
 import {useState} from "react";
-import {Product} from "../../../../models/models.ts";
 import {t} from "i18next";
 import {SearchBarAvoid} from "./SearchBarAvoid.tsx";
-import {SearchResultsList} from "./SearchResultListAvoid.tsx";
 import {ChosenProductsToAvoid} from "./ChosenProductsToAvoid.tsx";
 import "../../../../assets/css/plangenerator/PrefsProducts.css";
 
-export const ProductsToAvoid = ({savedProductsToAvoid}: {savedProductsToAvoid: string[] | null}) => {
+export const ProductsToAvoid = ({savedProductsToAvoid}: { savedProductsToAvoid: string[] | null }) => {
     const [searchText, setSearchText] = useState('');
-    const [rows, setRows] = useState<Product[]>([]);
 
     return (
-        <div className="prefs-item">
-            <div className="pref-section">
-                <div>{t('pToAvoidMessage')}:</div>
-                <div className="product-grid-con">
-                    <div className="product-item">
-                        <div>
-                            <SearchBarAvoid
-                                searchText={searchText}
-                                setRows={setRows}
-                                onSearchTextChange={setSearchText}
-                            />
-                            <SearchResultsList
-                                rows={rows}
-                                setRows={setRows}
-                                onSearchTextChange={setSearchText}
-                            />
-                        </div>
+        <div className="prefs-item product-section">
+            <div className="header-box">
+                <p>{t('pToAvoidMessage')}:</p>
+            </div>
+            <div className="product-grid">
+                <div className="product-box">
+                    <div className="product-data-box">
+                        <SearchBarAvoid
+                            searchText={searchText}
+                            onSearchTextChange={setSearchText}
+                        />
                     </div>
-                    <div className="product-item">
-                        {t('products')}:
+                </div>
+                <div className="product-box">
+                    <div className="chosen-prod-box">
                         <ChosenProductsToAvoid savedProductsToAvoid={savedProductsToAvoid}/>
                     </div>
                 </div>

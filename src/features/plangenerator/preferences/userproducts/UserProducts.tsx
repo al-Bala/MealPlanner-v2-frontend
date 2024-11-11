@@ -52,11 +52,13 @@ export const UserProducts = () => {
     };
 
     return (
-        <div className="prefs-item">
-            <div className="pref-section">
-                <div>{t('userProductsMessage')}:</div>
-                <div className="product-grid-con">
-                    <div className="product-item">
+        <div className="prefs-item product-section">
+            <div className="header-box">
+                <p>{t('userProductsMessage')}:</p>
+            </div>
+            <div className="product-grid">
+                <div className="product-box">
+                    <div className="product-data-box">
                         <SearchBarUser
                             searchText={searchText}
                             onSearchTextChange={setSearchText}
@@ -64,7 +66,7 @@ export const UserProducts = () => {
                             clear={clear}
                         />
                         {selectedRow &&
-                            <div>
+                            <div className="input-box">
                                 <AmountUnit
                                     row={selectedRow}
                                     allProductData={allProductData}
@@ -78,15 +80,18 @@ export const UserProducts = () => {
                                     />
                                 }
                                 {allProductData.unit && allProductData.amount &&
-                                    <div className="add-button-box">
-                                        <button onClick={handleSubmit}>{t('addButton')}</button>
-                                    </div>
+                                    <button
+                                        className="add-prod-button"
+                                        onClick={handleSubmit}>
+                                        {t('addButton')}
+                                    </button>
                                 }
                             </div>
                         }
                     </div>
-                    <div className="product-item">
-                        {t('products')}:
+                </div>
+                <div className="product-box">
+                    <div className="chosen-prod-box">
                         <ChosenUserProducts/>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import "../../../../assets/css/plangenerator/PrefsPage.css"
+import "../../../../assets/css/plangenerator/PrefsPanel.css"
 import {DietButton} from '../../../../assets/styles/Diet.style.ts';
 import {DietModel} from '../../../../models/models.ts';
 import {useContext, useEffect, useState} from "react";
@@ -36,7 +36,7 @@ export const DietOption = () => {
     }
 
     return (
-        <div className="diet-grid-con">
+        <div className="diet-box">
             {diets.map((chosenDiet) => (
                 <DietButton
                     key={chosenDiet.id}

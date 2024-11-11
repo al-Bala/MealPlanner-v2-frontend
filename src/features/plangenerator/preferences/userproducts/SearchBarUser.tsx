@@ -1,5 +1,5 @@
 import React, {Dispatch, SetStateAction, useState} from "react";
-import "../../../../assets/css/plangenerator/PrefsPage.css"
+import "../../../../assets/css/plangenerator/PrefsPanel.css"
 import {t} from 'i18next';
 import {Product} from "../../../../models/models.ts";
 import {useApiGenerator} from "../../../../api/useApiGenerator.ts";
@@ -24,8 +24,8 @@ export const SearchBarUser = ({searchText, onSearchTextChange, setSelectedRow, c
     }
 
     return (
-        <div>
-            <input className="custom-field"
+        <div className="input-box">
+            <input
                 type="text"
                 value={searchText}
                 placeholder={t('searchMessage')}

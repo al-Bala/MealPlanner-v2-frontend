@@ -16,19 +16,23 @@ export const Portions = ({savedPortions}: {savedPortions: number | null}) =>  {
     }, [savedPortions]);
 
     return (
-        <div className="pref-section">
-            <div>{t('portionsMessage')}:</div>
-            <input
-                type="number"
-                value={state?.portionsNr != null ? state?.portionsNr : ''}
-                placeholder={t('portionsMessage')}
-                onChange={(e) =>
-                    dispatch?.({
-                        type: 'SET_PORTIONS_NR',
-                        portionsNr: Number(e.target.value)
-                    })
-                }
-            />
+        <div className="prefs-item portion-section">
+            <div className="header-box">
+                <p>{t('portionsMessage')}</p>
+            </div>
+            <div className="portion-box">
+                <input
+                    type="number"
+                    value={state?.portionsNr != null ? state?.portionsNr : ''}
+                    placeholder={t('portionsMessage')}
+                    onChange={(e) =>
+                        dispatch?.({
+                            type: 'SET_PORTIONS_NR',
+                            portionsNr: Number(e.target.value)
+                        })
+                    }
+                />
+            </div>
         </div>
     );
 }

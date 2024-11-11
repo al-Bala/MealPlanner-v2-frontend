@@ -1,6 +1,6 @@
 import {ChangeEvent, Dispatch, SetStateAction} from "react";
 import {Product, UserProductAll} from '../../../../models/models.ts';
-import "../../../../assets/css/plangenerator/PrefsPage.css"
+import "../../../../assets/css/plangenerator/PrefsPanel.css"
 import {t} from 'i18next';
 
 interface Props {
@@ -21,14 +21,14 @@ export const AmountUnit = ({row, allProductData, setAllProductData}: Props) => {
 
     return (
         <>
-            <div className="prod-AU-grid-con">
-                <input className="custom-field"
+            <div className="AU-grid">
+                <input
                        type="number"
                        value={row ? allProductData.amount : ''}
                        placeholder={t('amountMessage')}
                        onChange={(e) => handleAmountChange(e)}
                 />
-                <select className="custom-field"
+                <select
                         value={allProductData.unit}
                         onChange={(e) => handleUnitChange(e)}
                 >

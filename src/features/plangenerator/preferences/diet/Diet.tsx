@@ -16,9 +16,10 @@ export const Diet = ({ savedDietId }: { savedDietId: string | null }) =>  {
     }, [savedDietId]);
 
     return (
-        // <div className="pref-section" style={{ backgroundColor: 'lightblue', marginRight: '0.5em'}}>
-        <div className="pref-section">
-            <div>{t('dietMessage')}:</div>
+        <div className="prefs-item diet-section">
+            <div className="header-box">
+                <p>{t('dietMessage')}</p>
+            </div>
             <DietOption/>
         </div>
     );

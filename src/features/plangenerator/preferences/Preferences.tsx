@@ -73,12 +73,14 @@ export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
 
     return (
         <>
-            <div className="prefs-grid-container">
-                <Diet savedDietId={savedUserPrefers.dietId}/>
-                <Portions savedPortions={savedUserPrefers.portions}/>
-                <ProductsToAvoid savedProductsToAvoid={savedUserPrefers.products_to_avoid}/>
-                <UserProducts/>
-                <StartDate/>
+            <div className="prefers-container">
+                <div className="prefs-grid">
+                    <Diet savedDietId={savedUserPrefers.dietId}/>
+                    <Portions savedPortions={savedUserPrefers.portions}/>
+                    <ProductsToAvoid savedProductsToAvoid={savedUserPrefers.products_to_avoid}/>
+                    <UserProducts/>
+                    <StartDate/>
+                </div>
             </div>
             <button onClick={handleClick}>{t('nextButton')}</button>
         </>

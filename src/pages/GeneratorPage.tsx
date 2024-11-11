@@ -1,4 +1,4 @@
-import "../assets/css/plangenerator/PrefsPage.css"
+import "../assets/css/plangenerator/PrefsPanel.css"
 import {PrefsProvider} from "../context/PreferencesContext.tsx";
 import {Preferences} from "../features/plangenerator/preferences/Preferences.tsx";
 import {MealsProvider} from "../context/MealsContext.tsx";
@@ -18,7 +18,6 @@ export const GeneratorPage = () => {
         <>
             <PrefsProvider>
                 <MealsProvider>
-                    <div className="prefs-base">
                         <Preferences
                             setIsNextClicked={setIsNextClicked}
                         />
@@ -28,7 +27,6 @@ export const GeneratorPage = () => {
                             }
                             <div style={{height: "600px"}}></div>
                         </div>
-                    </div>
                 </MealsProvider>
             </PrefsProvider>
         </>

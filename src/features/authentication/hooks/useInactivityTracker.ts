@@ -2,7 +2,7 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import useAuth from "./useAuth.ts";
 import {useApiAuth} from "../../../api/useApiAuth.ts";
 
-const MAX_INACTIVE_TIME_SEC = 30;
+const MAX_INACTIVE_TIME_SEC = 3600;
 
 const useInactivityTracker = () => {
     const [inactiveTime, setInactiveTime] = useState<number>(0);
