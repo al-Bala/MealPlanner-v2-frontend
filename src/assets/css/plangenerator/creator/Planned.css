@@ -1,0 +1,72 @@
+.planned-section {
+    width: 125%;
+}
+
+.planned-day {
+    display: flex;
+    flex-direction: column;
+    min-height: 32em;
+
+    .planned-date-header {
+        background-color: #F4F4F4;
+        border-bottom: 1px solid black;
+        margin-bottom: 2em;
+
+        h2 {
+            font-size: 1.4em;
+            margin: 0.3em 0;
+        }
+    }
+}
+
+.planned-relative-box {
+    gap: 8em;
+}
+
+.planned-background {
+    height: 13.5em;
+    background-color: #E3E3E3;
+    border-top: 1em solid #F9A257;
+}
+
+.meal-type {
+    width: 100%;
+    /*height: 3em;*/
+    margin: auto;
+    border-radius: 15px;
+    padding: 0.5em 0;
+}
+
+.set-recipe {
+    .meal-type {
+        background-color: #88A983;
+    }
+}
+
+.empty-recipe {
+    .meal-type {
+        background-color: #C2C2C2;
+    }
+}
+
+/*PHONE*/
+@media (max-width: 768px) {
+    .planned-relative-box {
+        gap: 0;
+    }
+
+    .planned-background {
+        display: none;
+    }
+
+    .planned-background-mobile {
+        position: absolute;
+        display: block;
+        height: 14.5em;
+        width: 100vw;
+        bottom: -2em;
+        background-color: #E3E3E3;
+        border-top: 1em solid #F9A257;
+        z-index: 1;
+    }
+}

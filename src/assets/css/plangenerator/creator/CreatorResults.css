@@ -1,0 +1,87 @@
+.results-background {
+    height: 14.5em;
+    top: 7.4em;
+    background-color: #F9A257;
+
+    .result-recipes-con{
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        z-index: 20;
+        bottom: 1.2em;
+    }
+}
+
+.results-background-mobile {
+    display: none;
+}
+
+.buttons-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5em;
+    margin-top: 2.3em;
+
+    .actions-buttons{
+        display: flex;
+        gap: 3em;
+        bottom: -10em;
+
+        button {
+            padding: 0.4em 0;
+            width: 18em;
+            /*background-color: #D9D9D9;*/
+            background-color: #536851;
+            color: white;
+        }
+    }
+
+    .save-button {
+        padding: 0.4em 0;
+        width: 18em;
+        background-color: #D9D9D9;
+        /*color: white;*/
+    }
+}
+
+
+@media (max-width: 1080px) {
+    .results-background {
+        .result-recipes-con {
+            width: 100%;
+        }
+    }
+}
+
+/*PHONE*/
+@media (max-width: 768px) {
+    .results-background {
+        display: none;
+    }
+
+    .results-background-mobile {
+        position: absolute;
+        display: block;
+        height: 14.5em;
+        width: 100vw;
+        bottom: -1.5em;
+        background-color: #F9A257;
+        z-index: 1;
+    }
+
+    .buttons-2 {
+        position: static;
+
+        .actions-buttons{
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+            margin-top: 2em;
+        }
+
+        .save-button {
+            margin-bottom: 8em;
+        }
+    }
+}

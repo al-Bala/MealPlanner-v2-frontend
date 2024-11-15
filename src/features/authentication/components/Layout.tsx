@@ -6,11 +6,11 @@ const Layout = () => {
     return (
         <main className="App">
             <Navbar/>
-            <div className="background">
-                <Outlet />
+            <div className="background-80">
+                <Outlet/>
             </div>
         </main>
-    )
+)
 }
 
 export default Layout

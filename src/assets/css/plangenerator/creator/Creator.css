@@ -1,0 +1,38 @@
+#target {
+    width: 125%;
+    scroll-margin-top: 4em;
+}
+
+.creator-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+}
+
+.creator-relative-box {
+    gap: 7em;
+}
+
+/*!*TABLET*!*/
+@media (max-width: 1280px) {
+}
+
+/*PHONE*/
+@media (max-width: 768px) {
+    .creator-section {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 3em;
+
+        h2 {
+            padding-top: 0.5em;
+            margin-bottom: 0;
+        }
+    }
+
+    .creator-relative-box {
+        gap: 0;
+    }
+}

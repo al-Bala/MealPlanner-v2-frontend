@@ -1,13 +1,11 @@
 import {MealValues} from "../../../models/models.ts";
 import {useApiGenerator} from "../../../api/useApiGenerator.ts";
-import {useContext, useRef, useState} from "react";
+import {Dispatch, SetStateAction, useContext, useRef, useState} from "react";
 import {PrefsContext} from "../../../context/PreferencesContext.tsx";
 import {MealsContext, MealsDispatchContext} from "../../../context/MealsContext.tsx";
 import {useApiUser} from "../../../api/useApiUser.ts";
 import useAuth from "../../authentication/hooks/useAuth.ts";
-import {RecipeResult} from "./RecipeResult.tsx";
-import {MealsChooser} from "./meals/MealsChooser.tsx";
-import {GeneratedDays} from "./GeneratedDays.tsx";
+import {CreatorPanel} from "./meals/CreatorPanel.tsx";
 import {
     AcceptDayRequest,
     ChangeDayRequest,
@@ -23,8 +21,15 @@ import {
 } from "../../../models/generatorModels.ts";
 import useArraysComparator from "../hooks/useArraysComparator.ts";
 import {t} from "i18next";
+import {Date} from "./Date.tsx";
+import "../../../assets/css/plangenerator/creator/Base.css"
 
-export const PlanCreator= () => {
+interface Props {
+    tempDays: TempDay[];
+    setTempDays: Dispatch<SetStateAction<TempDay[]>>;
+}
+
+export const Creator = ({tempDays, setTempDays}: Props) => {
     const apiUser = useApiUser();
     const apiGenerator = useApiGenerator();
     const {auth} = useAuth();
@@ -38,7 +43,7 @@ export const PlanCreator= () => {
     // const [dayResult, setDayResult] = useState<DayResult>({recipesResult: []});
     const [dayResult, setDayResult] = useState<DayResult | null>(null);
     const [currentMeals, setCurrentMeals] = useState<MealValues[]>([]);
-    const [tempDays, setTempDays] = useState<TempDay[]>([]);
+    // const [tempDays, setTempDays] = useState<TempDay[]>([]);
     const daysToSaveRef = useRef<PlannedDay[]>([]);
 
     const savedPrefers: SavedPrefers = {
@@ -54,6 +59,7 @@ export const PlanCreator= () => {
     const postData = async () => {
         let response: CreateDayResponse | undefined;
         const isMealRepeated = repeatedDayIndex == dayIndex;
+
         function deleteRepeatedMeal() {
             if (isMealRepeated) {
                 return stateMeals.filter(r => r.mealId !== 'DINNER');
@@ -61,15 +67,20 @@ export const PlanCreator= () => {
                 return stateMeals;
             }
         }
+
         function addRepeatedRecipeToResult(result: DayResult) {
             if (isMealRepeated) {
                 const previousDinner = tempDays[tempDays.length - 1].tempRecipes
                     .find(m => m.typeOfMeal === 'DINNER');
-                previousDinner && result.recipesResult.push(previousDinner)
-                setDayResult({recipesResult: result.recipesResult})
+                if(previousDinner){
+                    const recipesWithoutDinner = result.recipesResult.filter(r => r.typeOfMeal !== 'DINNER');
+                    recipesWithoutDinner.push(previousDinner)
+                    setDayResult({recipesResult: recipesWithoutDinner})
+                }
             }
         }
-        if(dayIndex == 0){
+
+        if (dayIndex == 0) {
             const firstDayRequest: FirstDayRequest = {
                 savedPrefers: savedPrefers,
                 userProducts: statePrefs?.userProducts,
@@ -87,7 +98,7 @@ export const PlanCreator= () => {
             const newMealValues = deleteRepeatedMeal();
             const allUsedRecipesNames = tempDays
                 .flatMap(dayPlan => dayPlan.tempRecipes)
-                    .flatMap(recipeDay => recipeDay.recipeName);
+                .flatMap(recipeDay => recipeDay.recipeName);
             const nextDayRequest: NextDayRequest = {
                 savedPrefers: savedPrefers,
                 mealsValues: newMealValues,
@@ -171,7 +182,7 @@ export const PlanCreator= () => {
         setDayResult({recipesResult: []})
         setCurrentMeals([])
 
-        if(repeatedDayIndex == dayIndex) {
+        if (repeatedDayIndex == dayIndex) {
             setRepeatedDayIndex(-1);
         }
     }
@@ -186,7 +197,8 @@ export const PlanCreator= () => {
                 addMappedResultsToDaysToSave(dayResult?.recipesResult || []);
             }
         }
-        if(repeatedDayIndex !== -1){
+
+        if (repeatedDayIndex !== -1) {
             alert("Masz jeszcze jeden dzień do wygenerowania")
             return
         }
@@ -198,33 +210,51 @@ export const PlanCreator= () => {
     }
 
     return (
-        <div >
-            <GeneratedDays tempDays={tempDays}/>
-            <div className="plan-container">
-                <MealsChooser dayIndex={dayIndex} isTwoDays={repeatedDayIndex} setIsTwoDays={setRepeatedDayIndex}/>
-                {isMealButtonsChanged ?
-                    <div className="rec-search-button">
-                        <button onClick={() => postData()}>{t('findRecipesButton')}</button>
-                    </div>
-                    :
-                    <>
-                        <RecipeResult dayResult={dayResult}/>
-                        {dayResult ?
-                            <div className="actions-buttons-box">
+        <div id="target" className="creator-section">
+            <Date dayIndex={dayIndex}/>
+            <div className="main-relative-box creator-relative-box">
+                <div className="background-100-width meals-background"></div>
+                <div className="absolute-container">
+                    <CreatorPanel dayIndex={dayIndex} isTwoDays={repeatedDayIndex}
+                                  setIsTwoDays={setRepeatedDayIndex}
+                                  isMealButtonsChanged={isMealButtonsChanged}
+                                  dayResult={dayResult}
+                    />
+                </div>
+                {!isMealButtonsChanged &&
+                    <div className="background-100-width results-background"></div>
+                }
+            </div>
+            {isMealButtonsChanged ?
+                <div className="buttons-1">
+                    <button className="find-button" onClick={() => postData()}>
+                        {t('findRecipesButton')}
+                    </button>
+                    {dayResult &&
+                        <button className="save-button" onClick={handleSave}>
+                            {t('savePlanButton')}
+                        </button>
+                    }
+                </div>
+                :
+                <>
+                    {dayResult ?
+                        <div className="buttons-2">
+                            <div className="actions-buttons">
                                 <button onClick={handleChange}>{t('changeButton')}</button>
                                 <button onClick={handleAccept}>{t('nextDayButton')}</button>
                             </div>
-                            :
-                            <>Error: Recipes not found</>
-                        }
-                    </>
-                }
-            </div>
-            <div>
-                {dayResult &&
-                    <button onClick={handleSave}>{t('savePlanButton')}</button>
-                }
-            </div>
+                            {dayResult &&
+                                <button className="save-button" onClick={handleSave}>
+                                    {t('savePlanButton')}
+                                </button>
+                            }
+                        </div>
+                        :
+                        <>Error: Recipes not found</>
+                    }
+                </>
+            }
         </div>
     )
 }

@@ -45,7 +45,7 @@ export const translationPL = {
   addButton: 'Dodaj',
   // creator
   chooseMealsMsg: 'Wybierz posiłki, które chcesz przygotować',
-  forManyDaysMsg: 'Na ile dni',
+  repeatOption: 'Powtórz jutro',
   sameDinnerMsg: 'To samo co wczoraj',
   time: 'Czas',
   // buttons

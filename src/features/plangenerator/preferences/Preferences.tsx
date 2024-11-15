@@ -12,7 +12,7 @@ import {SavedPrefers} from "../../../models/generatorModels.ts";
 import {t} from "i18next";
 
 interface PreferencesProps {
-    setIsNextClicked:   Dispatch<SetStateAction<boolean>>
+    setIsNextClicked: Dispatch<SetStateAction<boolean>>
 }
 
 export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
@@ -33,7 +33,7 @@ export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
 
         apiUser.getPrefers({controller})
             .then(prefs => {
-                if(prefs){
+                if (prefs) {
                     isMounted && setSavedUserPrefers({
                         // diet: prefs.diet,
                         dietId: prefs.dietId,
@@ -50,6 +50,10 @@ export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
     }, []);
 
     const handleClick = () => {
+        dispatch?.({
+            type: "RESET",
+            meal: {mealId: '', timeMin: 0, forHowManyDays: 0}
+        })
         console.log("StatePrefs: " + state.portionsNr);
         apiUser.updatePrefers({
             username: auth.username,
@@ -72,7 +76,7 @@ export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
     };
 
     return (
-        <>
+        <div className="prefers-section">
             <div className="prefers-container">
                 <div className="prefs-grid">
                     <Diet savedDietId={savedUserPrefers.dietId}/>
@@ -83,6 +87,6 @@ export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
                 </div>
             </div>
             <button onClick={handleClick}>{t('nextButton')}</button>
-        </>
+        </div>
     );
 }

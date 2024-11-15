@@ -1,8 +1,16 @@
+.prefers-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 5em;
+    margin-bottom: 8em;
+}
+
 .prefers-container {
     display: flex;
     justify-content: center;
     width: 90%;
-    margin-top: 3em;
     margin-bottom: 3em;
 }
 
@@ -11,7 +19,6 @@
     width: 100%;
     grid-template-columns: repeat(9, 1fr);
     gap: 10px;
-    margin-right: 10px;
 }
 
 .prefs-item {
@@ -104,6 +111,10 @@
 
 /*PHONE*/
 @media (max-width: 768px) {
+    .prefers-section {
+        margin-top: 3em;
+    }
+
     .prefers-container {
         width: 100%;
     }

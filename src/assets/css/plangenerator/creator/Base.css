@@ -1,0 +1,71 @@
+.main-relative-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.background-100-width {
+    z-index: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.absolute-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    z-index: 20;
+    width: 80%;
+}
+
+.inner-items-flex-con {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    gap: 10px;
+    width: 90%;
+    z-index: 40;
+}
+
+.panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 14em;
+    gap: 1.5em;
+}
+
+/*!*TABLET*!*/
+@media (max-width: 1280px) {
+}
+
+/*PHONE*/
+@media (max-width: 768px) {
+    .absolute-container {
+        position: static;
+        width: 100%;
+    }
+
+    .inner-items-flex-con {
+        flex-direction: column;
+        align-items: center;
+        gap: 2em;
+        width: 60%;
+        margin-top: 0.3em;
+    }
+
+    .planned-relative-box {
+        gap: 0;
+    }
+
+    .creator-relative-box {
+        gap: 0;
+    }
+}

@@ -22,13 +22,14 @@ body{
   -moz-osx-font-smoothing: grayscale;
 }
 
-.background {
+.background-80 {
   display: flex;
   flex-direction: column;
-  width: 80%;
   justify-content: center;
   align-items: center;
-  margin: auto;
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 5em;
 }
 
 a {

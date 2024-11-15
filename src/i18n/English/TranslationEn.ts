@@ -45,7 +45,7 @@ export const translationEn = {
   addButton: 'Add',
   // creator
   chooseMealsMsg: 'Choose the meals you want to prepare',
-  forManyDaysMsg: 'For how many days',
+  repeatOption: 'Repeat tomorrow',
   sameDinnerMsg: 'The same as yesterday',
   time: 'Time',
   //buttons

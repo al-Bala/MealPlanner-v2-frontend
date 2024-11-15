@@ -7,6 +7,13 @@
 // }
 import {Dayjs} from "dayjs";
 
+export const mealsNames: MealModel[] = [
+    {id:'BREAKFAST', name:'Breakfast', days: false},
+    // {id:'L', name:'Lunch', days: false},
+    {id:'DINNER', name:'Dinner', days: true},
+    {id:'SUPPER', name:'Supper', days: false}
+];
+
 export interface Product {
     id: string;
     name: string;
@@ -49,7 +56,7 @@ export interface MealValues {
 export interface MealModel {
     id: string;
     name: string;
-    days: boolean;
+    days: boolean;  // can be repeated
 }
 
 export interface MainData {
