@@ -1,23 +1,20 @@
 import {Link} from 'react-router-dom';
-import useAuth from "../features/authentication/hooks/useAuth.ts";
-import useInactivityTracker from "../features/authentication/hooks/useInactivityTracker.ts";
+import "../assets/css/Home.css"
 import {t} from "i18next";
 
 export const HomePage = () => {
-    const {auth} = useAuth();
-    const { inactiveTime } = useInactivityTracker();
+    // const { inactiveTime } = useInactivityTracker();
 
     return (
-        <div>
+        <div className="home-section">
             <h2>Meal Planner</h2>
-            <p>{t('homePageMsg')}:</p>
-            <Link to="/generator">
-                <button style={{backgroundColor: "#2c4f33", color: "white"}}>{t('generateButton')}</button>
-            </Link>
-            <div style={{marginTop: "5em"}}>
-                {t('userId')}: {auth.username}
+            <div className="home-msg">
+                <p>{t('homePageMsg')}:</p>
             </div>
-            <p>Inactive time: {inactiveTime}</p>
+            <Link to="/generator">
+                <button className="home-generator-button">{t('generateButton')}</button>
+            </Link>
+            {/*<p>Inactive time: {inactiveTime}</p>*/}
         </div>
     );
 };

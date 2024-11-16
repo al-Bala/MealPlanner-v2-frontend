@@ -1,0 +1,41 @@
+.home-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 1.2em;
+    margin-top: 2em;
+}
+
+.home-msg {
+    display: flex;
+    justify-content: center;
+    background-color: #F4F4F4;
+    border-radius: 15px;
+    width: 40%;
+
+    p {
+        margin: 1em;
+    }
+}
+
+.home-generator-button {
+    background-color: #536851;
+    font-size: 1.1em;
+    color: white;
+    padding: 0.8em 1.8em;
+}
+
+/*!*TABLET*!*/
+@media (max-width: 1280px) {
+    .home-msg {
+        width: 60%;
+    }
+}
+
+/*PHONE*/
+@media (max-width: 768px) {
+    .home-msg {
+        width: 90%;
+    }
+}
