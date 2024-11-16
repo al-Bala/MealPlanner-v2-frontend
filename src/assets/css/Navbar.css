@@ -18,6 +18,8 @@ nav ul {
     align-content: center;
     list-style: none;
     justify-content: right;
+    gap: 3em;
+    margin-right: 3em;
 }
 
 nav ul .home {
@@ -25,7 +27,6 @@ nav ul .home {
 }
 
 nav ul li {
-    margin-right: 3em;
     align-content: center;
 }
 
@@ -95,6 +96,16 @@ nav .menu-icon {
     option {
         background-color: white;
         color: black;
+    }
+}
+
+/*!*TABLET*!*/
+@media (max-width: 962px) {
+    nav ul {
+        justify-content: space-between;
+        gap: normal;
+        margin-right: 2em;
+        margin-left: 4em;
     }
 }
 
