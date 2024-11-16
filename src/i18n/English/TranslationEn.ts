@@ -27,7 +27,7 @@ export const translationEn = {
   alreadyHaveAccountQuestion: 'Already have an account?',
   hereLink: 'here',
   // profile
-  planHistory: 'Plan history',
+  plansHistory: 'Plans history',
   emptyHistoryMsg: 'Not found any recipes in history',
   // home page
   homePageMsg: 'Let\'s create your plan of recipes',

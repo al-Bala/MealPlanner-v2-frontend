@@ -27,7 +27,7 @@ export const translationPL = {
   alreadyHaveAccountQuestion: 'Masz już konto?',
   hereLink: 'tutaj',
   // profile
-  planHistory: 'Historia planów',
+  plansHistory: 'Historia planów',
   emptyHistoryMsg: 'Brak przepisów w historii',
   // home page
   homePageMsg: 'Stwórz swój plan przepisów',

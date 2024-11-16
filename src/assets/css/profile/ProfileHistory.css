@@ -1,0 +1,115 @@
+.plans-his-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 2em;
+}
+
+.plans-his-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.empty-plans-his {
+    background-color: #F4F4F4;
+    width: 100%;
+    border-radius: 10px;
+    padding: 2em 0;
+}
+
+.one-plan-his-container {
+    margin-top: 1.5em;
+    margin-bottom: 2em;
+    width: 100%;
+}
+
+.plan-his-info {
+    display: flex;
+    justify-content: right;
+    gap: 0.5em;
+    margin-bottom: 1em;
+
+    .info-box {
+        display: flex;
+        align-items: center;
+        background-color: #F4F4F4;
+        border-radius: 10px;
+        padding: 0.6em 0.8em;
+        gap: 0.8em;
+
+        .diet {
+            min-width: 5em;
+        }
+    }
+}
+
+.plan-his-box {
+    display: flex;
+    flex-direction: column;
+    background-color: #F4F4F4;
+    border-radius: 15px;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    gap: 2em;
+}
+
+.date {
+    display: flex;
+    justify-content: center;
+    background-color: #E3E3E3;
+    border-bottom: 1px solid black;
+    margin-bottom: 1em;
+
+    p {
+        font-size: 1.2em;
+        margin: 0.2em 0;
+    }
+}
+
+.grocery-button {
+    background-color: #536851;
+    color: white;
+    width: 30%;
+    margin: 2em 0;
+}
+
+/*!*TABLET*!*/
+@media (max-width: 1280px) {
+    .plans-his-section {
+        width: 125%;
+    }
+
+    .plan-his-info {
+        margin-right: 2em;
+    }
+
+    .plan-his-box {
+        border-radius: 0;
+    }
+}
+
+/*PHONE*/
+@media (max-width: 768px) {
+    .plans-his-section {
+        width: 125%;
+    }
+
+    .empty-plans-his {
+        width: 70%;
+    }
+
+    .plan-his-day {
+        margin-bottom: 2em;
+    }
+
+    .grocery-button {
+        width: 70%;
+    }
+
+    .plan-his-info {
+        justify-content: center;
+    }
+}
