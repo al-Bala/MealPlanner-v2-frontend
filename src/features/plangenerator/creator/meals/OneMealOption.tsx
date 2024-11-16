@@ -1,25 +1,24 @@
 import {Dispatch, ReactNode, SetStateAction, useContext, useState} from "react";
 import {MealModel} from "../../../../models/models.ts";
-// import {LuClock4} from "react-icons/lu";
-import {DaysButton, MealButton, FirstDayMealButton, TimeButton} from './Meals.style.ts';
+import {RepeatRecipeButton, MealButton, FirstDayMealButton, TimeButton} from './Meals.style.ts';
 import {MealsContext, MealsDispatchContext} from "../../../../context/MealsContext.tsx";
 import TimeSlider from "./TimeSlider.tsx";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import {t} from "i18next";
 
 interface Props {
-    dayIndex: number;
-    isTwoDays: number;
-    setIsTwoDays: Dispatch<SetStateAction<number>>;
+    currentDayIndex: number;
+    repeatedDayIndex: number;
+    setRepeatedDayIndex: Dispatch<SetStateAction<number>>;
     meal: MealModel;
     children: ReactNode;
 }
 
-export const OneMealOption = ({dayIndex, isTwoDays, setIsTwoDays, meal, children}: Props) => {
+export const OneMealOption = ({currentDayIndex, repeatedDayIndex, setRepeatedDayIndex, meal, children}: Props) => {
     const stateMeals = useContext(MealsContext);
     const dispatch = useContext(MealsDispatchContext);
     const [timeButton, setTimeButton] = useState(false);
-    const [isRepeatButtonClicked, setIsRepeatButtonClicked] = useState(false);
+    const [isRepeatRecipeClicked, setIsRepeatRecipeClicked] = useState(false);
 
     const isMealSelected = () => {
         return !!stateMeals.find((selectedMeal) => selectedMeal.mealId == meal.id);
@@ -40,21 +39,21 @@ export const OneMealOption = ({dayIndex, isTwoDays, setIsTwoDays, meal, children
         }
     }
 
-    const handleDaysClick = () => {
-        if(isRepeatButtonClicked){
+    const handleRepeatRecipeClick = () => {
+        if(isRepeatRecipeClicked){
             dispatch?.({
                 type: 'SET_DAYS',
                 meal: {mealId: meal.id, timeMin: -1, forHowManyDays: 1}
             })
-            setIsTwoDays(-1)
+            setRepeatedDayIndex(-1)
         } else {
             dispatch?.({
                 type: 'SET_DAYS',
                 meal: {mealId: meal.id, timeMin: -1, forHowManyDays: 2}
             })
-            setIsTwoDays(dayIndex + 1);
+            setRepeatedDayIndex(currentDayIndex + 1);
         }
-        setIsRepeatButtonClicked(!isRepeatButtonClicked);
+        setIsRepeatRecipeClicked(!isRepeatRecipeClicked);
     }
 
     const handleTimeClick = () => {
@@ -71,12 +70,12 @@ export const OneMealOption = ({dayIndex, isTwoDays, setIsTwoDays, meal, children
 
     const renderRepeatMealButton = () => (
         <div className="meal-repeat-button">
-            <DaysButton
-                $selected={isRepeatButtonClicked}
-                onClick={handleDaysClick}
+            <RepeatRecipeButton
+                $selected={stateMeals.find(m => m.mealId == meal.id)?.forHowManyDays === 1}
+                onClick={handleRepeatRecipeClick}
             >
                 {t('repeatOption')}
-            </DaysButton>
+            </RepeatRecipeButton>
         </div>
     );
 
@@ -93,7 +92,7 @@ export const OneMealOption = ({dayIndex, isTwoDays, setIsTwoDays, meal, children
     const renderMealOption = () => (
         <>
             <div className="meal-name">
-                {dayIndex == 0 ?
+                {currentDayIndex == 0 ?
                     <FirstDayMealButton
                         disabled={meal.name === 'Dinner'}
                         $mealName={meal.name}
@@ -113,7 +112,7 @@ export const OneMealOption = ({dayIndex, isTwoDays, setIsTwoDays, meal, children
                 }
                 {isMealSelected() && renderTimeButton()}
             </div>
-            {isMealSelected() && meal.days && renderRepeatMealButton()}
+            {isMealSelected() && meal.isRepeatable && renderRepeatMealButton()}
             {timeButton && (
                 <div>
                     <TimeSlider meal={meal}/>
@@ -134,7 +133,7 @@ export const OneMealOption = ({dayIndex, isTwoDays, setIsTwoDays, meal, children
     return (
         <div className="meal-item">
             <div className="meal-box">
-                {(dayIndex === isTwoDays && meal.days) ? renderRepeatedMealOption() : renderMealOption()}
+                {(currentDayIndex === repeatedDayIndex && meal.isRepeatable) ? renderRepeatedMealOption() : renderMealOption()}
             </div>
         </div>
     );

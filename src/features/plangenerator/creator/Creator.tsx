@@ -38,12 +38,10 @@ export const Creator = ({tempDays, setTempDays}: Props) => {
     const dispatch = useContext(MealsDispatchContext);
     const arraysComparator = useArraysComparator();
 
-    const [dayIndex, setDayIndex] = useState(0);
+    const [currentDayIndex, setCurrentDayIndex] = useState(0);
     const [repeatedDayIndex, setRepeatedDayIndex] = useState(-1);
-    // const [dayResult, setDayResult] = useState<DayResult>({recipesResult: []});
     const [dayResult, setDayResult] = useState<DayResult | null>(null);
     const [currentMeals, setCurrentMeals] = useState<MealValues[]>([]);
-    // const [tempDays, setTempDays] = useState<TempDay[]>([]);
     const daysToSaveRef = useRef<PlannedDay[]>([]);
 
     const savedPrefers: SavedPrefers = {
@@ -58,7 +56,7 @@ export const Creator = ({tempDays, setTempDays}: Props) => {
 
     const postData = async () => {
         let response: CreateDayResponse | undefined;
-        const isMealRepeated = repeatedDayIndex == dayIndex;
+        const isMealRepeated = repeatedDayIndex == currentDayIndex;
 
         function deleteRepeatedMeal() {
             if (isMealRepeated) {
@@ -71,16 +69,16 @@ export const Creator = ({tempDays, setTempDays}: Props) => {
         function addRepeatedRecipeToResult(result: DayResult) {
             if (isMealRepeated) {
                 const previousDinner = tempDays[tempDays.length - 1].tempRecipes
-                    .find(m => m.typeOfMeal === 'DINNER');
+                    .find(m => m.typeOfMeal === 'Dinner');
                 if(previousDinner){
-                    const recipesWithoutDinner = result.recipesResult.filter(r => r.typeOfMeal !== 'DINNER');
+                    const recipesWithoutDinner = result.recipesResult.filter(r => r.typeOfMeal !== 'Dinner');
                     recipesWithoutDinner.push(previousDinner)
                     setDayResult({recipesResult: recipesWithoutDinner})
                 }
             }
         }
 
-        if (dayIndex == 0) {
+        if (currentDayIndex == 0) {
             const firstDayRequest: FirstDayRequest = {
                 savedPrefers: savedPrefers,
                 userProducts: statePrefs?.userProducts,
@@ -94,7 +92,7 @@ export const Creator = ({tempDays, setTempDays}: Props) => {
             response && setDayResult(response.dayResult);
         } else {
             console.log("Post - TwoDays: " + repeatedDayIndex);
-            console.log("Post - DayIndex: " + dayIndex);
+            console.log("Post - DayIndex: " + currentDayIndex);
             const newMealValues = deleteRepeatedMeal();
             const allUsedRecipesNames = tempDays
                 .flatMap(dayPlan => dayPlan.tempRecipes)
@@ -151,7 +149,7 @@ export const Creator = ({tempDays, setTempDays}: Props) => {
                     recipeName: recipe.recipeName,
                     forHowManyDays: stateMeals
                         .find(m => m.mealId === recipe.typeOfMeal)?.forHowManyDays || -1,    //??? error
-                    isRepeated: repeatedDayIndex == dayIndex && recipe.typeOfMeal == 'DINNER'
+                    isRepeated: repeatedDayIndex == currentDayIndex && recipe.typeOfMeal == 'DINNER'
                 };
                 newTempRecipes.push(updatedTempRecipe);
             });
@@ -159,11 +157,12 @@ export const Creator = ({tempDays, setTempDays}: Props) => {
         }
 
         console.log("TwoDays: " + repeatedDayIndex);
-        console.log("DayIndex: " + dayIndex);
+        console.log("DayIndex: " + currentDayIndex);
         dispatch?.({
             type: 'SET_DAYS',
             meal: {mealId: 'DINNER', timeMin: -1, forHowManyDays: 1}
         })
+
         const tempRecipes = mapFromDayResultsToTempRecipes();
 
         const acceptDayRequest: AcceptDayRequest = {
@@ -174,15 +173,15 @@ export const Creator = ({tempDays, setTempDays}: Props) => {
         apiGenerator.acceptDay({acceptDayRequest});
 
         setTempDays([...tempDays, {
-            dayIndex: dayIndex,
+            dayIndex: currentDayIndex,
             tempRecipes: tempRecipes
         }]);
         addMappedResultsToDaysToSave(dayResult?.recipesResult || []);
-        setDayIndex(dayIndex + 1)
+        setCurrentDayIndex(currentDayIndex + 1)
         setDayResult({recipesResult: []})
         setCurrentMeals([])
 
-        if (repeatedDayIndex == dayIndex) {
+        if (repeatedDayIndex == currentDayIndex) {
             setRepeatedDayIndex(-1);
         }
     }
@@ -211,12 +210,13 @@ export const Creator = ({tempDays, setTempDays}: Props) => {
 
     return (
         <div id="target" className="creator-section">
-            <Date dayIndex={dayIndex}/>
+            <Date dayIndex={currentDayIndex}/>
             <div className="main-relative-box creator-relative-box">
                 <div className="background-100-width meals-background"></div>
                 <div className="absolute-container">
-                    <CreatorPanel dayIndex={dayIndex} isTwoDays={repeatedDayIndex}
-                                  setIsTwoDays={setRepeatedDayIndex}
+                    <CreatorPanel currentDayIndex={currentDayIndex}
+                                  repeatedDayIndex={repeatedDayIndex}
+                                  setRepeatedDayIndex={setRepeatedDayIndex}
                                   isMealButtonsChanged={isMealButtonsChanged}
                                   dayResult={dayResult}
                     />

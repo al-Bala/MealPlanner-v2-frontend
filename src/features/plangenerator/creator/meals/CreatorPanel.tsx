@@ -6,13 +6,13 @@ import {DayResult} from "../../../../models/generatorModels.ts";
 import {OneRecipeResult} from "../OneRecipeResult.tsx";
 
 interface Props {
-    dayIndex: number;
-    isTwoDays: number;
-    setIsTwoDays: Dispatch<SetStateAction<number>>;
+    currentDayIndex: number;
+    repeatedDayIndex: number;
+    setRepeatedDayIndex: Dispatch<SetStateAction<number>>;
     isMealButtonsChanged: boolean;
     dayResult: DayResult | null;
 }
-export const CreatorPanel = ({dayIndex, isTwoDays, setIsTwoDays, isMealButtonsChanged, dayResult}: Props) => {
+export const CreatorPanel = ({currentDayIndex, repeatedDayIndex, setRepeatedDayIndex, isMealButtonsChanged, dayResult}: Props) => {
     return (
         <>
             <p>{t('chooseMealsMsg')}</p>
@@ -20,9 +20,9 @@ export const CreatorPanel = ({dayIndex, isTwoDays, setIsTwoDays, isMealButtonsCh
                     {mealsNames.map((meal: MealModel) => (
                         <div className="panel">
                             <OneMealOption key={meal.id}
-                                           dayIndex={dayIndex}
-                                           isTwoDays={isTwoDays}
-                                           setIsTwoDays={setIsTwoDays}
+                                           currentDayIndex={currentDayIndex}
+                                           repeatedDayIndex={repeatedDayIndex}
+                                           setRepeatedDayIndex={setRepeatedDayIndex}
                                            meal={meal}
                             >
                                 {meal.name}

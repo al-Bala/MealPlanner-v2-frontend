@@ -8,10 +8,10 @@
 import {Dayjs} from "dayjs";
 
 export const mealsNames: MealModel[] = [
-    {id:'BREAKFAST', name:'Breakfast', days: false},
+    {id:'BREAKFAST', name:'Breakfast', isRepeatable: false},
     // {id:'L', name:'Lunch', days: false},
-    {id:'DINNER', name:'Dinner', days: true},
-    {id:'SUPPER', name:'Supper', days: false}
+    {id:'DINNER', name:'Dinner', isRepeatable: true},
+    {id:'SUPPER', name:'Supper', isRepeatable: false}
 ];
 
 export interface Product {
@@ -56,7 +56,7 @@ export interface MealValues {
 export interface MealModel {
     id: string;
     name: string;
-    days: boolean;  // can be repeated
+    isRepeatable: boolean;
 }
 
 export interface MainData {
