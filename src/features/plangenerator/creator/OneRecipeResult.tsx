@@ -17,7 +17,9 @@ export const OneRecipeResult = ({meal, dayResult}: Props) => {
     return (
         <div className={mealForDay?.recipeId === 'SKIPPED' ? 'recipe-item empty-recipe' : 'recipe-item set-recipe'}>
             <div className="recipe-box">
-                <div className="photo-box"></div>
+                <div className="photo-box">
+                    <p>[.jpg]</p>
+                </div>
                 <div className="recipe-name">
                     <p>{mealForDay?.recipeName}</p>
                 </div>

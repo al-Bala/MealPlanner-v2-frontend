@@ -13,7 +13,9 @@ export const PlannedRecipes = ({day}: Props) => {
                         <div className="meal-type">{r.mealTypeName}</div>
                         <div className={r.isRepeated ? 'recipe-item repeated' : 'recipe-item'} key={r.mealTypeName}>
                             <div className="recipe-box">
-                                <div className="photo-box"></div>
+                                <div className="photo-box">
+                                    <p>[.jpg]</p>
+                                </div>
                                 <div className="recipe-name">
                                     <p>{r.recipeName}</p>
                                 </div>

@@ -17,6 +17,9 @@
 .empty-recipe {
     .photo-box{
         background-color: #E5E5E5;
+        p {
+            display: none;
+        }
     }
     .recipe-name {
         background-color: #656565;
@@ -40,9 +43,16 @@
     z-index: 30;
 
     .photo-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         height: 100%;
         border-top-right-radius: inherit;
         border-top-left-radius: inherit;
+
+        p {
+            color: #8E8E8E;
+        }
     }
 
     .recipe-name {
