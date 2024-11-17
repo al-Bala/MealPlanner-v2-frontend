@@ -94,8 +94,8 @@ export const OneMealOption = ({currentDayIndex, repeatedDayIndex, setRepeatedDay
             <div className="meal-name">
                 {currentDayIndex == 0 ?
                     <FirstDayMealButton
-                        disabled={meal.name === 'Dinner'}
-                        $mealName={meal.name}
+                        disabled={meal.typeName === 'Dinner'}
+                        $mealTypeName={meal.typeName}
                         $selected={isMealSelected()}
                         onClick={handleMealClick}
                     >

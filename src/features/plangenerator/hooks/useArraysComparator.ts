@@ -1,7 +1,7 @@
 import {MealValues} from "../../../models/models.ts";
 import {useContext} from "react";
 import {MealsContext} from "../../../context/MealsContext.tsx";
-import {DayResult, TempDay} from "../../../models/generatorModels.ts";
+import {ResultDay, TempDay} from "../../../models/generatorModels.ts";
 
 const areArraysEqual = (arr1: string[], arr2: string[]) => {
     if (arr1.length !== arr2.length) return false;
@@ -25,10 +25,10 @@ const useArraysComparator = () => {
         return isMealsButtonsChanged();
     }
 
-    const isTempDaysAndResultEqual = ({tempDays, result}: {tempDays: TempDay[], result: DayResult | null}) => {
+    const isTempDaysAndResultEqual = ({tempDays, result}: {tempDays: TempDay[], result: ResultDay | null}) => {
         return areArraysEqual(
             tempDays.length != 0 ? tempDays[tempDays.length - 1].tempRecipes.flatMap(d => d.recipeId) : [],
-            result && result.recipesResult.length != 0 ? result.recipesResult.flatMap(d => d.recipeId) : []
+            result && result.resultRecipes.length != 0 ? result.resultRecipes.flatMap(d => d.recipeId) : []
         );
     }
 

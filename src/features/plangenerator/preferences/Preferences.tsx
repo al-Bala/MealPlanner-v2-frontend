@@ -71,7 +71,7 @@ export const Preferences = ({setIsNextClicked}: PreferencesProps) => {
 
         dispatch?.({
             type: 'ADD_MEAL',
-            meal: {mealId: 'DINNER', timeMin: -1, forHowManyDays: 1}
+            meal: {mealId: 'DINNER-ID', timeMin: -1, forHowManyDays: 1}
         })
     };
 

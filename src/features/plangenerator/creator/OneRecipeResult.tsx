@@ -1,18 +1,18 @@
 import {MealModel} from "../../../models/models.ts";
-import {DayResult} from "../../../models/generatorModels.ts";
+import {ResultDay} from "../../../models/generatorModels.ts";
 
 interface Props{
     meal: MealModel;
-    dayResult: DayResult | null;
+    dayResult: ResultDay | null;
 }
 
 export const OneRecipeResult = ({meal, dayResult}: Props) => {
 
     const findMeal = (mealId: string) => {
-        return dayResult?.recipesResult
-            .find(meal => meal.typeOfMeal === mealId);
+        return dayResult?.resultRecipes
+            .find(meal => meal.mealTypeName === mealId);
     }
-    const mealForDay = findMeal(meal.name);
+    const mealForDay = findMeal(meal.typeName);
 
     return (
         <div className={mealForDay?.recipeId === 'SKIPPED' ? 'recipe-item empty-recipe' : 'recipe-item set-recipe'}>

@@ -19,6 +19,7 @@ export interface PlannedRecipe {
     recipeId: string;
     recipeName: string;
     forHowManyDays: number;
+    // isRepeated: boolean;
 }
 
 // PREFERENCES
@@ -64,15 +65,15 @@ export interface PlanToSave {
 // RESULT
 export interface CreateDayResponse {
     message: string;
-    dayResult: DayResult
+    resultDay: ResultDay
 }
 
-export interface DayResult {
-    recipesResult: RecipeResultM[];
+export interface ResultDay {
+    resultRecipes: RecipeResultM[];
 }
 
 export interface RecipeResultM {
-    typeOfMeal: string;
+    mealTypeName: string;
     recipeId: string;
     recipeName: string;
 }
@@ -84,7 +85,7 @@ export interface TempDay {
 }
 
 export interface TempRecipe {
-    typeOfMeal: string;
+    mealTypeName: string;
     recipeId: string;
     recipeName: string;
     forHowManyDays: number;

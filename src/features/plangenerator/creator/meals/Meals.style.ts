@@ -8,8 +8,8 @@ export const TimeButton = styled.button<{ $selected: boolean; }>`
     background: ${props => props.$selected ? '#88A983' : 'lightgrey'};
 `;
 
-export const FirstDayMealButton = styled.button<{ $mealName: string, $selected: boolean; }>`
-    background: ${props => props.$selected || props.$mealName == 'Dinner' ? '#88A983' : 'lightgrey'};
+export const FirstDayMealButton = styled.button<{ $mealTypeName: string, $selected: boolean; }>`
+    background: ${props => props.$selected || props.$mealTypeName == 'Dinner' ? '#88A983' : 'lightgrey'};
     color: black;
     width: 100%;
 `;

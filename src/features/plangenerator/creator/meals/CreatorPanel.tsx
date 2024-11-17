@@ -2,7 +2,7 @@ import {MealModel, mealsNames} from "../../../../models/models.ts";
 import {OneMealOption} from "./OneMealOption.tsx";
 import {Dispatch, SetStateAction} from "react";
 import {t} from "i18next";
-import {DayResult} from "../../../../models/generatorModels.ts";
+import {ResultDay} from "../../../../models/generatorModels.ts";
 import {OneRecipeResult} from "../OneRecipeResult.tsx";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
     repeatedDayIndex: number;
     setRepeatedDayIndex: Dispatch<SetStateAction<number>>;
     isMealButtonsChanged: boolean;
-    dayResult: DayResult | null;
+    dayResult: ResultDay | null;
 }
 export const CreatorPanel = ({currentDayIndex, repeatedDayIndex, setRepeatedDayIndex, isMealButtonsChanged, dayResult}: Props) => {
     return (
@@ -25,7 +25,7 @@ export const CreatorPanel = ({currentDayIndex, repeatedDayIndex, setRepeatedDayI
                                            setRepeatedDayIndex={setRepeatedDayIndex}
                                            meal={meal}
                             >
-                                {meal.name}
+                                {meal.typeName}
                             </OneMealOption>
                             {!isMealButtonsChanged &&
                                 <OneRecipeResult meal={meal} dayResult={dayResult}/>
